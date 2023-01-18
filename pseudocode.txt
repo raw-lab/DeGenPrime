@@ -1,0 +1,14 @@
+needs to be able to accept non-aligned and aligned files
+for non-aligned:
+    - support for .fna and .fasta files
+    -this will be done later with an R or Rust wiget
+        - ask Dr. White about how to handle .fna
+for aligned files
+- score the aligned files
+- sort the primers by amount of degeneracy
+- lower will mean better. degen of 0 has a score of 0, degen of 1 has a score of 1, degen of 2 has a score of 2, degen of 3 has a score of 4 and should disqualify.
+- need to be able to make forward and reverse primers for the PCR
+    - look at PCR link that Dr. White will send later
+
+may end up with two primers that are equally as good - have a way to handle this
+ideally a degen of 3 should stop scoring on a sequence, since we are trying to avoid this at all costs.
