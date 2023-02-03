@@ -3,6 +3,7 @@ for non-aligned:
     - support for .fna and .fasta files
     -this will be done later with an R or Rust wiget
         - ask Dr. White about how to handle .fna
+    -needleman-wunsch algorithm, wikipedia provides pseudocode for this
 for aligned files
 - score the aligned files
 - sort the primers by amount of degeneracy
