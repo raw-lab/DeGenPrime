@@ -1,0 +1,29 @@
+needs to be able to accept non-aligned and aligned files
+for non-aligned:
+    - support for .fna and .fasta files
+    -call MAFFT
+        - subprocess - calls command in the terminal for you
+        - needs to be imported in the code, this is done w MetaCerberus if I need help
+         - possible solution -  $mafft --globalpair --maxiterate 1000 --clustalout file.fasta >file_global.clust
+    //-this will be done later with an R or Rust wiget
+        - ask Dr. White about how to handle .fna
+    -needleman-wunsch algorithm, wikipedia provides pseudocode for this
+for aligned files
+- score the aligned files
+- sort the primers by amount of degeneracy
+- lower will mean better. degen of 0 has a score of 0, degen of 1 has a score of 1, degen of 2 has a score of 2, degen of 3 has a score of 4 and should disqualify.
+- if veery sequence in the same position is the same, it is a score of 0
+-need to consider degeneracy scores - can be a 70/30 split or a 50/50
+- need to be able to make forward and reverse primers for the PCR
+    - look at PCR link that Dr. White will send later
+ - need a dictionary to score degeneracy
+ - harder for it to prime if there are two+ bases next to one another, should penalize if we have more than three base pairs repeating
+ -start with nucleotide scoring and then can move on to protein
+ - default amplification should be the entire thing, can specify the amount of BP to amplify
+ -positional arguments as well
+ -after the primer is made, need to score again to make sure it doesn't stick to itself (primer dimers)
+ -ideally we have zero self-complimentarity
+ 
+
+may end up with two primers that are equally as good - have a way to handle this
+ideally a degen of 3 should stop scoring on a sequence, since we are trying to avoid this at all costs.
