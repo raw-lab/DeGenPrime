@@ -32,6 +32,9 @@ namespace DeGenPrime
 
 		void PushBack(char c);
 		void PopBack();
+
+		void Invert();
+		void Reverse();
 		
 		std::string GetName() const;
 		std::vector<char> GetCodes() const;

@@ -5,6 +5,7 @@
 #include <string>
 #include "DataNode.h"
 #include "DataSequence.h"
+#include "global.h"
 
 using namespace std;
 
@@ -26,94 +27,132 @@ namespace DeGenPrime
 		for(int i = 0;i < _list.size();i++)
 		{
 			cout << _list[i].GetCode();
-			/* Used to calculate standard deviation
-			accum_ratio += (_list[i].Ratio() - AverageRatio()) *
-						(_list[i].Ratio() - AverageRatio());
-			accum_weight += (_list[i].WeightedRatio() - AverageWeighted()) *
-						(_list[i].WeightedRatio() - AverageWeighted());
-			*/
 		}
-		cout << "\nSequence Most Commons: ";
-		for(int i = 0;i < _list.size();i++)
-		{
-			cout << _list[i].GetMostCommon();
-		}
-		cout << "\nSequence Average Match Ratio: " << AverageRatio() << endl;
-		// accum_percent = sqrt(accum_ratio);
-		// accum_weight = sqrt(accum_weight);
-		// cout << "\t(std: " << accum_percent << "%)" << endl;
-		cout << "Sequence Average Weighted Ratio: " << AverageWeighted();
-		// cout << " %(std: " << accum_weight << "%)\n" << endl;
-		cout << endl << endl;
+		cout << endl << "Temperature: " << Temperature() << endl;
+		cout << "Enthalpy: " << Enthalpy() << endl;
+		cout << "Entropy (1M Na+): " << Entropy(1.0) << endl;
+		cout << "Gibbs (25 C, 1M Na+): " << Gibbs(25.0, 1.0) << endl;
 		return;
 	}
-	void DataSequence::PrintNonNSequences()
-	{
-		int counter = 0;
-		float ratio = 0.0;
-		float weighted = 0.0;
-		for(int i = 0;i < _list.size();i++)
-		{
-			if(_list[i].GetCode() == 'N')
-			{
-				continue;
-			}
-			else
-			{
-				cout << "[Index: " << i << "] ";
-				_list[i].Print();
-				cout << endl;
-				counter++;
-				ratio += _list[i].Ratio();
-				weighted += _list[i].WeightedRatio();
-			}
-		}
-		ratio /= counter;
-		weighted /= counter;
-		cout << "Total Non-N Sequences: [" << counter << "]" << endl;
-		cout << "Average Match Score: [" << ratio << endl;
-		cout << "Average Weighted Score: [" << weighted << endl;
-	}
 
-	std::vector<DataNode> DataSequence::SubSeq(int startIndex, int length)
+	DataSequence DataSequence::SubSeq(int startIndex, int length)
 	{
-		std::vector<DataNode> sub_seq;
+		DataSequence sub_seq;
 		for(int i = startIndex;i < startIndex+length;i++)
 		{
-				sub_seq.push_back(_list[i]);
+				sub_seq.PushBack(_list[i]);
 		}
 		return sub_seq;
 
 	}
 
-	std::vector<int> DataSequence::IndecesOfNonNSubsequences(int length)
+	DataSequence DataSequence::InvSeq()
 	{
-		std::vector<int> indeces;
-		int ending_index = _list.size() - length;
-		for(int i = 0;i < ending_index; ) // Third argument intentionally blank.
+		DataSequence inv_seq;
+		for(DataNode node : _list)
 		{
-			bool was_no_n = true;
-			int next_index = i + 1;
-			// Base nested for loop on i and length
-			for(int j = i;j < i + length;j++)
-			{
-				if(_list[j].GetCode() == 'N')
-				{
-					next_index = j + 1;
-					was_no_n = false;
-				}
-			}
-			if(was_no_n)
-			{
-				indeces.push_back(i);
-			}
-			i = next_index;
+			DataNode inv_node = node.InvNode();
+			inv_seq.PushBack(inv_node);
 		}
-		return indeces;
+		return inv_seq;
+	}
+
+	DataSequence DataSequence::RevSeq()
+	{
+		DataSequence rev_seq;
+		for(int i = _list.size() - 1; i > -1;i--)
+		{
+			rev_seq.PushBack(_list[i]);
+		}
+		return rev_seq;
+	}
+
+	float DataSequence::Enthalpy() const
+	{
+		float accumulated_enthalpy = 0.0;
+		for(int i = 0;i < _list.size() - 1;) // Third argument intentionally blank.
+		{
+			// Skip deletions in first nucleotide
+			if(_list[i].GetMostCommon() == '-')
+			{
+				continue;
+			}
+			int j = i + 1;
+			
+			// Skip deletions in second nucleotide
+			while(_list[j].GetMostCommon() == '-' && j < _list.size())
+			{
+				j++;
+			}
+			
+			// Make sure not out of bounds
+			if(j < _list.size())
+			{
+				accumulated_enthalpy += _list[i].Enthalpy(_list[j]);
+			}
+
+			// Increment the loop counter
+			i = j;
+		}
+		return accumulated_enthalpy;
+	}
+
+	float DataSequence::Entropy(float salt_concentration) const
+	{
+		float accumulated_entropy = 0.0;
+		for(int i = 0;i < _list.size() - 1;) // Third argument intentionally blank.
+		{
+			// Skip deletions in first nucleotide
+			if(_list[i].GetMostCommon() == '-')
+			{
+				continue;
+			}
+			int j = i + 1;
+			
+			// Skip deletions in second nucleotide
+			while(_list[j].GetMostCommon() == '-' && j < _list.size())
+			{
+				j++;
+			}
+			
+			// Make sure not out of bounds
+			if(j < _list.size())
+			{
+				accumulated_entropy += _list[i].Entropy(_list[j]);
+			}
+
+			// Increment the loop counter
+			i = j;
+		}
+		accumulated_entropy += 0.368 * (float)(_list.size()) * log(salt_concentration * 50.0/1000.0);
+		// accumulated_entropy += (0.368 * (float)(_list.size()) * log(salt_concentration)); (is this wrong?)
+		return accumulated_entropy;
+	}
+
+	float DataSequence::Gibbs(float temperature, float salt_concentration) const
+	{
+		float gibbs = 0.0;
+		DataSequence p;
+		
+		// If a nearest neighbor is a deletion, we need to skip over that particular 
+		// DataNode and get a subsequence that does not contain any deletions.
+		for(int i = 0; i < _list.size();i++)
+		{
+			if(_list[i].GetMostCommon() != '-')
+			{
+				p.PushBack(_list[i]);
+			}
+		}
+		
+		// Gibbs Energy = Enthalpy - (Temperature * Salt Corrected Entropy)
+		gibbs = p.Enthalpy();
+		gibbs -= ((temperature + 273.15) * (p.Entropy(salt_concentration) / 1000.0));
+		return gibbs;
 	}
 
 	std::vector<DataNode> DataSequence::GetDataSequence() const { return _list; }
 	int DataSequence::size() const { return _list.size(); }
+
 	float DataSequence::AverageRatio() const
 	{
 		int counter = 0;
@@ -126,16 +165,80 @@ namespace DeGenPrime
 		accum /= counter;
 		return accum;
 	}
-	float DataSequence::AverageWeighted() const
+
+	int DataSequence::IndexOf(DataSequence data) const
 	{
-		int counter = 0;
-		float accum = 0.0;
-		for(int i = 0;i < _list.size();i++)
+		int index = -1;
+		bool outerflag = false;
+		for(int i = 0;i < _list.size() - data.size();i++)
 		{
-			accum += _list[i].WeightedRatio();
-			counter++;
+			bool innerflag = false;
+			for(int j = 0;j < data.size();j++)
+			{
+				if(innerflag)
+				{
+					break;
+				}
+				else if(_list[i+j].GetMostCommon() != data.GetDataSequence()[j].GetMostCommon())
+				{
+					innerflag = true;
+					break;
+				}
+			}
+			if(!innerflag)
+			{
+				outerflag = true;
+				index = i;
+			}
 		}
-		accum /= counter;
-		return accum;
+		return index;
+	}
+
+	float DataSequence::Temperature() const
+	{
+		float temperature = 0.0;
+		if(_list.size() > MAX_PRIMER_LENGTH || _list.size() < MIN_PRIMER_LENGTH)
+		{
+			temperature = -1.0;
+		}
+		else
+		{
+			int gc = 0;
+			int at = 0;
+			for(int i = 0;i < _list.size();i++)
+			{
+				switch(_list[i].GetMostCommon())
+				{
+					case 'A':
+					case 'T':
+						at++;
+						break;
+					case 'C':
+					case 'G':
+						gc++;
+						break;
+					default:
+						break;
+				}
+			}
+			temperature = 64.9 + (41.0 * (gc - 16.4) / (float)(gc + at) ); // Source, northwestern univ.
+		}
+		return temperature;
+	}
+
+	bool DataSequence::checkMatch(DataSequence data) const
+	{
+		if(data.size() != _list.size())
+		{
+			return false;
+		}
+		for(int i = 0;i < data.size();i++)
+		{
+			if(data.GetDataSequence()[i].GetMostCommon() != _list[i].GetMostCommon())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 } // End of DeGenPrime

@@ -62,16 +62,23 @@ namespace DeGenPrime
 	{
 	public:
 		DataNode(std::vector<char> char_list);
+		DataNode(char code, char mc, float ratio);
 
+		DataNode InvNode();
 		void Print(); // Test Function
+
+		float Enthalpy(DataNode node) const;
+		float Entropy(DataNode node) const;
+		float Gibbs(DataNode node, float temperature) const;
 
 		char GetCode() const;
 		char GetMostCommon() const;
 		float Ratio() const;
-		float WeightedRatio() const;
 	private:
 		void ChooseCode(int Count[5], int Size);
+		void EvaluateCode();
 		int MostCommonIndex(int Count[5]);
+
 		char _code;
 		char _most_common;
 		float _ratio;

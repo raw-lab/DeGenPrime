@@ -1,3 +1,4 @@
+#include <cctype>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -13,28 +14,87 @@ namespace DeGenPrime
 	
 	SequenceReader::SequenceReader() { }
 
+	FileType SequenceReader::IdentifyFileType(ifstream &ifs)
+	{
+		FileType ret;
+		int forward_arrow = (int)'>';
+		if(ifs.peek() == forward_arrow)
+		{
+			ret = fasta;
+		}
+		else
+		{
+			ret = clust;
+		}
+		return ret;
+	}
+
 	SequenceList SequenceReader::CreateList(ifstream &ifs)
 	{
-		FindEndOfHeader(ifs);
 		SequenceList list;
+		Sequence seq;
+		FileType type = IdentifyFileType(ifs);
 		string line;
-		while(getline(ifs, line))
+		char next;
+		int count;
+		switch(type)
 		{
-			if(ParseLine(line))
-			{
-				Sequence seq = CreateSequence(line);
+			case clust:
+				FindEndOfHeader(ifs);
+				while(getline(ifs, line))
+				{
+					if(ParseLine(line))
+					{
+						seq = CreateSequence(line);
+						list.PushBack(seq);
+					}
+				}
+				if(list.size() > 1)
+				{
+					list.PopBack(); // The last sequence needs to be removed.
+				}
+				break;
+			case fasta:
+				count = 1;
+				while(getline(ifs,line))
+				{
+					if(line[0] == '>') // New Sequence
+					{
+						list.PushBack(seq); // The first sequence will be empty
+						line = line.erase(0,1); // erase the '>'
+						seq.SetName(line);
+					}
+					else // Adding to existing sequence
+					{
+						for(int i = 0;i < line.length();i++)
+						{
+							seq.PushBack(line[i]);
+						}
+					}
+				}
+				// Push the last collected sequence and delete the empty first sequence
 				list.PushBack(seq);
-			}
+				list.Erase(0);
+				break;
+			default:
+				break;
 		}
-		list.PopBack(); // The last line needs to be removed.
 		return list;
 	}
 
 	Sequence SequenceReader::CreateSequence(string line)
 	{
 		Sequence seq;
-		string name = line.substr(0, 16);
-		string codes = line.erase(0, 16);
+		string line2 = "";
+		for(char c : line)
+		{
+			if(c != '\r')
+			{
+				line2 += c;
+			}
+		}
+		string name = line2.substr(0, 16);
+		string codes = line2.erase(0, 16);
 		seq.SetName(name);
 		std::vector<char> list;
 		for(int i=0; i<codes.length(); i++)
@@ -47,13 +107,7 @@ namespace DeGenPrime
 
 	bool SequenceReader::ParseLine(string line)
 	{
-		bool _ret = true;
-		char first = (char)line[0];
-		if(first == '\n' || first == ' ' || first == '\t')
-		{
-			_ret = false;
-		}
-		return _ret;
+		return ( std::isblank((char)line[0]) == 1 ? false : true);
 	}
 
 	void SequenceReader::FindEndOfHeader(ifstream &ifs)
@@ -61,12 +115,12 @@ namespace DeGenPrime
 		int _count = 0;
 		char next;
 		ifs.get(next);
-		while(next != '\n')
+		while(next != '\n' && next != '\r')
 		{
 			_count++;
 			ifs.get(next);
 		}
-		while(next == '\n')
+		while(next == '\n' || next == '\r')
 		{
 			_count++;
 			ifs.get(next);
