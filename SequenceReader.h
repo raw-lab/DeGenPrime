@@ -38,11 +38,18 @@
 
 namespace DeGenPrime
 {
+	enum FileType
+	{
+		clust,
+		fasta
+	};
 		
 	class SequenceReader
 	{
 	public:
 		SequenceReader();
+		
+		FileType IdentifyFileType(std::ifstream &ifs);
 		SequenceList CreateList(std::ifstream &ifs);
 		
 	private:

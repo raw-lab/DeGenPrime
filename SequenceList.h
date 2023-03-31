@@ -10,6 +10,7 @@
 //			the argument's codes to the sequence already in the
 //			list.  If there is not a sequence with that name in
 //			the list.  It appends the Sequence to the list.
+//		  Erase(int index): Erases the Sequence in the list at index.
 //		  PopBack(): This removes the last sequence in the list.
 // 		  ProcessList():	Condense the longitudinal data across all 
 //					the stringsin the list into a data sequence.
@@ -41,14 +42,18 @@ namespace DeGenPrime
 	public:
 		SequenceList();
 
+		SequenceList InvRevList();
 		DataSequence ProcessList();
 		
 		void SetList(std::vector<Sequence> catalog);
-
+		void Erase(int index);
 		void PushBack(Sequence seq); // Do not use reg push_back
 		void PopBack();	// Do not use reg pop_back
+		void FilterDashes();
 
-		void PrintSequenceNames(); // Test Function
+		void PrintSequenceNames() const; // Test Function
+		void PrintSection(int index, int length) const; // Test Function
+
 		std::vector<char> CharsAt(int index) const;
 		std::vector<Sequence> GetSequenceList() const;
 		int size() const;
