@@ -1,12 +1,13 @@
-import tkinter as tk
 from tkinter import *
 from tkinter.filedialog import askopenfile
+import tkinter as tk
+import customtkinter as ctk
 import os
 
 #instantiate the main window. this will be cleared once the button is pressed.
-window = tk.Tk()
+window = ctk.CTk()
 window.title("DeGenPrime")
-window.geometry("250x250")
+window.geometry("500x300")
 frame = Frame(window)
 frame.pack()
 
@@ -15,13 +16,13 @@ frame.pack()
 def handle_click(event):
     lbl_greeting.destroy()
     btn_greeting.destroy()
-    window.geometry("500x500")
-    btn_browsefiles.pack()
+    window.geometry("700x500")
+    btn_browsefiles.place(x=10,y=10)
 
 #entry screen. this will describe to the user the purpose of DeGenPrime
-lbl_greeting = tk.Label(text="Welcome to DeGenPrime. Our goal is to maximize your primer design experience while minimizing your headaches. Input either an unaligned or a prealigned .fasta or .fna file, and allow DeGenPrime to recommend the best primers for your PCR use.")
+lbl_greeting = ctk.CTkLabel(text="Welcome to DeGenPrime. Our goal is to maximize your primer design experience while minimizing your headaches. Input either an unaligned or a prealigned .fasta or .fna file, and allow DeGenPrime to recommend the best primers for your PCR use.", master = window,wraplength = 450, justify= "center")
 lbl_greeting.pack(fill=BOTH, expand=True)
-btn_greeting = tk.Button(text="ENTER")
+btn_greeting = ctk.CTkButton(master = window,text="ENTER")
 btn_greeting.bind("<Button-1>", handle_click)
 btn_greeting.pack()
 
@@ -30,9 +31,13 @@ def find_input_file():
     file = askopenfile(mode ='r', filetypes =[('Acceptable Filetypes', '*.fasta,*.fna,*.clust,*.faa')])
     if file:
         inputpath = os.path.abspath(file.name)
-        lbl_inputpath = tk.Label(text="Your selected file is" + str(inputpath)).pack()
+        lbl_inputpath = ctk.CTkLabel(master = window, text="Your selected file is: " + str(inputpath)).place(x=10,y=50)
+        filecontent = file.read()
 
-btn_browsefiles = tk.Button(text="Browse Files", command=find_input_file)
+        #somewhere in this event handling scheme we will have to pass the file to C++. figure out how to do this.
+
+
+btn_browsefiles = ctk.CTkButton(master=window,text="Browse Files", command=find_input_file)
 
 
 
