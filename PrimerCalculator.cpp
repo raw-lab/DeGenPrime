@@ -48,6 +48,26 @@ namespace DeGenPrime
 		}*/
 	}
 
+	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound)
+	{
+		// Check the lowerBound is appropriate
+		int loopBound = lowerBound > 0 ? lowerBound : 0;
+		if(loopBound + MAX_PRIMER_LENGTH > data.size())
+		{
+			loopBound = data.size() - MAX_PRIMER_LENGTH;
+		}
+		
+		// Needs to loop through all primers in the forward direction
+		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
+		{
+			for(int j = 0;j < loopBound;j++)
+			{
+				Primer id(j,i);
+				PushBack(id);
+			}
+		}
+	}
+
 	void PrimerCalculator::FilterDegeneracy(DataSequence data)
 	{
 		for(int i = _primers.size() - 1; i >= 0;i--)
@@ -196,29 +216,6 @@ namespace DeGenPrime
 		}
 	}
 
-	void PrimerCalculator::FilterGibbs(DataSequence data, float temperature, float salt_concentration)
-	{
-		for(int i = _primers.size() - 1;i >= 0;i--)
-		{
-			// Define the primer
-			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
-
-			// Filter sequences that are likely to form dimers or hairpins by Gibbs energy
-			// -	filter any primer with internal gibbs < -6
-			// -	filter any primer with a 3' end < -5
-			DataSequence InternalSeq = p.SubSeq(0, p.size() - 3);
-			DataSequence EndSeq = p.SubSeq(p.size() - 3, 3);
-
-			float InternalGibbs = InternalSeq.Gibbs(temperature, salt_concentration);
-			float EndGibbs = EndSeq.Gibbs(temperature, salt_concentration);
-
-			if(InternalGibbs < -6.0 || EndGibbs < -5.0)
-			{
-				Erase(i);
-			}
-		}
-	}
-
 	void PrimerCalculator::FilterRepeats(DataSequence data)
 	{
 		for(int i = _primers.size() - 1;i >= 0;i--)
@@ -292,12 +289,149 @@ namespace DeGenPrime
 		}
 	}
 
-	void PrimerCalculator::FilterTemperature(DataSequence data)
+	void PrimerCalculator::FilterHairpins(DataSequence data)
+	{
+		for(int i = _primers.size() - 1;i >= 0;i--)
+		{
+			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
+			bool flag = false;
+			int match_count = 0;
+
+			// Filter all sequences that would form Hairpins.
+			// -	define a fold point within range <3, size - 4> (j)
+			// -	split primer into two subsequences
+			// -  determine which end of the primer is closest to the fold point
+			// -	reverse and invert the end sequence
+			// -	count matches between the subsequences
+			// -	if matches >= sqrt(sub_length) raise flag, reject primer.
+			//		(usually sqrt(sub_length) is 2.xxx, but can be 3 for larger primers.)
+
+			for(int j = 3;j < p.size() - 3;j++)
+			{
+				if(flag)
+				{
+					break;
+				}
+				
+				DataSequence begin = p.SubSeq(0, j - 1);
+				DataSequence end = p.SubSeq(j + 1, p.size() - j - 1);
+				int size_difference = end.size() - begin.size();
+				if(size_difference != 0)
+				{
+					if(size_difference > 0)
+					{
+						// Get first chars of end sequence
+						end = end.SubSeq(0,begin.size());
+					}
+					else
+					{
+						// Get last chars of begin sequence
+						begin = begin.SubSeq(begin.size() - end.size(), end.size());
+					}
+				}
+
+				end = end.RevSeq().InvSeq();
+				match_count = begin.CountMatches(end);
+				if((float)match_count >= sqrt(end.size()))
+				{
+					flag = true;
+				}
+			}
+			if(flag)
+			{
+				Erase(i);
+			}
+		}
+	}
+
+	void PrimerCalculator::FilterDimers(DataSequence data)
+	{
+		for(int i = _primers.size() - 1;i >= 0;i--)
+		{
+			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
+			bool flag = false;
+			int match_count = 0;
+
+			// Filter all sequences that would for self-dimers
+			// -	use the 3' end of the primer (first three nucleotides) as a reference check
+			// -	self dimers are most likely to form when these nucleotides have matches.
+			// -	slide these nucleotides backward along the InvSeq (not RevSeq) of the primer
+			// -	start at index p.size() - 4.
+			// -	if there are 2 matches, filter the primer
+
+			DataSequence begin = p.SubSeq(0,3);
+			DataSequence inv_seq = p.InvSeq();
+
+			for(int j = inv_seq.size() - 4;j >= 0;j--)
+			{
+				if(flag)
+				{
+					break;
+				}
+
+				DataSequence end = inv_seq.SubSeq(j,3);
+				match_count = begin.CountMatches(end);
+
+				flag = (match_count >= 2) ? true : false;
+			}
+			if(flag)
+			{
+				Erase(i);
+			} 
+		}
+
+		/* Old system, was filtering way too much
+		for(int i = _primers.size() - 1;i >= 0;i--)
+		{
+			bool flag = false;
+			int match_count = 0;
+			// Filter all sequences that would form Self Dimers
+			//	- more than 3 matches would likely form self dimer
+			//	- Begin with subsequence of length 4 (length 3 covered by FilterComplementaryEnds())
+			//	- Slide Window comparing nucleotide matches between Fwd.InvSeq() and Rev.RevSeq()
+			//	- Compare forward sliding along rev AND reverse sliding along forward
+			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
+			DataSequence r = p.InvSeq();
+			
+			// Slide end of reverse along beginning of forward
+			for(int j = 4;j < p.size();j++)
+			{
+				if(flag)
+				{
+					break;
+				}
+				DataSequence p_sub = p.SubSeq(0,j);
+				DataSequence r_sub = r.SubSeq(r.size() - j,j);
+				match_count = p_sub.CountMatches(r_sub);
+				flag = (match_count > 3) ? true : false;
+			}
+			
+			// Slide end of forward along beginning of reverse
+			for(int j = 4;j < p.size();j++)
+			{
+				if(flag)
+				{
+					break;
+				}
+				DataSequence p_sub = p.SubSeq(p.size() - j,j);
+				DataSequence r_sub = r.SubSeq(0,j);
+				match_count = p_sub.CountMatches(r_sub);
+				flag = (match_count > 3) ? true : false;
+			}
+			if(flag)
+			{
+				Erase(i);
+			}
+		}
+		*/
+	}
+
+	void PrimerCalculator::FilterTemperature(DataSequence data, float offset)
 	{
 		for(int i = _primers.size() - 1; i >= 0;i--)
 		{
 			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
-			if(p.Temperature() < MIN_PRIMER_TEMP || p.Temperature() > MAX_PRIMER_TEMP)
+			if(p.BasicTemperature() < (MIN_PRIMER_TEMP + offset/2.0) || p.BasicTemperature() > (MAX_PRIMER_TEMP - offset/2.0))
 			{
 				Erase(i);
 			}
@@ -350,21 +484,4 @@ namespace DeGenPrime
 	std::vector<Primer> PrimerCalculator::GetPrimers() const { return _primers; }
 
 	int PrimerCalculator::size() const { return _primers.size(); }
-
-	int PrimerCalculator::AmpliconLength(DataSequence fwd_data, DataSequence rev_data, Primer forward, Primer reverse) const
-	{
-		DataSequence rev = rev_data.SubSeq(reverse.Index(), reverse.Length());
-		rev.RevSeq().InvSeq();
-		int EndOfFwdSequence = forward.Index() + forward.Length();
-		int BeginningOfReverseSequence = fwd_data.IndexOf(rev);
-		return (BeginningOfReverseSequence - EndOfFwdSequence);
-	}
-
-	float PrimerCalculator::TemperatureDifference(DataSequence fwd_data, DataSequence rev_data, Primer forward, Primer reverse) const
-	{
-		float firstTemp  = fwd_data.SubSeq(forward.Index(), forward.Length()).Temperature();
-		float secondTemp = rev_data.SubSeq(reverse.Index(), reverse.Length()).Temperature();
-		float difference = firstTemp > secondTemp ? (firstTemp - secondTemp) : secondTemp - firstTemp;
-		return difference;
-	}
 } // End of DeGenPrime

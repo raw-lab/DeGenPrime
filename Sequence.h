@@ -31,6 +31,7 @@ namespace DeGenPrime
 		void SetList(std::vector<char> list);
 
 		void PushBack(char c);
+		void PushBack(std::string str);
 		void PopBack();
 
 		void Invert();

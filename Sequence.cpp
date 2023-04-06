@@ -14,6 +14,17 @@ namespace DeGenPrime
 	void Sequence::SetList(std::vector<char> list) {_codes = list; }
 
 	void Sequence::PushBack(char c) { _codes.push_back(c); }
+	void Sequence::PushBack(string str)
+	{
+		for(char c : str)
+		{
+			if(c != '\0')
+			{
+				_codes.push_back(c);
+			}
+		}
+	}
+	
 	void Sequence::PopBack() { _codes.pop_back(); }
 
 	void Sequence::Invert()

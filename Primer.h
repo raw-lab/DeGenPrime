@@ -13,6 +13,7 @@ namespace DeGenPrime
 	class Primer
 	{
 	public:
+		Primer();
 		Primer(int index, int length);
 
 		void Print();
