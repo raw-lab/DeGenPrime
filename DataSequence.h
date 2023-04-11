@@ -38,22 +38,29 @@ namespace DeGenPrime
 		void PushBack(DataNode node);
 		void PopBack();
 
-		void Print(int id); // Test function
+		void Print(int id, float temperature, float salt_conc, float mg_conc, float primer_conc); // Test function
 
 		DataSequence SubSeq(int startIndex,int length);
 		DataSequence InvSeq();
 		DataSequence RevSeq();
 
+		float AverageRatio() const;
 		float Enthalpy() const;
-		float Entropy(float salt_concentration) const;
-		float Gibbs(float temperature, float salt_concentration) const;
+		float Entropy() const;
+		float Gibbs(float temperature) const;
+		float BasicTemperature() const;
+		float RTlnK(float temperature, float primer_conc) const;
+		float RlnK(float primer_conc) const;
+		float AdvancedTemperature(float salt_conc, float mg_conc, float primer_conc) const;
+		float BasicAnneal(DataSequence source, int startIndex) const;
 		
 		std::vector<DataNode> GetDataSequence() const;
-		int size() const;
-		float AverageRatio() const;
 
+		int CountMatches(DataSequence data) const;
+		int RevIndex(int index) const;
 		int IndexOf(DataSequence data) const;
-		float Temperature() const;
+		int size() const;
+
 		bool checkMatch(DataSequence data) const;
 	private:
 		std::vector<DataNode> _list;

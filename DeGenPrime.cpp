@@ -10,6 +10,8 @@
 #include "SequenceList.h"
 #include "SequenceReader.h"
 #include "Primer.h"
+#include "PrimerPair.h"
+#include "PrimerPairList.h"
 #include "PrimerCalculator.h"
 
 using namespace std;
@@ -24,11 +26,14 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
+	
 	string filename = argv[1];
 	string argument2 = std::filesystem::current_path();
-
+	/*
+	// File Information
 	cout << "Full path of argument: " << argument2 << endl;
 	cout << "Full path of file: " << argument2 << "/" << filename << endl;
+	*/
 
 	ifstream ifs;
 	ifs.open(argument2 + "/" + filename);
@@ -37,213 +42,230 @@ int main(int argc, char *argv[])
 		cout << "Failure to open file.\n";
 		exit(1);
 	}
-	cout << "File opened." << endl;
+	// cout << "File opened." << endl;
 
 	SequenceReader read;
 	SequenceList list = read.CreateList(ifs);
+
+	/*
+	// Sequence Filter Information
 	cout << "Before Filter, the number of Sequences in the list is: " << list.size() << endl;
 	list.PrintSequenceNames();
 	list.FilterDashes();
 	
 	cout << "After Filter, the number of Sequences in the list is: " << list.size() << endl;
 	list.PrintSequenceNames();
+	cout << endl;
+	*/
 
 	SequenceList reverse_list = list.InvRevList();
 
 	DataSequence data = list.ProcessList();
 	DataSequence rev = reverse_list.ProcessList();
-
+	
 	/*
-	std::vector<char> test_chars;
-	for(char c : "GATTACAGATTACAGATTACA")
-	{
-		test_chars.push_back(c);
-	}
-	test_chars.pop_back();
+	// Test Annealing
+	int anneal_index = 700;
+	DataSequence anneal = data.SubSeq(anneal_index,20);
+	anneal.Print(anneal_index,25.0,50,50,50);
+	cout << "Annealing Temp of [" << anneal_index << "] is: " << anneal.BasicAnneal(data, anneal_index) << endl;
+	*/
+	// TEST ENTROPY, ENTHALPY, GIBBS
 
+	
+	//1st TEST (Sequence)
 	Sequence test_seq;
 	test_seq.SetName("Test Sequence");
-	test_seq.SetList(test_chars);
+	test_seq.PushBack("CGTTGA");
 
 	SequenceList test_list;
 	test_list.PushBack(test_seq);
 
 	DataSequence testData = test_list.ProcessList();
-	DataSequence testInvRev = testData.InvSeq().RevSeq();
-	testData.Print(0);
-	testInvRev.Print(0);
+	testData.Print(0, 37.0, 50, 50, 50);
+	
+	/*
+	// 2nd TEST (3' Ends)
+	Sequence tester_seq;
+	tester_seq.SetName("Test Sequence");
+	tester_seq.PushBack("ATCGC");
+
+	SequenceList tester_list;
+	tester_list.PushBack(tester_seq);
+
+	DataSequence testerData = tester_list.ProcessList();
+	testerData.Print(0, 25.0, 50, 50, 50);
 	*/
 	/*
-	cout << "Printing all 'N' indeces." << endl;
-	for(int i = 0;i < 180;i++)
-	{
-		if(data.GetDataSequence()[i].GetCode() == 'N')
-		{
-			cout << "N found at index: [" << i << "]" << endl;
-			data.GetDataSequence()[i].Print();
-			cout << endl;
-		}
-	}
-	*/
-	
+	// Primer Calculator Section
 	PrimerCalculator calc;
-	calc.InitializePrimers(data, 0);
+	calc.InitializePrimers(data, 2000);
+	int filterchange = 0;
 
-	cout << "Number of possible primers in specified size range, before Filters: [" << calc.size() << "]\n" << endl;
+	cout << "Number of possible forward primers in specified size range, before Filters: [" << calc.size() << "]\n" << endl;
 	PrimerCalculator test_calc;
 	test_calc.SetPrimers(calc.GetPrimers());
 	
 	calc.FilterDegeneracy(data);
 	cout << "After FilterDegeneracy: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
 
 	calc.FilterDeletions(data, list);
 	cout << "After FilterDeletions: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
 
 	calc.FilterGCContent(data);
 	cout << "After FilterGCContent: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;
-	
-	//calc.FilterGibbs(data, 37.0, 1.0);
-	//cout << "After FilterGibbs: Filtered [";
-	//cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	//cout << "%)" << endl;
-
-	calc.FilterRepeats(data);
-	cout << "After FilterRepeats: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
 
 	calc.FilterComplementaryEnds(data);
 	cout << "After FilterComplementaryEnds: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;	
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
 
-	calc.FilterTemperature(data);
-	cout << "After FilterTemperature: Filtered [";
-	cout << test_calc.size() - calc.size() << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
-	cout << "%)" << endl;
+	calc.FilterHairpins(data);
+	cout << "After FilterHairpins: Filtered [";
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
+
 	
-
-	calc.PrintSize();
-	//calc.PrintAll();
+	calc.FilterDimers(data);
+	cout << "After FilterDimers: Filtered [";
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
 	
-	/*
-	DataNode node1('A', 'A', 1.0);
-	DataNode node2('C', 'C', 1.0);
-	DataNode node3('G', 'G', 1.0);
-	DataNode node4('T', 'T', 1.0);
-
-	cout << "Enthalpy of " << node1.GetMostCommon() << " and " << node1.GetMostCommon() << ": " << node1.Enthalpy(node1) << "\t";
-	cout << "Enthalpy of " << node1.GetMostCommon() << " and " << node2.GetMostCommon() << ": " << node1.Enthalpy(node2) << "\t";
-	cout << "Enthalpy of " << node1.GetMostCommon() << " and " << node3.GetMostCommon() << ": " << node1.Enthalpy(node3) << "\t";
-	cout << "Enthalpy of " << node1.GetMostCommon() << " and " << node4.GetMostCommon() << ": " << node1.Enthalpy(node4) << endl;
-
-	cout << "Entropy of " << node1.GetMostCommon() << " and " << node1.GetMostCommon() << ": " << node1.Entropy(node1) << "\t";
-	cout << "Entropy of " << node1.GetMostCommon() << " and " << node2.GetMostCommon() << ": " << node1.Entropy(node2) << "\t";
-	cout << "Entropy of " << node1.GetMostCommon() << " and " << node3.GetMostCommon() << ": " << node1.Entropy(node3) << "\t";
-	cout << "Entropy of " << node1.GetMostCommon() << " and " << node4.GetMostCommon() << ": " << node1.Entropy(node4) << endl;
 	
-	cout << "Gibbs of " << node1.GetMostCommon() << " and " << node1.GetMostCommon() << ": " << node1.Gibbs(node1, 37.0) << "\t";
-	cout << "Gibbs of " << node1.GetMostCommon() << " and " << node2.GetMostCommon() << ": " << node1.Gibbs(node2, 37.0) << "\t";
-	cout << "Gibbs of " << node1.GetMostCommon() << " and " << node3.GetMostCommon() << ": " << node1.Gibbs(node3, 37.0) << "\t";
-	cout << "Gibbs of " << node1.GetMostCommon() << " and " << node4.GetMostCommon() << ": " << node1.Gibbs(node4, 37.0) << endl;
-	*/
-	/*
-	for(Primer p : calc.GetPrimers())
+	calc.FilterRepeats(data);
+	cout << "After FilterRepeats: Filtered [";
+	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - calc.size();
+
+	int offset = 0;
+	do
 	{
-		DataSequence temp = data.SubSeq(p.Index(), p.Length());
-		temp.Print(p.Index());
-	}
-	*/
-	/*
-	test_calc.FilterDegeneracy(data);
-	cout << "FilterDegeneracy: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 *(float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	// calc.PrintSize();
+		float tenthOfDifference = (float)(MAX_PRIMER_TEMP - MIN_PRIMER_TEMP)/ 10.0;
+		calc.FilterTemperature(data, offset * tenthOfDifference);
+		cout << "After FilterTemperature[" << offset << "]: Filtered [";
+		cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
+		cout << "% of total filtered)" << endl;
+		filterchange = test_calc.size() - calc.size();
+		offset += 1;
+	} while(calc.size() > 400 && offset < 10);
 	
-	test_calc.SetPrimers(calc.GetPrimers());
-	test_calc.FilterDeletions(data, list);
-	cout << "FilterDeletions: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 * (float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	// calc.PrintSize();
-
-	// test_calc.SetPrimers(calc.GetPrimers());
-	test_calc.FilterGCContent(data);
-	cout << "FilterGCContent: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 * (float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	//calc.PrintSize();
-	
-	test_calc.SetPrimers(calc.GetPrimers());
-	test_calc.FilterRepeats(data);
-	cout << "FilterRepeats: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 * (float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	// calc.PrintSize();
-	
-	test_calc.SetPrimers(calc.GetPrimers());
-	test_calc.FilterComplementaryEnds(data);
-	cout << "FilterComplementaryEnds: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 * (float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	// calc.PrintSize();
-
-	test_calc.SetPrimers(calc.GetPrimers());
-	test_calc.FilterTemperature(data);
-	cout << "FilterTemperature: Filtered [";
-	cout << calc.size() - test_calc.size() << "] Primers. (" << 100.0 * (float)(calc.size() - test_calc.size())/(float)(calc.size());
-	cout << "%)" << endl;
-	*/
-	/*
 	calc.PrintSize();
-	calc.PrintAll();
-	for(Primer p : calc.GetPrimers())
-	{
-		DataSequence temp = data.SubSeq(p.Index(), p.Length());
-		temp.Print(p.Index());
-		cout << "Primer Code: " << endl;
-		temp = temp.InvSeq();
-		temp.Print(p.Index());
-	}
-
+	cout << endl;
+	*/
+	/*
 	PrimerCalculator rev_calc;
-	rev_calc.InitializePrimers(rev);
+	rev_calc.InitializePrimers(rev, 2000);
+	filterchange = 0;
 	
-	cout << "Rev, before Filters: " << endl;
-	rev_calc.PrintSize();
+	cout << "Number of possible reverse primers in specified size range, before Filters: [" << rev_calc.size() << "]\n" << endl;
+	test_calc.SetPrimers(rev_calc.GetPrimers());
 	
 	rev_calc.FilterDegeneracy(rev);
-	cout << "Rev, after FilterDegeneracy: " << endl;
-	rev_calc.PrintSize();
+	cout << "After FilterDegeneracy: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
 
 	rev_calc.FilterDeletions(rev, reverse_list);
-	cout << "Rev, after FilterDeletions: " << endl;
-	rev_calc.PrintSize();
+	cout << "After FilterDeletions: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
 
 	rev_calc.FilterGCContent(rev);
-	cout << "Rev, after FilterGCContent: " << endl;
-	rev_calc.PrintSize();
-	
-	// rev_calc.FilterRepeats(rev);
-	// cout << "Rev, after FilterRepeats: " << endl;
-	// rev_calc.PrintSize();
-	
-	rev_calc.FilterComplementaryEnds(rev);
-	cout << "Rev, after FilterComplementaryEnds: " << endl;
-	rev_calc.PrintSize();
+	cout << "After FilterGCContent: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
 
-	rev_calc.FilterTemperature(rev);
-	cout << "Rev, after FilterTemperature: " << endl;
+	rev_calc.FilterComplementaryEnds(rev);
+	cout << "After FilterComplementaryEnds: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
+
+	rev_calc.FilterHairpins(rev);
+	cout << "After FilterHairpins: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
+
+	
+	rev_calc.FilterDimers(rev);
+	cout << "After FilterDimers: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
+	
+
+	rev_calc.FilterRepeats(rev);
+	cout << "After FilterRepeats: Filtered [";
+	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = test_calc.size() - rev_calc.size();
+
+	offset = 0;
+	do
+	{
+		float tenthOfDifference = (float)(MAX_PRIMER_TEMP - MIN_PRIMER_TEMP) / 10.0;
+		rev_calc.FilterTemperature(rev, offset * tenthOfDifference);
+		cout << "After FilterTemperature[" << offset << "]: Filtered [";
+		cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (";
+		cout << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
+		cout << "% of total filtered)" << endl;
+		filterchange = test_calc.size() - rev_calc.size();
+		offset++;
+	} while(rev_calc.size() > 400 && offset < 10);
+
 	rev_calc.PrintSize();
+	cout << endl;
 	*/
-	// rev_calc.PrintAll();
+	/*
+	PrimerPairList pairlist;
+	pairlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
+	cout << "Before filters, ";
+	pairlist.PrintSize();
+	filterchange = 0;
+
+	PrimerPairList testPairList(data, rev, pairlist.GetPairs());
+
+	pairlist.FilterAmpliconLength();
+	cout << "After FilterAmpliconLength: Filtered [";
+	cout << "testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
+	cout << 100.0 * (float)(testPairList.size() - pairlist.size())/(float)(testPairList.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = testPairList.size() p pairlist.size();
+	
+	pairlist.FilterTemperatureDifference();
+	cout << "After FilterTemperatureDifference: Filtered [";
+	cout << testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
+	cout << 100.0 * (float)(testPairList.size() - pairlist.size())/(float)(testPairList.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = testPairList.size() - pairlist.size();
+
+	pairlist.FilterCrossDimers();
+	cout << "After FilterCrossDimers: Filtered [";
+	cout << testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
+	cout << 100.0 * (float)(testPairList.size() - pairlist.size())/(float)(testPairList.size());
+	cout << "% of total filtered)" << endl;
+	filterchange = testPairList.size() - pairlist.size();
+
+	cout << "After filters, ";
+	pairlist.PrintSize();
+	*/
 
 	ifs.close();
 	return 0;

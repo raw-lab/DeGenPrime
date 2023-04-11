@@ -423,7 +423,60 @@ namespace DeGenPrime
 		// Delta S is in cal/K * mol, Delta H is kcal/mol
 		float gibbs = Enthalpy(node);
 		gibbs -= (temperature + 273.15) * ( Entropy(node) / 1000.0 );
+
+		char node_char = node.GetMostCommon();
+		char this_char = GetMostCommon();
+
+		cout << "Calculating Gibbs of [" << this_char << "-" << node_char << "]: " << gibbs << endl;
 		return gibbs;
+		
+		/* Old Method
+		float gibbs = 0.0;
+
+		
+		
+		int node_mc = (node_char == '-') ? 0 : (int)node_char;
+		int this_mc = (this_char == '-') ? 0 : (int)this_char;
+		switch(node_mc * this_mc)
+		{
+			// 'A' = 65, 'C' = 67, 'G' = 71, 'T' = 84
+			// Values from: https://www.pnas.org/doi/10.1073/pnas.95.4.1460
+			// Values given in units of kcal/(k * mol)
+			// Values were taken at 37 degrees celsius.
+			case 4225:	// 'AA'
+			case 7056:	// 'TT'
+				gibbs =  -1.0;
+				break;
+			case 4355:	// 'AC', 'CA'
+				gibbs = -1.45;
+				break;
+			case 4615:	// 'AG', 'GA'
+				gibbs = -1.3;
+				break;
+			case 5460:	// 'AT', 'TA'
+				gibbs = (this_mc == 65) ? -0.88 : -0.58;
+				break;
+			case 4489:	// 'CC'
+			case 5041:	// 'GG'
+				gibbs = -1.84;
+				break;
+			case 4757:	// 'CG', 'GC'
+				gibbs = (this_mc == 67) ? -2.17 : -2.24;
+				break;
+			case 5628:	// 'CT', 'TC'
+				gibbs = -1.28;
+				break;
+			case 5964:	// 'GT', 'TG'
+				entropy = -1.44;
+				break;
+			default:	// either contains '-'
+				break;
+		}
+
+		cout << gibbs << endl;
+		
+		return gibbs;
+		*/
 	}
 
 	char DataNode::GetCode() const { return _code; }

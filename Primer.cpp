@@ -7,6 +7,7 @@ using namespace std;
 
 namespace DeGenPrime
 {
+	Primer::Primer() { }
 	Primer::Primer(int index, int length)
 	{
 		_Length = length;
