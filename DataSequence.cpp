@@ -17,27 +17,25 @@ namespace DeGenPrime
 	void DataSequence::PushBack(DataNode node) { _list.push_back(node); }
 	void DataSequence::PopBack() { _list.pop_back(); }
 
-	void DataSequence::Print(int id, float temperature, float salt_conc, float mg_conc, float primer_conc)
+	void DataSequence::Print(int id, float temperature, float salt_conc, float primer_conc)
 	{
 		double accum_ratio = 0.0;
 		double accum_weight = 0.0;
 		cout << "DataSequence ID [" << id;
 		cout << "]\tLength: [" << _list.size() << "]" << endl;
 		cout << "Sequence Codes: ";
+		PrintCodes();
+		cout << "\nBasic Melting Temperature: " << BasicTemperature() << endl;
+		cout << "Nearest Neighbor Melting Temperature: " << NNMeltingTemperature(salt_conc, primer_conc) << endl;
+		return;
+	}
+
+	void DataSequence::PrintCodes()
+	{
 		for(int i = 0;i < _list.size();i++)
 		{
 			cout << _list[i].GetCode();
 		}
-		// cout << "\nSalt Conc: " << salt_conc << endl;
-		// cout << "Mg Conc: " << mg_conc << endl;
-		// cout << "Primer Conc: " << primer_conc << endl;
-		// cout << "Basic Melting Temperature: " << BasicTemperature() << endl;
-		// cout << "Advanced Melting Temperature: " << AdvancedTemperature(salt_conc, mg_conc, primer_conc) << endl;
-		// cout << "Enthalpy: " << Enthalpy() << endl;
-		// cout << "Entropy: " << Entropy() << endl;
-		cout << "\nGibbs @ Temp "<< temperature << " C : \n" << Gibbs(temperature) << endl;
-		// cout << "RTlnK: " << RTlnK(temperature, primer_conc) << endl;
-		return;
 	}
 
 	DataSequence DataSequence::SubSeq(int startIndex, int length)
@@ -98,7 +96,7 @@ namespace DeGenPrime
 
 		accumulated_enthalpy += (first == 'C' || first == 'G') ? 0.1 : 2.3;
 		accumulated_enthalpy += (last == 'C' || last == 'G') ? 0.1 : 2.3;
-
+		
 		return accumulated_enthalpy;
 	}
 
@@ -156,44 +154,16 @@ namespace DeGenPrime
 		char last = p.GetDataSequence()[p.size() - 1].GetMostCommon();
 
 		float accum = (first == 'C' || first == 'G') ? .98 : 1.03;
-		cout << "Gibbs added for first init : " << accum << endl;
 		accum = (last == 'C' || last == 'G') ? .98 : 1.03;
-		cout << "Gibbs added for last init: " << accum << endl;
 
 		accumulated_gibbs += (first == 'C' || first == 'G') ? 0.98 : 1.03;
 		accumulated_gibbs += (last == 'C' || last == 'G') ? 0.98 : 1.03;
 
-		cout << "Total: ";
 		return accumulated_gibbs;
-	}
-
-	float DataSequence::RTlnK(float temperature, float primer_conc) const
-	{
-		const float r = 1.9872 * .001;
-		return (r * (temperature + 273.15) * log(pow(10,9)/primer_conc));
-	}
-
-	float DataSequence::RlnK(float primer_conc) const
-	{
-		const float r = 1.9872 * 001;
-		return (r * log(pow(10,9)/primer_conc));
 	}
 
 	std::vector<DataNode> DataSequence::GetDataSequence() const { return _list; }
 	int DataSequence::size() const { return _list.size(); }
-
-	float DataSequence::AverageRatio() const
-	{
-		int counter = 0;
-		float accum = 0.0;
-		for(int i = 0;i < _list.size();i++)
-		{
-			accum += _list[i].Ratio();
-			counter++;
-		}
-		accum /= counter;
-		return accum;
-	}
 
 	int DataSequence::RevIndex(int index) const
 	{
@@ -260,34 +230,44 @@ namespace DeGenPrime
 		return temperature;
 	}
 
-	float DataSequence::AdvancedTemperature(float salt_conc, float mg_conc, float primer_conc) const
+	float DataSequence::RlnK(float primer_conc) const
 	{
-		return (Enthalpy()/((Entropy()/1000.0) + RlnK(primer_conc)));
-		/*
-		float enthalpy = -1 * Enthalpy();
-		float entropy = -1 * Entropy();
-		const float ideal_gas = 1.987 / 1000.0;
-		float numerator = enthalpy - 3.4;
-		// cout << "\nInside AdvancedTemperature" << endl;
-		float denominator = entropy/1000.0 + (ideal_gas * log(pow(10,9)/primer_conc));
-		float temperature = numerator / denominator;
-		float offset = 16.6 * (log(salt_conc/1000.0)/log(10.0));
-		// cout << "Denominator: " << denominator << endl;
-		// cout << "Numerator: " << numerator << endl;
-		// cout << "Quotient: " << (numerator/denominator) << endl;
-		// cout << "Offset: " << offset << endl;
-		temperature += offset;
-		temperature -= 273.15;
-		return temperature;
-		*/
+		float r = 1.9872;
+		r *= log(pow(10,9)/primer_conc);
+		return r;
 	}
 
-	float DataSequence::BasicAnneal(DataSequence source, int startIndex) const
+	float DataSequence::MonoIonMod(float salt_conc) const
 	{
-		float temperature = 0.3 * BasicTemperature();
-		int length = source.size() - startIndex - 1;
-		DataSequence sub = source.SubSeq(startIndex,length);
-		temperature += 0.7 * sub.BasicTemperature();
+		return (16.6 * (log(salt_conc * pow(10,-3))/log(10.0)));
+	}
+
+	float DataSequence::NNMeltingTemperature(float salt_conc, float primer_conc) const
+	{
+		float numerator = -1.0 * Enthalpy();
+		// cout << "\nEnthalpy (numerator) was: " << numerator << endl;
+		float denominator = -1.0 * Entropy();
+		float rlnk = RlnK(primer_conc/4.0);
+		float salt_mod = 0.368 * size() * log(salt_conc*pow(10,-3));
+		// cout << "Entropy was: " << denominator << endl;
+		// cout << "RlnK was: " << rlnk << endl;
+		// cout << "Salt Mod: " << salt_mod << endl;
+		denominator += rlnk + salt_mod;
+		// cout << "Adding Entropy, RlnK and Salt Mod gives (denominator): " << denominator << endl;
+		denominator /= 1000.0;
+		// cout << "Converting Entropy from cals to kcals (divide by 1000.0): " << denominator << endl;
+		// cout << "Numerator/Denominator : " << (numerator/denominator) << endl;
+		// cout << "Salt Conc : " << (salt_conc) << endl;
+		// cout << "Ln(Above Num)/Ln(10) : " << (log(salt_conc)/log(10)) << endl;
+		float offset = MonoIonMod(salt_conc);
+		float kelvin = (numerator/denominator) + offset;
+		return (kelvin - 273.15);
+	}
+
+	float DataSequence::BasicAnneal(DataSequence product, float salt_conc, float primer_conc)
+	{
+		float temperature = 0.3 * NNMeltingTemperature(salt_conc, primer_conc);
+		temperature += (0.7 * product.NNMeltingTemperature(salt_conc, primer_conc));
 		temperature -= 14.9;
 		return temperature;
 	}

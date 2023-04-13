@@ -6,12 +6,27 @@
 // MAX_N_TOLERANCE (Default 0.0) The maximum allowed ratio of N	//
 //	degenerates allowed in a data node.  Any more than this	//
 //	and the node is defaulted to 'N'.					//
-// MAX_-_HORIZONTAL_TOLERANCE (Default 0.5) The maximum allowed	//
+// MAX_DASH_HORIZONTAL_TOLERANCE (Default 0.5) The maximum 		//
 //	ratio of '-'s in a sequence.  More '-'s and the sequence	//
 //	is rejected from the list.						//
-// MAX_-_VERTICAL_TOLERANCE (Default 0.3) The maximum allowed	//
+// MAX_DASH_VERTICAL_TOLERANCE (Default 0.3) The maximum allowed	//
 //	ratio os '-'s in a datanode.  Any more '-'s and the node	//
 //	is defaulted to being a '-' node.					//
+// MIN_AMPLICON_LENGTH (Default 0) The minimum amplicon size.	//
+// MAX_GC_EXTREMA_RATIO (Default 0.6) The maximum ratio of G or C	//
+//	allowed in the last five nucleotides.				//
+// MIN_GC_TOTAL_RATIO (Default 0.4) The minimum ratio of G or C	//
+//	allowed in any primer.							//
+// MAX_GC_TOTAL_RATIO (Default 0.6) The maximum ratio of G or C	//
+//	allowed in any primer.							//
+// MIN_DEGENERATE_THRESHOLD (Default 0.3) The minimum amount of	//
+//	degeneracy within a node to determine degeneracy.		//
+// MIN_PRIMER_TEMP (Default 50.0) The minimum allowed temperature	//
+//	of any primer in degrees celsius.					//
+// MAX_PRIMER_TEMP (Default 60.0) The maximum allowed temperature	//
+//	of any primer in degrees celsius.					//
+// MAX_TEMP_DIFFERENCE (Default 1.0) Maximum allowed temperature	//
+//	difference between forward and reverse primer.			//
 // ************************************************************** //
 
 #ifndef GLOBAL_DEGENPRIME

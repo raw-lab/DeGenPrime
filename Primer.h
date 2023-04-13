@@ -2,7 +2,7 @@
 // Purpose:	Provide a data structure for information about a primer.	//
 // Members:	Length:	How many nucleotides are in the primer.		//
 //		Index:	Where the primer begins.				//
-//		isForward:	Is this a forward or reverse primer. (bool)	//
+// Functions:	Print():	Print data about the primer.			//
 // ********************************************************************	//
 
 #ifndef PRIMER_CLASS

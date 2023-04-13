@@ -21,6 +21,25 @@ namespace DeGenPrime
 		_pairs = pair_list;
 	}
 
+	PrimerPairList PrimerPairList::SubList(int startIndex, int length)
+	{
+		PrimerPairList sub_list;
+		for(int i = startIndex;i < startIndex+length;i++)
+		{
+				sub_list.PushBack(_pairs[i]);
+		}
+		return sub_list;
+
+	}
+
+	void PrimerPairList::Append(PrimerPairList list)
+	{
+		for(int i = 0;i < list.size();i++)
+		{
+			_pairs.push_back(list.GetPairs()[i]);
+		}
+	}
+
 	void PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
 	{
 		_fwd = fwd_seq;
@@ -38,6 +57,11 @@ namespace DeGenPrime
 	void PrimerPairList::Erase(int index)
 	{
 		_pairs.erase(_pairs.begin() + index);
+	}
+
+	void PrimerPairList::PushBack(PrimerPair pair)
+	{
+		_pairs.push_back(pair);
 	}
 
 	void PrimerPairList::Sort()
@@ -69,142 +93,67 @@ namespace DeGenPrime
 		}
 	}
 
-	void PrimerPairList::FilterCrossDimers()
+	int PrimerPairList::FilterAnnealingTemp(DataSequence fwd, DataSequence rev)
 	{
+		// We want to filter any primer pairs if the annealing temperature of
+		// the least stable (highest Gibbs @ melting temp) primer is 10 deg C
+		// more or less than the NNMeltingTemperature at std conditions of that primer.
+		// the return value is the number of primers filtered.
+		int filtered = 0;
 		for(int i = _pairs.size() - 1;i >= 0;i--)
 		{
-			bool flag = false;
-			int match_count = 0;
+			// cout << "Inside FilterAnnealingTemp Loop, Iteration[" << i << "]" << endl;
+			DataSequence primer_fwd = fwd.SubSeq(_pairs[i].GetForward().Index(),_pairs[i].GetForward().Length());
+			DataSequence primer_rev = rev.SubSeq(_pairs[i].GetReverse().Index(),_pairs[i].GetReverse().Length());
 
-			// -	Filter any primers who sequences have more than 3 parallel matches
-			DataSequence fwd_primer = _fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].GetForward().Length());
-			DataSequence rev_primer = _rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].GetReverse().Length());
+			// primer_fwd.Print(i,37.0,50.0,50.0);
+			// primer_rev.Print(i,37.0,50.0,50.0);
 
-			// Invert the reverse primer
-			rev_primer = rev_primer.InvSeq();
-			
-			// consider that primer pairs may contain primers of different sizes.
-			int size_difference = fwd_primer.size() - rev_primer.size();
-			
-			// If size_difference > 0, the forward primer is bigger, need to slide along it
-			// If size_difference < 0, the reverse primer is bigger, need to slide along it
-			// If size_difference = 0, they are the same and direct comparison is fine.
+			float fwd_gibbs = primer_fwd.Gibbs(50.0);
+			float rev_gibbs = primer_rev.Gibbs(50.0);
 
-			// Begin loop at index 3, run through smaller size
-			int smallersize = (size_difference >= 0) ? rev_primer.size() : fwd_primer.size();
-			for(int j = 3;j < smallersize;j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				
-				// For this algorithm we want to slide the larger primer along the smaller primer.
-				// Use the ternary operator on size_difference to find this primer.
-				// It does not matter which we use if size_difference = 0.
-				
-				DataSequence smaller_sub = (size_difference >= 0) ? rev_primer.SubSeq(0,j) : fwd_primer.SubSeq(0,j);
-				
-				// We need to do some extra slides for size differences when the primers entirely overlap
-				if(j == smallersize - 1 && size_difference != 0)
-				{
-					// Use size_difference as a while loop condition to get all combinations.
-					int n = 0;
-					int increment = (size_difference >= 0) ? -1 : 1;
-					size_difference -= increment; // We need one extra loop
-					while(size_difference != 0)
-					{
-						if(flag)
-						{
-							break;
-						}
-						DataSequence larger_sub = (size_difference >= 0) ? fwd_primer.SubSeq(fwd_primer.size() - j-n,j) 
-							: rev_primer.SubSeq(rev_primer.size() - j-n,j);
-						match_count = larger_sub.CountMatches(smaller_sub);
-						flag = (match_count > 3) ? true : false;
-						n++;
-						size_difference += increment;
-					}
-				}
-				else
-				{
-					DataSequence larger_sub = (size_difference >= 0) ? fwd_primer.SubSeq(fwd_primer.size() - j,j) 
-						: rev_primer.SubSeq(rev_primer.size() - j,j);
-					match_count = larger_sub.CountMatches(smaller_sub);
-					flag = (match_count > 3) ? true : false;
-				}
-			}
+			DataSequence most_stable = (fwd_gibbs > rev_gibbs) ? primer_fwd : primer_rev;
+			float temp = (fwd_gibbs > rev_gibbs) ? primer_fwd.NNMeltingTemperature(50.0,50.0) 
+				: primer_rev.NNMeltingTemperature(50.0,50.0);
+
+			// cout << "Just after finding the temp, which was: " << temp << endl;
 			
-			// This time we run the primers the other way
-			size_difference = fwd_primer.size() - rev_primer.size(); // Reset this value
-			for(int j = 3;j < smallersize;j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				
-				// For this algorithm we want to slide the larger primer along the smaller primer.
-				// Use the ternary operator on size_difference to find this primer.
-				// It does not matter which we use if size_difference = 0.
-				
-				DataSequence smaller_sub = (size_difference >= 0) ? rev_primer.SubSeq(rev_primer.size() - j,j)
-					: fwd_primer.SubSeq(fwd_primer.size() - j,j);
-				
-				// We need to do some extra slides for size differences when the primers entirely overlap
-				if(j == smallersize - 1 && size_difference != 0)
-				{
-					// Use size_difference as a while loop condition to get all combinations.
-					int n = 0;
-					int increment = (size_difference >= 0) ? -1 : 1;
-					size_difference -= increment; // We need one extra loop
-					while(size_difference != 0)
-					{
-						if(flag)
-						{
-							break;
-						}
-						DataSequence larger_sub = (size_difference >= 0) ? fwd_primer.SubSeq(n,j) : rev_primer.SubSeq(n,j);
-						match_count = larger_sub.CountMatches(smaller_sub);
-						flag = (match_count > 3) ? true : false;
-						n++;
-						size_difference += increment;
-					}
-				}
-				else
-				{
-					DataSequence larger_sub = (size_difference >= 0) ? fwd_primer.SubSeq(0,j) : rev_primer.SubSeq(0,j);
-					match_count = larger_sub.CountMatches(smaller_sub);
-					flag = (match_count > 3) ? true : false;
-				}
-			}
-			if(flag)
+			DataSequence product = (fwd_gibbs > rev_gibbs) ? fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].AmpSize())
+				: rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].AmpSize());
+
+			// cout << "Just before calling BasicAnneal" << endl;
+
+			float anneal = most_stable.BasicAnneal(product, 50.0,50.0);
+			float diff = (temp - anneal);
+			if(diff < -10.0 || diff > 10.0)
 			{
 				Erase(i);
+				filtered++;
 			}
-		} // End of Looping through PrimerPairList
-	}
-
-	/*
-	void PrimerPairList::Sort()
-	{
-		// Sort using lambda expression
-		sort(_pairs.begin(), _pairs.end());
-		
+		}
+		return filtered;
 	}
 
 	bool PrimerPairList::comparator(const PrimerPair& lhs, const PrimerPair& rhs)
 	{
-		float temp1 = lhs.TemperatureDifference(_fwd,_rev);
-		float temp2 = rhs.TemperatureDifference(_fwd,_rev);
+		float temp1 = lhs.TempDiff();
+		float temp2 = rhs.TempDiff();
 		return (temp1 < temp2);
 	}
-	*/
 	
 	void PrimerPairList::PrintSize()
 	{
 		cout << "The number of forward-reverse primer pairs in this list is: ";
 		cout << size() << endl;
+	}
+
+	void PrimerPairList::PrintAll(DataSequence fwd, DataSequence rev)
+	{
+		for(int i = 0;i < _pairs.size();i++)
+		{
+			cout << "Primer pair #" << i + 1 << endl;
+			_pairs[i].Print(fwd, rev);
+		}
 	}
 
 	std::vector<PrimerPair> PrimerPairList::GetPairs() const { return _pairs; }

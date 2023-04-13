@@ -349,81 +349,22 @@ namespace DeGenPrime
 		for(int i = _primers.size() - 1;i >= 0;i--)
 		{
 			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
-			bool flag = false;
-			int match_count = 0;
 
 			// Filter all sequences that would for self-dimers
-			// -	use the 3' end of the primer (first three nucleotides) as a reference check
-			// -	self dimers are most likely to form when these nucleotides have matches.
-			// -	slide these nucleotides backward along the InvSeq (not RevSeq) of the primer
-			// -	start at index p.size() - 4.
-			// -	if there are 2 matches, filter the primer
-
-			DataSequence begin = p.SubSeq(0,3);
-			DataSequence inv_seq = p.InvSeq();
-
-			for(int j = inv_seq.size() - 4;j >= 0;j--)
-			{
-				if(flag)
-				{
-					break;
-				}
-
-				DataSequence end = inv_seq.SubSeq(j,3);
-				match_count = begin.CountMatches(end);
-
-				flag = (match_count >= 2) ? true : false;
-			}
-			if(flag)
+			// -	use the 3' end of the primer (last 5 nucleotides) as a reference check
+			// -	self dimers are most likely to form when these nucleotides have too low of enthalpy
+			// -	filter primers with 3' end < -3.0
+			// - also filter primers with internal gibbs < -5.0
+			DataSequence ending = p.SubSeq(p.size() - 6, 5);
+			DataSequence begin = p.SubSeq(0, p.size() - 5);
+			
+			float temp = p.BasicTemperature();
+			if(begin.Gibbs(temp) < -5.0 || ending.Gibbs(temp) < -3.0)
 			{
 				Erase(i);
 			} 
 		}
 
-		/* Old system, was filtering way too much
-		for(int i = _primers.size() - 1;i >= 0;i--)
-		{
-			bool flag = false;
-			int match_count = 0;
-			// Filter all sequences that would form Self Dimers
-			//	- more than 3 matches would likely form self dimer
-			//	- Begin with subsequence of length 4 (length 3 covered by FilterComplementaryEnds())
-			//	- Slide Window comparing nucleotide matches between Fwd.InvSeq() and Rev.RevSeq()
-			//	- Compare forward sliding along rev AND reverse sliding along forward
-			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
-			DataSequence r = p.InvSeq();
-			
-			// Slide end of reverse along beginning of forward
-			for(int j = 4;j < p.size();j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				DataSequence p_sub = p.SubSeq(0,j);
-				DataSequence r_sub = r.SubSeq(r.size() - j,j);
-				match_count = p_sub.CountMatches(r_sub);
-				flag = (match_count > 3) ? true : false;
-			}
-			
-			// Slide end of forward along beginning of reverse
-			for(int j = 4;j < p.size();j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				DataSequence p_sub = p.SubSeq(p.size() - j,j);
-				DataSequence r_sub = r.SubSeq(0,j);
-				match_count = p_sub.CountMatches(r_sub);
-				flag = (match_count > 3) ? true : false;
-			}
-			if(flag)
-			{
-				Erase(i);
-			}
-		}
-		*/
 	}
 
 	void PrimerCalculator::FilterTemperature(DataSequence data, float offset)
