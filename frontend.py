@@ -38,14 +38,19 @@ class App(ctk.CTk):
 
             def save_settings():
                 amplicon_get = self.amplicon.get()
+                if(int(amplicon_get) < 0): amplicon_get = 0
                 DNAconc_get = self.DNAconc.get()
+                if(int(DNAconc_get) < 0): DNAconc_get = 50
                 temp_get = self.temp.get()
+                if(int(temp_get) < 50): temp_get = 50
                 pc_get = self.pc.get()
+                if(int(pc_get) < 0): pc_get = 50
                 mc_get = self.mc.get()
+                if(int(mc_get) < 0): mc_get = 50
 
                 with open('SETTINGS.csv', 'w', newline='') as file:
                     writer = csv.writer(file)
-                    field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer Concentration", "Monovalent Ion Concentration"]
+                    field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer Concentration", "Monovalent_Ion_Concentration"]
     
                     writer.writerow(field)
                     writer.writerow([amplicon_get, DNAconc_get, temp_get, pc_get, mc_get])
@@ -71,11 +76,11 @@ class App(ctk.CTk):
             self.settings_tabview.add("Advanced Settings")
 
             ### REGULAR SETTINGS ###
-            self.ampl_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Amplicon Length")
+            self.ampl_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Minimum Amplicon Length")
             self.ampl_label.grid(row = 0, column = 0,pady=2.5)
-            self.amplicon = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Amplicon Length")
+            self.amplicon = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Min. Amplicon Length")
             self.amplicon.grid(row = 1, column = 0,pady=2.5)
-            self.amplicon.insert("0", "18")
+            self.amplicon.insert("0", "0")
             self.ampl_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Base Pairs")
             self.ampl_label2.grid(row = 1, column = 1, padx=10,pady=2.5)
             
