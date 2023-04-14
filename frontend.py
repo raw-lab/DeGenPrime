@@ -50,7 +50,7 @@ class App(ctk.CTk):
 
                 with open('SETTINGS.csv', 'w', newline='') as file:
                     writer = csv.writer(file)
-                    field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer Concentration", "Monovalent_Ion_Concentration"]
+                    field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer_Concentration", "Monovalent_Ion_Concentration"]
     
                     writer.writerow(field)
                     writer.writerow([amplicon_get, DNAconc_get, temp_get, pc_get, mc_get])
