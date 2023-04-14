@@ -41,7 +41,7 @@ namespace DeGenPrime
 		}
 		ChooseCode(Count, char_list.size());
 		int Index = MostCommonIndex(Count);
-		switch(Index)
+		switch(Index) // Set Most Common
 		{
 			case 0:
 				_most_common = 'A';
@@ -62,11 +62,11 @@ namespace DeGenPrime
 				_most_common = 'N';
 				break;
 		}
-		_ratio = ((float)Count[Index]) / (float)char_list.size();
-		EvaluateCode();
+		_ratio = ((float)Count[Index]) / (float)char_list.size(); // Set ratio
+		EvaluateCode(); // Double check code
 	}
 
-	DataNode::DataNode(char code, char mc, float ratio)
+	DataNode::DataNode(char code, char mc, float ratio) // build node directly
 	{
 		_code = code;
 		_most_common = mc;
@@ -140,7 +140,6 @@ namespace DeGenPrime
 		return DataNode(inv_code, inv_most_common, _ratio);
 	}
 
-	// Test Function
 	void DataNode::Print()
 	{
 		cout << "Code: [" << _code;
@@ -427,7 +426,7 @@ namespace DeGenPrime
 		char node_char = node.GetMostCommon();
 		char this_char = GetMostCommon();
 
-		cout << "Calculating Gibbs of [" << this_char << "-" << node_char << "]: " << gibbs << endl;
+		// cout << "Calculating Gibbs of [" << this_char << "-" << node_char << "]: " << gibbs << endl;
 		return gibbs;
 		
 		/* Old Method

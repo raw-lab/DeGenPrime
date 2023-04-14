@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	SequenceReader read;
 	SequenceList list = read.CreateList(ifs);
 
-	/*
+	
 	// Sequence Filter Information
 	cout << "Before Filter, the number of Sequences in the list is: " << list.size() << endl;
 	list.PrintSequenceNames();
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	cout << "After Filter, the number of Sequences in the list is: " << list.size() << endl;
 	list.PrintSequenceNames();
 	cout << endl;
-	*/
+	
 
 	SequenceList reverse_list = list.InvRevList();
 
@@ -66,24 +66,26 @@ int main(int argc, char *argv[])
 	/*
 	// Test Annealing
 	int anneal_index = 700;
+	int product_length = 200;
 	DataSequence anneal = data.SubSeq(anneal_index,20);
-	anneal.Print(anneal_index,25.0,50,50,50);
-	cout << "Annealing Temp of [" << anneal_index << "] is: " << anneal.BasicAnneal(data, anneal_index) << endl;
+	DataSequence product = data.SubSeq(anneal_index, product_length);
+	anneal.Print(anneal_index,37.0,50,50);
+	cout << "Basic Anneal for amplicon length " << product_length << ": " << anneal.BasicAnneal(product, 50, 50) << endl;
 	*/
 	// TEST ENTROPY, ENTHALPY, GIBBS
 
-	
+	/*
 	//1st TEST (Sequence)
 	Sequence test_seq;
 	test_seq.SetName("Test Sequence");
-	test_seq.PushBack("CGTTGA");
+	test_seq.PushBack("CAGCGCCACATACATCAT");
 
 	SequenceList test_list;
 	test_list.PushBack(test_seq);
 
 	DataSequence testData = test_list.ProcessList();
-	testData.Print(0, 37.0, 50, 50, 50);
-	
+	testData.Print(0, 37.0, 50, .250);
+	*/
 	/*
 	// 2nd TEST (3' Ends)
 	Sequence tester_seq;
@@ -96,7 +98,7 @@ int main(int argc, char *argv[])
 	DataSequence testerData = tester_list.ProcessList();
 	testerData.Print(0, 25.0, 50, 50, 50);
 	*/
-	/*
+
 	// Primer Calculator Section
 	PrimerCalculator calc;
 	calc.InitializePrimers(data, 2000);
@@ -136,13 +138,13 @@ int main(int argc, char *argv[])
 	cout << "% of total filtered)" << endl;
 	filterchange = test_calc.size() - calc.size();
 
-	
+	/*
 	calc.FilterDimers(data);
 	cout << "After FilterDimers: Filtered [";
 	cout << test_calc.size() - calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - calc.size())/(float)(test_calc.size());
 	cout << "% of total filtered)" << endl;
 	filterchange = test_calc.size() - calc.size();
-	
+	*/
 	
 	calc.FilterRepeats(data);
 	cout << "After FilterRepeats: Filtered [";
@@ -164,8 +166,8 @@ int main(int argc, char *argv[])
 	
 	calc.PrintSize();
 	cout << endl;
-	*/
-	/*
+
+
 	PrimerCalculator rev_calc;
 	rev_calc.InitializePrimers(rev, 2000);
 	filterchange = 0;
@@ -203,13 +205,13 @@ int main(int argc, char *argv[])
 	cout << "% of total filtered)" << endl;
 	filterchange = test_calc.size() - rev_calc.size();
 
-	
+	/*
 	rev_calc.FilterDimers(rev);
 	cout << "After FilterDimers: Filtered [";
 	cout << test_calc.size() - rev_calc.size() - filterchange << "] Primers. (" << 100.0 * (float)(test_calc.size() - rev_calc.size())/(float)(test_calc.size());
 	cout << "% of total filtered)" << endl;
 	filterchange = test_calc.size() - rev_calc.size();
-	
+	*/
 
 	rev_calc.FilterRepeats(rev);
 	cout << "After FilterRepeats: Filtered [";
@@ -232,8 +234,7 @@ int main(int argc, char *argv[])
 
 	rev_calc.PrintSize();
 	cout << endl;
-	*/
-	/*
+	
 	PrimerPairList pairlist;
 	pairlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
 	cout << "Before filters, ";
@@ -244,10 +245,10 @@ int main(int argc, char *argv[])
 
 	pairlist.FilterAmpliconLength();
 	cout << "After FilterAmpliconLength: Filtered [";
-	cout << "testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
+	cout << testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
 	cout << 100.0 * (float)(testPairList.size() - pairlist.size())/(float)(testPairList.size());
 	cout << "% of total filtered)" << endl;
-	filterchange = testPairList.size() p pairlist.size();
+	filterchange = testPairList.size() - pairlist.size();
 	
 	pairlist.FilterTemperatureDifference();
 	cout << "After FilterTemperatureDifference: Filtered [";
@@ -256,17 +257,28 @@ int main(int argc, char *argv[])
 	cout << "% of total filtered)" << endl;
 	filterchange = testPairList.size() - pairlist.size();
 
-	pairlist.FilterCrossDimers();
-	cout << "After FilterCrossDimers: Filtered [";
-	cout << testPairList.size() - pairlist.size() - filterchange << "] Primer Pairs. (";
-	cout << 100.0 * (float)(testPairList.size() - pairlist.size())/(float)(testPairList.size());
-	cout << "% of total filtered)" << endl;
-	filterchange = testPairList.size() - pairlist.size();
-
 	cout << "After filters, ";
 	pairlist.PrintSize();
-	*/
 
+	cout << "\nSorting remaining " << pairlist.size();
+	cout << " primer pairs in the list by temperature difference." << endl;
+	pairlist.Sort();
+	cout << "Finished Sorting!" << endl;
+
+	int desiredpairs = 5;
+	cout << "Running FilterAnnealingTemp on the top " << desiredpairs << " primer pairs." << endl;
+	PrimerPairList top = pairlist.SubList(0,desiredpairs);
+	int nextIndex = desiredpairs;
+	int filtercount = top.FilterAnnealingTemp(data, rev);
+	while(filtercount != 0)
+	{
+		PrimerPairList next = pairlist.SubList(nextIndex,filtercount);
+		filtercount = next.FilterAnnealingTemp(data, rev);
+		top.Append(next);
+	}
+	
+	top.PrintAll(data, rev);
+	
 	ifs.close();
 	return 0;
 }
