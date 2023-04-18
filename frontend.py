@@ -39,10 +39,10 @@ class App(ctk.CTk):
             def save_settings():
                 amplicon_get = self.amplicon.get()
                 if(int(amplicon_get) < 0): amplicon_get = 0
-                DNAconc_get = self.DNAconc.get()
-                if(int(DNAconc_get) < 0): DNAconc_get = 50
-                temp_get = self.temp.get()
-                if(int(temp_get) < 50): temp_get = 50
+                temphigh_get = self.temphigh.get()
+                if(int(temphigh_get) < 0): temphigh_get = 50
+                templow_get = self.templow.get()
+                if(int(templow_get) < 50): templow_get = 50
                 pc_get = self.pc.get()
                 if(int(pc_get) < 0): pc_get = 50
                 mc_get = self.mc.get()
@@ -53,7 +53,7 @@ class App(ctk.CTk):
                     field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer_Concentration", "Monovalent_Ion_Concentration"]
     
                     writer.writerow(field)
-                    writer.writerow([amplicon_get, DNAconc_get, temp_get, pc_get, mc_get])
+                    writer.writerow([amplicon_get, temphigh_get, templow_get, pc_get, mc_get])
 
             #create the frame for the three side buttons -- browse, run, and save
             self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
@@ -75,7 +75,12 @@ class App(ctk.CTk):
             self.settings_tabview.add("Settings")
             self.settings_tabview.add("Advanced Settings")
 
+
+
             ### REGULAR SETTINGS ###
+            #self.radio_button_1 = self.CTkRadioButton(self.settings_tabview.tab("Settings"))
+            #self.radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
+
             self.ampl_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Minimum Amplicon Length")
             self.ampl_label.grid(row = 0, column = 0,pady=2.5)
             self.amplicon = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Min. Amplicon Length")
@@ -84,34 +89,34 @@ class App(ctk.CTk):
             self.ampl_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Base Pairs")
             self.ampl_label2.grid(row = 1, column = 1, padx=10,pady=2.5)
             
-            self.DNAconc_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "DNA Concentration")
-            self.DNAconc_label.grid(row = 2, column = 0, pady=2.5)
-            self.DNAconc = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="DNA Concentration")
-            self.DNAconc.grid(row = 3, column = 0, pady=2.5)
-            self.DNAconc.insert("0", "50")
-            self.DNAconc_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "mMol")
-            self.DNAconc_label2.grid(row = 3, column = 1,padx=10,pady=2.5)
+            self.temphigh_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Temperature (Upper Bound)")
+            self.temphigh_label.grid(row = 2, column = 0, pady=2.5)
+            self.temphigh = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="DNA Temperature (Upper Bound)")
+            self.temphigh.grid(row = 3, column = 0, pady=2.5)
+            self.temphigh.insert("0", "65")
+            self.temphigh_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "C°")
+            self.temphigh_label2.grid(row = 3, column = 1,padx=10,pady=2.5)
             
-            self.temp_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Temperature")
-            self.temp_label.grid(row = 4, column = 0,pady=2.5)
-            self.temp = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Temperature")
-            self.temp.grid(row = 5, column = 0,pady=2.5)
-            self.temp.insert("0", "50")
-            self.temp_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "C°")
-            self.temp_label2.grid(row = 5, column = 1,padx=10,pady=2.5)
+            self.templow_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Temperature (Lower Bound)")
+            self.templow_label.grid(row = 4, column = 0,pady=2.5)
+            self.templow = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Temperature (Lower Bound)")
+            self.templow.grid(row = 5, column = 0,pady=2.5)
+            self.templow.insert("0", "50")
+            self.templow_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "C°")
+            self.templow_label2.grid(row = 5, column = 1,padx=10,pady=2.5)
 
             ###ADVANCED SETTINGS###
-            self.pc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Primer Concentration")
+            self.pc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Primer Temperature (Upper Bound)")
             self.pc_label.grid(row = 0, column = 0,pady=2.5)
-            self.pc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Primer Concentration")
+            self.pc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Primer Temperature (Upper Bound)")
             self.pc.grid(row = 1, column = 0,pady=2.5)
             self.pc.insert("0", "50")
             self.pc_label2 = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "nMol")
             self.pc_label2.grid(row = 1, column = 1, padx=10,pady=2.5)
             
-            self.mc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Monovalent Ion Concentration")
+            self.mc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Monovalent Ion Temperature (Upper Bound)")
             self.mc_label.grid(row = 2, column = 0, pady=2.5)
-            self.mc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Monovalent Ion Concentration")
+            self.mc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Monovalent Ion Temperature (Upper Bound)")
             self.mc.grid(row = 3, column = 0, pady=2.5)
             self.mc.insert("0", "50")
             self.mc_label2 = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "mMol")
