@@ -248,7 +248,7 @@ namespace DeGenPrime
 
 	float DataSequence::NNMeltingTemperature() const
 	{
-		float numerator = -1.0 * Enthalpy();
+		float numerator = -1.0 * Enthalpy() - 3.4;
 		float denominator = -1.0 * Entropy();
 
 		float rlnk = RlnK();
