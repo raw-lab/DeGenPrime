@@ -1,0 +1,67 @@
+Full path of argument: /home/bfulghum/DeGenPrime
+Full path of file: /home/bfulghum/DeGenPrime/SinNombreL.fna
+Input File opened.
+Before Filter, the number of Sequences in the list is: 1
+Sequence():[NC_005217.1 Sin Nombre virus map viral genome L segment] Size:[6562]
+After Filter, the number of Sequences in the list is: 1
+Sequence():[NC_005217.1 Sin Nombre virus map viral genome L segment] Size:[6562]
+
+Number of possible forward primers in specified size range, before Filters: [32815]
+
+After FilterDegeneracy: Filtered [100] Primers. (0.304739% of total.)
+After FilterDeletions: Filtered [0] Primers. (0.000000% of total.)
+After FilterGCContent: Filtered [25033] Primers. (76.285235% of total.)
+After FilterRepeats: Filtered [601] Primers. (1.831480% of total.)
+After FilterComplementaryEnds: Filtered [115] Primers. (0.350449% of total.)
+After FilterHairpins: Filtered [6729] Primers. (20.505866% of total.)
+After FilterDimers: Filtered [122] Primers. (0.371781% of total.)
+After FilterTemperature: Filtered [36] Primers. (0.109706% of total.)
+After all filters: Filtered [32736] Primers. (99.759256% of total.)
+Total primers remaining: [79]
+
+Number of possible reverse primers in specified size range, before Filters: [32815]
+
+After FilterDegeneracy: Filtered [35] Primers. (0.106659% of total.)
+After FilterDeletions: Filtered [0] Primers. (0.000000% of total.)
+After FilterGCContent: Filtered [24982] Primers. (76.129819% of total.)
+After FilterRepeats: Filtered [691] Primers. (2.105744% of total.)
+After FilterComplementaryEnds: Filtered [110] Primers. (0.335213% of total.)
+After FilterHairpins: Filtered [6737] Primers. (20.530245% of total.)
+After FilterDimers: Filtered [144] Primers. (0.438824% of total.)
+After FilterTemperature: Filtered [36] Primers. (0.109706% of total.)
+After all filters: Filtered [32735] Primers. (99.756209% of total.)
+Total primers remaining: [80]
+
+Before filters, the number of forward-reverse primer pairs in this list is: 6320
+After FilterAmpliconLength: Filtered: [3479] Primer Pairs (55.047470% of total.)
+After FilterTemperatureDifference: Filtered: [1928] Primer Pairs (30.506328% of total.)
+After all filters: Filtered: [5407] Primer Pairs (85.553795% of total.)
+Total primer pairs remaining: [913]
+
+Sorting remaining 913 primer pairs in the list by temperature difference.
+Running FilterAnnealingTemp on the top 5 primer pairs.
+Primer pair #1
+Forward Primer: Index[2672] Length: [20] Codes: [GCACGTATTGTGAGGAAATA] Tm: [57.845726]
+Reverse Primer: Index[3376] Length: [18] Codes: [CAGACACTCCACCCTTAA] Tm: [57.840141]
+Temperature Difference: [0.005585] Amplicon Length: [513] Annealing Temp: [67.071472]
+
+Primer pair #2
+Forward Primer: Index[551] Length: [18] Codes: [CCTAGTCGGCGTAATGAT] Tm: [57.833092]
+Reverse Primer: Index[3376] Length: [18] Codes: [CAGACACTCCACCCTTAA] Tm: [57.840141]
+Temperature Difference: [0.007050] Amplicon Length: [2634] Annealing Temp: [67.038681]
+
+Primer pair #3
+Forward Primer: Index[5383] Length: [21] Codes: [GACAGAGCAAGTAAGTCATAC] Tm: [58.020378]
+Reverse Primer: Index[1151] Length: [20] Codes: [ACTCCTCGTATGACTTACTT] Tm: [58.029137]
+Temperature Difference: [0.008759] Amplicon Length: [27] Annealing Temp: [51.236473]
+
+Primer pair #4
+Forward Primer: Index[1691] Length: [18] Codes: [GTGCAGTGGTGTTTTTCA] Tm: [57.968315]
+Reverse Primer: Index[3625] Length: [18] Codes: [TCAGCCTCCTCTTGAATT] Tm: [57.956993]
+Temperature Difference: [0.011322] Amplicon Length: [1245] Annealing Temp: [66.784363]
+
+Primer pair #5
+Forward Primer: Index[2650] Length: [18] Codes: [GACAAAGCAGCACAAAGC] Tm: [58.868614]
+Reverse Primer: Index[1751] Length: [19] Codes: [ACGAAGCCAATAGCTACAA] Tm: [58.853172]
+Temperature Difference: [0.015442] Amplicon Length: [2160] Annealing Temp: [68.201805]
+
