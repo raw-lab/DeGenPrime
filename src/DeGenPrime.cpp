@@ -41,14 +41,10 @@ int main(int argc, char *argv[])
 	struct timeval begin, end;
 	gettimeofday(&begin, 0);
 	
-	// Count arguments
-	if(argc == 1 )
+	// Check if user wants help
+	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || strcmp("--help", argv[1]) == 0) ) )
 	{
 		PrintHelp();
-		/*
-		cout << "Syntax: ./DeGenPrime <filename>\n";
-		exit(PROGRAM_SUCCESS);
-		*/
 	}
 
 	// Process Tags
@@ -155,6 +151,7 @@ int main(int argc, char *argv[])
 		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound);
 	}
 
+	// Display number of possible primers, run filters and output filter percentages.
 	cout << "Number of possible forward primers in specified size range, before Filters: [" << calc.size() << "]\n" << endl;
 	ofs << "Number of possible forward primers in specified size range, before Filters: [" << calc.size() << "]\n" << endl;
 	ofs << calc.FilterAll(data, list) << endl;
@@ -177,10 +174,13 @@ int main(int argc, char *argv[])
 	ofs << pairlist.FilterMessage("final", 0);
 	cout << "After filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
 
+	// Sort PrimerPairList by least temperature difference.
 	ofs << "\nSorting remaining " << pairlist.size();
 	ofs << " primer pairs in the list by temperature difference." << endl;
 	pairlist.Sort();
 
+	// Loop through top desired primer pairs to filter them for annealing temperature
+	// and output the final list of primer pairs.
 	const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
 	ofs << "Running FilterAnnealingTemp on the top " << desiredpairs << " primer pairs." << endl;
 	PrimerPairList top = pairlist.SubList(0,desiredpairs);
@@ -217,10 +217,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// Close input/output file streams.
 	ifs.close();
 	ofs.close();
 	
-	// Show closing messages and clock to user.
+	// Show closing messages and clock to user, then close the program.
 	cout << "Output details saved to primers_" << filename.substr(0, filename.length() - 3) << "txt" << endl;
 	gettimeofday(&end, 0);
 	long seconds = end.tv_sec - begin.tv_sec;
@@ -352,6 +353,7 @@ void PrintHelp()
 	cout << "and cannot be used with --amplicon.\n";
 	cout << "\t--global or --g, for lists of seqeuences that are misaligned, this tag specifies ";
 	cout << "that the file should run mafft for global alignment.\n";
+	cout << "\t--help or --h, prints this help menu.\n";
 	cout << "\t--local or --l, for lists of sequences that are misaligned, this tag specifies ";
 	cout << "that the file should run mafft for local alignment.\n";
 	cout << "\t--min_temp:int, Sets the minimum primer melting temperature.  This has";
