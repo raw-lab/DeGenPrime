@@ -53,7 +53,7 @@ namespace DeGenPrime
 		std::string FilterMessage(std::string func, int filtercount);
 		std::string FilterAmpliconLength();
 		std::string FilterTemperatureDifference();
-		int FilterAnnealingTemp(DataSequence fwd, DataSequence rev);
+		int FilterAnnealingTemp(DataSequence fwd, DataSequence rev, int ignore);
 
 		void Sort();
 		void PrintSize();

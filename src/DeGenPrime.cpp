@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include <string>
-// #include <sys/timeb.h>>
+// #include <sys/timeb.h>
 #include <vector>
 #include "DataNode.h"
 #include "DataSequence.h"
@@ -171,21 +171,23 @@ int main(int argc, char *argv[])
 		calc.InitializeBoundedPrimers(data, GlobalSettings::GetBeginningNucleotide(), true);
 		int rev_lowerBound = data.RevIndex(GlobalSettings::GetEndingNucleotide());
 		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound, false);
+		/*
 		cout << "Inside Bounded Primers block." << endl;
 		cout << "GetEndNucleotide: [" << GlobalSettings::GetEndingNucleotide();
 		cout << "] GetBeginNucleotide: [" << GlobalSettings::GetBeginningNucleotide() << "]\n";
 		cout << "GetMinimumAmplicon: [" << GlobalSettings::GetMinimumAmplicon() << "]\n";
+		*/
 		int range = GlobalSettings::GetEndingNucleotide() - GlobalSettings::GetBeginningNucleotide();
 		int amp = GlobalSettings::GetMinimumAmplicon();
-		if(data.size() < amp)
-		{
-			amp = data.size();
-			GlobalSettings::SetMinimumAmplicon(amp);
-		}
 		int min = (range >= amp) ? range : amp;
-		cout << "Calculated amplicon minimum: [" << amp << "]\n";
-		cout << "Calculated min value: [" << min << "]\n";
-		GlobalSettings::SetMinimumAmplicon(min);
+		if(data.size() < min)
+		{
+			GlobalSettings::SetMinimumAmplicon(data.size());
+		}
+		else
+		{
+			GlobalSettings::SetMinimumAmplicon(min);
+		}
 	}
 
 	// Display number of possible primers, run filters and output filter percentages.
@@ -237,15 +239,15 @@ int main(int argc, char *argv[])
 	else
 	{
 		int nextIndex = desiredpairs;
-		int filtercount = top.FilterAnnealingTemp(data, rev);
+		int filtercount = top.FilterAnnealingTemp(data, rev, 0);
 		int remaining = pairlist.size() - desiredpairs;
-		int loopcount = 1;
+		int goodprimers = MAX_PRIMER_RETURNS - filtercount;
 		while(filtercount != 0 && remaining > 0)
 		{
 			int nextlength = (filtercount < remaining) ? filtercount : remaining;
 			PrimerPairList next = pairlist.SubList(nextIndex,nextlength);
-			filtercount = next.FilterAnnealingTemp(data, rev);
-			loopcount++;
+			filtercount = next.FilterAnnealingTemp(data, rev, goodprimers);
+			goodprimers = MAX_PRIMER_RETURNS - filtercount;
 			nextIndex += nextlength;
 			remaining -= nextlength;
 			top.Append(next);

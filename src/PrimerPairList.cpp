@@ -126,14 +126,14 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	int PrimerPairList::FilterAnnealingTemp(DataSequence fwd, DataSequence rev)
+	int PrimerPairList::FilterAnnealingTemp(DataSequence fwd, DataSequence rev, int ignore)
 	{
 		// We want to filter any primer pairs if the annealing temperature of
 		// the least stable (highest Gibbs @ melting temp) primer is 10 deg C
 		// more or less than the NNMeltingTemperature at std conditions of that primer.
 		// the return value is the number of primers filtered.
 		int filtered = 0;
-		for(int i = _pairs.size() - 1;i >= 0;i--)
+		for(int i = _pairs.size() - 1;i >= ignore;i--)
 		{
 			DataSequence primer_fwd = fwd.SubSeq(_pairs[i].GetForward().Index(),_pairs[i].GetForward().Length());
 			DataSequence primer_rev = rev.SubSeq(_pairs[i].GetReverse().Index(),_pairs[i].GetReverse().Length());
