@@ -1,3 +1,4 @@
+#include <cctype>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -89,15 +90,32 @@ namespace DeGenPrime
 		string ret = "";
 		for(int i = 0;i < _list.size();i++)
 		{
-			ret += "Sequence(" + i;
+			ret += "Sequence(" + to_string(i);
 			ret += "):[";
 			ret += _list[i].GetName() + "] Size:[";
 			ret += to_string(_list[i].size());
 			ret += "]\n";
-			/*
-			cout << "name=" << _list[i].GetName() << "*";
-			cout << " size =" << (string)_list[i].size() << endl;
-			*/
+		}
+		return ret;
+	}
+
+	string SequenceList::DecodeProteins() const
+	{
+		string ret = "";
+		int count = 0;
+		for(Sequence seq : _list)
+		{
+			ret += ">" + seq.GetName() + "\n";
+			for(char c : seq.GetCodes())
+			{
+				ret += Codon(c);
+				count += 3;
+				if(count == 69)
+				{
+					ret += "\n";
+					count = 0;
+				}
+			}
 		}
 		return ret;
 	}
@@ -160,4 +178,75 @@ namespace DeGenPrime
 
 	std::vector<Sequence> SequenceList::GetSequenceList() const { return _list; }
 	int SequenceList::size() const { return _list.size(); }
+
+	std::string SequenceList::Codon(char c) const
+	{
+		string ret = "";
+		switch(toupper(c))
+		{
+			case 'A': // Alanine
+				ret += "GCN";
+				break;
+			case 'R': // Arginine
+				ret += "MGN";
+				break;
+			case 'D': // Aspartic acid
+				ret += "GAY";
+				break;
+			case 'N': // Asparagine
+				ret += "AAY";
+				break;
+			case 'C': // Cysteine
+				ret += "TGY";
+				break;
+			case 'E': // Glutamic acid
+				ret += "GAR";
+				break;
+			case 'Q': // Glutamine
+				ret += "CAR";
+				break;
+			case 'G': // Glycine
+				ret += "GGN";
+				break;
+			case 'H': // Histidine
+				ret += "CAY";
+				break;
+			case 'I': // Isoleucine
+				ret += "ATH";
+				break;
+			case 'L': // Leucine
+				ret += "YTN";
+				break;
+			case 'K': // Lysine
+				ret += "AAR";
+				break;
+			case 'M': // Methionine, START
+				ret += "ATG";
+				break;
+			case 'F': // Phenylalanine
+				ret += "TTY";
+				break;
+			case 'P': // Proline
+				ret += "CCN";
+				break;
+			case 'S': // Serine
+				ret += "WSN";
+				break;
+			case 'T': // Threonine
+				ret += "ACN";
+				break;
+			case 'W': // Tryptophan
+				ret += "TGG";
+				break;
+			case 'Y': // Tyrosine
+				ret += "TAY";
+				break;
+			case 'V': // Valine
+				ret += "GTN";
+				break;
+			default:
+				break;
+		}
+		return ret;
+	}
 } // End of DeGenPrime

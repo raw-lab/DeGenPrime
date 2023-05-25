@@ -51,8 +51,9 @@ namespace DeGenPrime
 		void PopBack();	// Do not use reg pop_back
 		void FilterDashes();
 
-		std::string PrintSequenceNames() const; // Test Function
-		void PrintSection(int index, int length) const; // Test Function
+		std::string PrintSequenceNames() const;
+		std::string DecodeProteins() const;
+		void PrintSection(int index, int length) const;
 
 		bool TestAlignment() const;
 
@@ -61,6 +62,7 @@ namespace DeGenPrime
 		int size() const;
 	private:
 		std::vector<Sequence> _list;
+		std::string Codon(char c) const;
 	};
 
 } // End of DeGenPrime

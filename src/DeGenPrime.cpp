@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include <string>
-#include <sys/time.h>
+// #include <sys/timeb.h>>
 #include <vector>
 #include "DataNode.h"
 #include "DataSequence.h"
@@ -25,6 +25,9 @@ int GlobalSettings::_ampLength = DEFAULT_AMPLICON_LENGTH;
 int GlobalSettings::_beginningNucleotide = DEFAULT_BEGIN_NUCLEOTIDE;
 int GlobalSettings::_endingNucleotide = DEFAULT_END_NUCLEOTIDE;
 bool GlobalSettings::_measureByAmpliconSize = DEFAULT_MEASURE_BY_AMPLICON;
+bool GlobalSettings::_proteinSequence = DEFAULT_PROTEIN_SEQUENCE;
+bool GlobalSettings::_beginflag = DEFAULT_BEGIN_FLAG;
+bool GlobalSettings::_endflag = DEFAULT_END_FLAG;
 float GlobalSettings::_minTemp = DEFAULT_MIN_TEMP;
 float GlobalSettings::_maxTemp = DEFAULT_MAX_TEMP;
 float GlobalSettings::_primerConcentration = DEFAULT_PRIMER_CONC;
@@ -38,8 +41,8 @@ void PrintHelp();
 int main(int argc, char *argv[])
 {
 	// Set up clock
-	struct timeval begin, end;
-	gettimeofday(&begin, 0);
+	// struct timeval begin, end;
+	// gettimeofday(&begin, 0);
 	
 	// Check if user wants help
 	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || strcmp("--help", argv[1]) == 0) ) )
@@ -55,15 +58,8 @@ int main(int argc, char *argv[])
 
 	// Create Filename/path
 	string filename = argv[argc - 1];
-	string filepath = std::filesystem::current_path();
-
-	// Open Output File Stream
-	ofstream ofs;
-	ofs.open(filepath + "/primers_" + filename.substr(0, filename.length() - 3) + "txt");
-
-	// File Information
-	ofs << "Full path of argument: " << filepath << endl;
-	ofs << "Full path of file: " << filepath << "/" << filename << endl;
+	std::filesystem::path path = std::filesystem::current_path();
+	string filepath = path.u8string();
 
 	// Open Input File
 	ifstream ifs;
@@ -73,7 +69,6 @@ int main(int argc, char *argv[])
 		cout << "Failure to open file.\n";
 		exit(BAD_INPUT_FILE);
 	}
-	ofs << "Input File opened." << endl;
 
 	// Read Sequences
 	SequenceReader read;
@@ -83,8 +78,17 @@ int main(int argc, char *argv[])
 	if(list.size() == 0)
 	{
 		cout << "There were no sequences in the input file.\n";
-		ofs << "There were no sequences in the input file.\n";
 		exit(BAD_INPUT_FILE);
+	}
+	else if(GlobalSettings::GetProteinSequence())
+	{
+		ofstream os;
+		os.open(filepath + "/seq_" + filename.substr(0, filename.find('.')) + ".fasta");
+		cout << "Decoded proteins: " << list.DecodeProteins() << endl;
+		os << "" << list.DecodeProteins() << endl;
+		cout << "Decoded the proteins in the file.  Output saved to: ";
+		cout << filepath + "/seq_" + filename.substr(0, filename.find('.')) + ".fasta" << endl;
+		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
 	{
@@ -117,10 +121,29 @@ int main(int argc, char *argv[])
 		command2 += clustal;
 		const char *c1 = command1.c_str();
 		const char *c2 = command2.c_str();
-		system(c1);
+
+		// Attempt to align the sequence
+		try
+		{
+			system(c1);
+		}
+		catch(int exception)
+		{
+			cout << "There was an error trying to run MAFFT on this file." << endl;
+			exit(FILE_MISALIGNED);
+		}
 		system(c2);
 		exit(FILE_MISALIGNED);
 	}
+
+	// Open Output File Stream
+	ofstream ofs;
+	ofs.open(filepath + "/primers_" + filename.substr(0, filename.find('.')) + ".txt");
+
+	// File Information
+	ofs << "Full path of argument: " << filepath << endl;
+	ofs << "Full path of file: " << filepath << "/" << filename << endl;
+	ofs << "Input File opened." << endl;
 	
 	// Sequence Information Before Filtering
 	ofs << "Before Filter, the number of Sequences in the list is: " << list.size() << endl;
@@ -145,10 +168,24 @@ int main(int argc, char *argv[])
 	}
 	else // User specified a range
 	{
-		GlobalSettings::SetMinimumAmplicon(GlobalSettings::GetEndingNucleotide() - GlobalSettings::GetBeginningNucleotide());
-		calc.InitializeBoundedPrimers(data, GlobalSettings::GetBeginningNucleotide());
+		calc.InitializeBoundedPrimers(data, GlobalSettings::GetBeginningNucleotide(), true);
 		int rev_lowerBound = data.RevIndex(GlobalSettings::GetEndingNucleotide());
-		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound);
+		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound, false);
+		cout << "Inside Bounded Primers block." << endl;
+		cout << "GetEndNucleotide: [" << GlobalSettings::GetEndingNucleotide();
+		cout << "] GetBeginNucleotide: [" << GlobalSettings::GetBeginningNucleotide() << "]\n";
+		cout << "GetMinimumAmplicon: [" << GlobalSettings::GetMinimumAmplicon() << "]\n";
+		int range = GlobalSettings::GetEndingNucleotide() - GlobalSettings::GetBeginningNucleotide();
+		int amp = GlobalSettings::GetMinimumAmplicon();
+		if(data.size() < amp)
+		{
+			amp = data.size();
+			GlobalSettings::SetMinimumAmplicon(amp);
+		}
+		int min = (range >= amp) ? range : amp;
+		cout << "Calculated amplicon minimum: [" << amp << "]\n";
+		cout << "Calculated min value: [" << min << "]\n";
+		GlobalSettings::SetMinimumAmplicon(min);
 	}
 
 	// Display number of possible primers, run filters and output filter percentages.
@@ -162,6 +199,14 @@ int main(int argc, char *argv[])
 	ofs << rev_calc.FilterAll(rev, reverse_list) << endl;
 	cout << "After running Filters: [" << rev_calc.size() << "]\n" << endl;
 	
+	// Check PrimerPairs Can Exist
+	if(calc.size() == 0 || rev_calc.size() == 0)
+	{
+		cout << "No primer pairs were found that meet your specifications." << endl;
+		ofs << "No primer pairs were found that meet your specifications." << endl;
+		exit(PROGRAM_SUCCESS);
+	}
+
 	// Create PrimerPairList
 	PrimerPairList pairlist;
 	pairlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
@@ -223,11 +268,11 @@ int main(int argc, char *argv[])
 	
 	// Show closing messages and clock to user, then close the program.
 	cout << "Output details saved to primers_" << filename.substr(0, filename.length() - 3) << "txt" << endl;
-	gettimeofday(&end, 0);
-	long seconds = end.tv_sec - begin.tv_sec;
-	long microseconds = end.tv_usec - begin.tv_usec;
-	double elapsed = seconds + microseconds*1e-6;
-	printf("Program running time measured: %.3f seconds.\n", elapsed);
+	// gettimeofday(&end, 0);
+	// long seconds = end.tv_sec - begin.tv_sec;
+	// long microseconds = end.tv_usec - begin.tv_usec;
+	// double elapsed = seconds + microseconds*1e-6;
+	// printf("Program running time measured: %.3f seconds.\n", elapsed);
 	cout << "Program complete." << endl;
 	exit(PROGRAM_SUCCESS);
 }
@@ -244,6 +289,11 @@ void ProcessTags(int argc, char *argv[])
 		if(strcmp("--h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0)
 		{
 			PrintHelp();
+		}
+		else if(strstr(argv[i], "--protein") != NULL)
+		{
+			GlobalSettings::SetProteinSequence(true);
+			continue;
 		}
 
 		// For most tags, they follow the format: '--tag:value'
@@ -299,22 +349,27 @@ void ProcessTags(int argc, char *argv[])
 	// We need to check here if user has entered improper values for their tags.
 	// close the program if any improper tags were entered.
 
-	// User cannot enter a starting nucleotide without also entering an ending nucleotide
-	if(containsBegin != containsEnd)
-	{
-		string first = containsBegin ? "--begin" : "--end";
-		string second = containsBegin ? "--end" : "--begin";
-		cout << "Syntax error.  DeGenPrime cannot have a " << first << " tag without a ";
-		cout << second << " tag." << endl;
-		exit(SETTINGS_FILE_NOT_FOUND);
-	}
-
+	/*
 	// User cannot specify an amplicon length with beginning or ending nucleotides.
 	if(containsAmplicon && (containsBegin || containsEnd))
 	{
 		cout << "Syntax error.  DeGenPrime cannot have an --amplicon tag ";
 		cout << "with a --begin or --end tag." << endl;
 		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+	*/
+
+	// User cannot enter a starting nucleotide without also entering an ending nucleotide
+	if(containsBegin != containsEnd)
+	{
+		if(containsBegin)
+		{
+			GlobalSettings::SetEndFlag(true);
+		}
+		else
+		{
+			GlobalSettings::SetBeginFlag(true);
+		}
 	}
 
 	// User cannot specify an ending nucleotide less than the beginning nucleotide
@@ -335,7 +390,7 @@ void ProcessTags(int argc, char *argv[])
 
 	// Change global settings to measure specific sections if the users specified
 	// a region to amplify.
-	if(containsBegin)
+	if(containsBegin || containsEnd)
 	{
 		GlobalSettings::SetMeasureByAmpliconSize(false);
 	}
@@ -351,24 +406,27 @@ void PrintHelp()
 	cout << "and cannot be used with --amplicon.\n";
 	cout << "\t--end:int, Set the ending nucleotide.  This must be used with --begin ";
 	cout << "and cannot be used with --amplicon.\n";
-	cout << "\t--global or --g, for lists of seqeuences that are misaligned, this tag specifies ";
-	cout << "that the file should run mafft for global alignment.\n";
+	cout << "\t--global or --g, for lists of sequences that are misaligned, this tag specifies ";
+	cout << "that the file should run MAFFT for global alignment.\n";
 	cout << "\t--help or --h, prints this help menu.\n";
 	cout << "\t--local or --l, for lists of sequences that are misaligned, this tag specifies ";
-	cout << "that the file should run mafft for local alignment.\n";
+	cout << "that the file should run MAFFT for local alignment.\n";
 	cout << "\t--min_temp:int, Sets the minimum primer melting temperature.  This has";
-	cout << " a minimum value of " << MIN_PRIMER_TEMP << " (degrees celsius) and must be ";
+	cout << " a minimum value of " << MIN_PRIMER_TEMP << " (degrees Celsius) and must be ";
 	cout << "smaller than --max_temp.\n";
 	cout << "\t--max_temp:int, Sets the maximum primer melting temperature.  This has";
-	cout << " a maximum value of " << MAX_PRIMER_TEMP << " (degrees celsius) and must be ";
+	cout << " a maximum value of " << MAX_PRIMER_TEMP << " (degrees Celsius) and must be ";
 	cout << "larger than --min_temp.\n";
 	cout << "\t--primer_conc:int, Sets the concentration of the PCR primer in nM.  This has ";
 	cout << "a minimum value of " << MIN_PRIMER_CONC << " and this program will raise ";
 	cout << "any value smaller to this value.\n";
+	cout << "\t--protein, Tells the program that the input sequence is a protein sequence and ";
+	cout << "the program should unwrap the protein sequence into its base nucleotides.  This ";
+	cout << "will produce degenerate nucleotide codes whenever there is any ambiguity.\n";
 	cout << "\t--salt_conc:int, Sets the concentration of monovalent ions in mM.  This has ";
 	cout << "a minimum value of " << MIN_SALT_CONC << " and this program will raise ";
 	cout << "any value smaller to this value.\n";
-	cout << "\t--max_primers:int, Sets the maximum number of outputted primers.  This has ";
+	cout << "\t--max_primers:int, Sets the maximum number of output primers.  This has ";
 	cout << "a maximum value of " << MAX_PRIMER_RETURNS << " and this program will reduce ";
 	cout << "any value larger to this value.\n";
 	exit(PROGRAM_SUCCESS);

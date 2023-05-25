@@ -85,9 +85,11 @@ namespace DeGenPrime
 		float Enthalpy() const;
 		float Entropy() const;
 		float Gibbs() const;
+		float GCRatio() const;
 		float BasicTemperature() const;
 		float RlnK() const;
 		float MonoIonMod() const;
+		float ProductMelt() const;
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
 		

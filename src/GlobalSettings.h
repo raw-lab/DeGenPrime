@@ -21,17 +21,23 @@ namespace DeGenPrime
 		static void SetBeginningNucleotide(int begin);
 		static void SetEndingNucleotide(int ending);
 		static void SetMeasureByAmpliconSize(bool size);
+		static void SetProteinSequence(bool seq);
 		static void SetMinimumTemperature(float temp);
 		static void SetMaximumTemperature(float temp);
 		static void SetPrimerConcentration(float primer_conc);
 		static void SetMonoIonConcentration(float salt_conc);
 		static void SetMaximumReturnPrimers(int max);
 		static void SetThermodynamicTemperature(float temp);
+		static void SetBeginFlag(bool begin);
+		static void SetEndFlag(bool ending);
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
 		static int GetEndingNucleotide();
 		static bool GetMeasureByAmpliconSize();
+		static bool GetProteinSequence();
+		static bool GetBeginFlag();
+		static bool GetEndFlag();
 		static float GetMinimumTemperature();
 		static float GetMaximumTemperature();
 		static float GetPrimerConcentration();
@@ -44,6 +50,9 @@ namespace DeGenPrime
 		static int _beginningNucleotide;
 		static int _endingNucleotide;
 		static bool _measureByAmpliconSize;
+		static bool _proteinSequence;
+		static bool _beginflag;
+		static bool _endflag;
 		static float _minTemp;
 		static float _maxTemp;
 		static float _primerConcentration;

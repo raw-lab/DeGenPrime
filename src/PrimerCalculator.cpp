@@ -25,6 +25,7 @@ namespace DeGenPrime
 		if(endIndex < 0)
 		{
 			endIndex = 0;
+			GlobalSettings::SetMinimumAmplicon(data.size());
 		}
 
 		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++) // length
@@ -38,19 +39,43 @@ namespace DeGenPrime
 		_OriginalSize = size();
 	}
 
-	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound)
+	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound, bool fwdSeq)
 	{
-		// Check the lowerBound is appropriate
-		int loopBound = lowerBound > 0 ? lowerBound : 0;
+		int loopBound = lowerBound;
+		
+		// Set a flag to check if lowerBound should be used or not
+		bool flag = fwdSeq ? GlobalSettings::GetBeginFlag() : GlobalSettings::GetEndFlag();
+		if(flag)
+		{
+			int revInd = fwdSeq ? GlobalSettings::GetEndingNucleotide() :
+				GlobalSettings::GetBeginningNucleotide();
+			loopBound = data.RevIndex(revInd) - MAX_PRIMER_LENGTH;
+		}
+
+		// Check the loopBound is appropriate
+		loopBound = loopBound > 0 ? loopBound : 0;
 		if(loopBound + MAX_PRIMER_LENGTH > data.size())
 		{
 			loopBound = data.size() - MAX_PRIMER_LENGTH;
+		}
+
+		// Change global settings to reflect the new begin/end nucleotide
+		if(flag && fwdSeq)
+		{
+			GlobalSettings::SetBeginningNucleotide(loopBound);
+			GlobalSettings::SetBeginFlag(false);
+		}
+		else if(flag)
+		{
+			int rev = data.RevIndex(loopBound);
+			GlobalSettings::SetEndingNucleotide(rev);
+			GlobalSettings::SetEndFlag(false);
 		}
 		
 		// Needs to loop through all primers in the forward direction
 		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
 		{
-			for(int j = 0;j < loopBound;j++)
+			for(int j = 0;j <= loopBound;j++)
 			{
 				Primer id(j,i);
 				PushBack(id);
@@ -233,6 +258,72 @@ namespace DeGenPrime
 	{
 		string ret;
 		int filtercount = 0;
+		for(int i = _primers.size() - 1; i >= 0;i--)
+		{
+			// Define the primer
+			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
+			bool flag = false;
+			// Filter sequences with too much repition of nucleotides
+			//	- raise flag if four matches are found to any pair, more than one codon, or any higher
+			//	- break loop if flag or length * (match count) < remaining checks * match count
+			//	- there is no need to check subsequences longer than sqrt the total length.
+			for(int j = 0;j < p.size() - 5;j++)
+			{
+				if(flag)
+				{
+					break;
+				}
+				// Define pattern matching subsequences.
+				DataSequence two = p.SubSeq(j,2);
+				DataSequence three = p.SubSeq(j,3);
+				DataSequence four = p.SubSeq(j,4);
+
+				// Define match counters
+				int double_match_count = 0;
+				int triple_match_count = 0;
+				int quadra_match_count = 0;
+
+				// Choose k starting at index j + 1 and run through size - 4
+				int k = j + 1;
+				while(k < p.size() - 4)
+				{
+					if(two.GetDataSequence()[0].GetMostCommon() == 
+						p.GetDataSequence()[k].GetMostCommon())
+					{
+						double_match_count += two.checkMatch(p.SubSeq(k,2)) ? 1 : 0;
+						triple_match_count += three.checkMatch(p.SubSeq(k,3)) ? 1 : 0;
+						quadra_match_count += four.checkMatch(p.SubSeq(k,4)) ? 1 : 0;
+					}
+					flag = double_match_count > TooManyRepeats(2) ||
+						 triple_match_count > TooManyRepeats(3) ||
+						 quadra_match_count > TooManyRepeats(4);
+					if(flag)
+					{
+						break;
+					}
+					k++;
+					while(two.GetDataSequence()[0].GetMostCommon() !=
+						p.GetDataSequence()[k].GetMostCommon() && k < p.size() - 1)
+					{
+						k++;
+					}
+				}
+			}
+			if(flag)
+			{
+				Erase(i);
+				filtercount++;
+			}
+		}
+		ret = FilterMessage("FilterRepeats", filtercount);
+		return ret;
+	}
+
+	/*
+	string PrimerCalculator::FilterRepeats(DataSequence data)
+	{
+		string ret;
+		int filtercount = 0;
 		for(int i = _primers.size() - 1;i >= 0;i--)
 		{	
 			// Define the primer
@@ -269,14 +360,6 @@ namespace DeGenPrime
 						{
 							match_count++;
 							flag = (match_count > TooManyRepeats(length));
-							if(flag)
-							{
-								/* Debug
-								cout << "Primer [" << _primers[i].Index() << "] failed FilterRepeats.";
-								cout << "[match_count=" << match_count << "][TooManyRepeats(l)=";
-								cout << TooManyRepeats(length) << "][length=" << length << "]" << endl;
-								*/
-							}
 						}
 					} // End of InnerMost loop
 				}
@@ -290,6 +373,7 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterRepeats", filtercount);
 		return ret;
 	}
+	*/
 
 	string PrimerCalculator::FilterComplementaryEnds(DataSequence data)
 	{

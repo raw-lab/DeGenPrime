@@ -28,15 +28,19 @@ namespace DeGenPrime
 	{
 		string ret = "";
 		ret += "Forward Primer: Index[" + to_string(_fwd.Index());
+		ret += "] Reverse Index[" + to_string(fwd_data.RevIndex(_fwd.Index()));
 		ret += "] Length: [" + to_string(_fwd.Length()) + "] ";
 		DataSequence fwdSub = fwd_data.SubSeq(_fwd.Index(), _fwd.Length());
 		ret += "Codes: [" + fwdSub.Codes();
-		ret += "] Tm: [" + to_string(fwdSub.NNMeltingTemperature()) + "]\n";
+		ret += "]\nTm(NN): [" + to_string(fwdSub.NNMeltingTemperature()) + "] ";
+		ret += "Tm(Basic): [" + to_string(fwdSub.BasicTemperature()) + "]\n";
 		ret += "Reverse Primer: Index[" + to_string(_rev.Index());
+		ret += "] Reverse Index[" + to_string(rev_data.RevIndex(_rev.Index()));
 		ret += "] Length: [" + to_string(_rev.Length()) + "] ";
 		DataSequence revSub = rev_data.SubSeq(_rev.Index(), _rev.Length());
 		ret += "Codes: [" + revSub.Codes();
-		ret += "] Tm: [" + to_string(revSub.NNMeltingTemperature()) + "]\n";
+		ret += "]\nTm(NN): [" + to_string(revSub.NNMeltingTemperature()) + "] ";
+		ret += "Tm(Basic): [" + to_string(revSub.BasicTemperature()) + "]\n";
 		ret += "Temperature Difference: [" + to_string(TempDiff());
 		ret += "] Amplicon Length: [" + to_string(AmpSize()) + "] ";
 		DataSequence mostStable = (fwdSub.Gibbs() > revSub.Gibbs()) ? fwdSub : revSub;

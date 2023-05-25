@@ -51,6 +51,8 @@
 // DEFAULT_MEASURE_BY_AMPLICON (Default true) Method by which	//
 //	primers are chosen.  Can either by by minimum amplicon	//
 //	length (true) or range (false).					//
+// DEFAULT_PROTEIN_SEQUENCE (Default false) Method by which		//
+//	program decides if an input file is a protein sequence.	//
 // DEFAULT_MIN_TEMP (Default 50.0) Default minimum melting		//
 //	temperature to find primers.						//
 // DEFAULT_MAX_TEMP (Default 60.0) Default maximum melting		//
@@ -94,13 +96,16 @@
 
 #define DEFAULT_AMPLICON_LENGTH 0
 #define DEFAULT_BEGIN_NUCLEOTIDE 0
-#define DEFAULT_END_NUCLEOTIDE 1000
+#define DEFAULT_END_NUCLEOTIDE 2147483647
 #define DEFAULT_MEASURE_BY_AMPLICON true
+#define DEFAULT_PROTEIN_SEQUENCE false
 #define DEFAULT_MIN_TEMP 50.0
 #define DEFAULT_MAX_TEMP 60.0
 #define DEFAULT_PRIMER_CONC 50.0
 #define DEFAULT_SALT_CONC 50.0
 #define DEFAULT_MAX_PRIMERS 5
 #define DEFAULT_THERMODYNAMIC_TEMPERATURE 37.0
+#define DEFAULT_BEGIN_FLAG false
+#define DEFAULT_END_FLAG false
 
 #endif // GLOBAL_DEGENPRIME

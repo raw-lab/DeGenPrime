@@ -12,17 +12,23 @@ namespace DeGenPrime
 	void GlobalSettings::SetBeginningNucleotide(int begin){ _beginningNucleotide = (0 < begin) ? begin : 0; }
 	void GlobalSettings::SetEndingNucleotide(int ending) {_endingNucleotide = ending; }
 	void GlobalSettings::SetMeasureByAmpliconSize(bool size) {_measureByAmpliconSize = size; }
+	void GlobalSettings::SetProteinSequence(bool seq) {_proteinSequence = seq; }
 	void GlobalSettings::SetMinimumTemperature(float temp) {_minTemp = (MIN_PRIMER_TEMP < temp) ? temp : MIN_PRIMER_TEMP;}
 	void GlobalSettings::SetMaximumTemperature(float temp) {_maxTemp = (MAX_PRIMER_TEMP > temp) ? temp : MAX_PRIMER_TEMP;}
 	void GlobalSettings::SetPrimerConcentration(float primer_conc) {_primerConcentration = (MIN_PRIMER_CONC < primer_conc) ? primer_conc : MIN_PRIMER_CONC;}
 	void GlobalSettings::SetMonoIonConcentration(float salt_conc) {_monovalentIonConcentration = (MIN_SALT_CONC < salt_conc) ? salt_conc : MIN_SALT_CONC; }
 	void GlobalSettings::SetMaximumReturnPrimers(int max) {_maxPrimers = (MAX_PRIMER_RETURNS > max) ? max : MAX_PRIMER_RETURNS;}
 	void GlobalSettings::SetThermodynamicTemperature(float temp) {_thermodynamicTemperature = temp;}
+	void GlobalSettings::SetBeginFlag(bool begin) {_beginflag = begin;}
+	void GlobalSettings::SetEndFlag(bool ending) {_endflag = ending;}
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
 	int GlobalSettings::GetEndingNucleotide() { return _endingNucleotide; }
 	bool GlobalSettings::GetMeasureByAmpliconSize() { return _measureByAmpliconSize; }
+	bool GlobalSettings::GetProteinSequence() { return _proteinSequence; }
+	bool GlobalSettings::GetBeginFlag() { return _beginflag; }
+	bool GlobalSettings::GetEndFlag() { return _endflag; }
 	float GlobalSettings::GetMinimumTemperature() { return _minTemp; }
 	float GlobalSettings::GetMaximumTemperature() { return _maxTemp; }
 	float GlobalSettings::GetPrimerConcentration() { return _primerConcentration; }

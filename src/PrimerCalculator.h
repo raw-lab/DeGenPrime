@@ -52,7 +52,7 @@ namespace DeGenPrime
 		PrimerCalculator();
 		
 		void InitializePrimers(DataSequence data);
-		void InitializeBoundedPrimers(DataSequence data, int lowerBound);
+		void InitializeBoundedPrimers(DataSequence data, int lowerBound, bool fwdSeq);
 
 		std::string FilterAll(DataSequence data, SequenceList list);
 		std::string FilterDegeneracy(DataSequence data);

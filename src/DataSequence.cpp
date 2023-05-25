@@ -170,7 +170,10 @@ namespace DeGenPrime
 
 	int DataSequence::RevIndex(int index) const
 	{
-		return (_list.size() - index - 1);
+		int ret = _list.size();
+		ret -= index;
+		ret--;
+		return (ret);
 	}
 
 	int DataSequence::IndexOf(DataSequence data) const
@@ -262,11 +265,41 @@ namespace DeGenPrime
 		return (kelvin - 273.15);
 	}
 
+	float DataSequence::GCRatio() const
+	{
+		int gc = 0;
+		for(int i = 0;i < size();i++)
+		{
+			if(_list[i].GetMostCommon() == 'C' ||
+				_list[i].GetMostCommon() == 'G')
+			{
+				gc++;
+			}
+		}
+		float ratio = (float)gc;
+		ratio /= (float)size();
+		return ratio;
+	}
+
 	float DataSequence::BasicAnneal(DataSequence product)
 	{
 		float temperature = 0.3 * NNMeltingTemperature();
-		temperature += (0.7 * product.NNMeltingTemperature());
+		// temperature += (0.7 * product.NNMeltingTemperature()); -- Old, slow, incorrect
+		temperature += (0.7 * product.ProductMelt());
 		temperature -= 14.9;
+		return temperature;
+	}
+
+	float DataSequence::ProductMelt() const
+	{
+		float temperature = 81.5;
+		temperature += 16.6 * log(GlobalSettings::GetMonoIonConcentration()* pow(10,-3))/log(10);
+		temperature += 41.0 * GCRatio();
+		// Different sources use different values for the following constant.
+		// All values range between 500 and 750.
+		float b = 600.0;
+		b /= size();
+		temperature -= b;
 		return temperature;
 	}
 
