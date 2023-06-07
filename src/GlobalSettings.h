@@ -30,6 +30,10 @@ namespace DeGenPrime
 		static void SetThermodynamicTemperature(float temp);
 		static void SetBeginFlag(bool begin);
 		static void SetEndFlag(bool ending);
+		static void SetRunTest(bool test);
+		static void SetRunSearch(bool search);
+		static void SetTestValue(std::string str);
+		static void SetSearchFile(std::string str);
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
@@ -44,6 +48,10 @@ namespace DeGenPrime
 		static float GetMonoIonConcentration();
 		static int GetMaximumReturnPrimers();
 		static float GetThermodynamicTemperature();
+		static bool GetRunTest();
+		static bool GetRunSearch();
+		static std::string GetTestValue();
+		static std::string GetSearchFile();
 
 	private:
 		static int _ampLength;
@@ -59,6 +67,10 @@ namespace DeGenPrime
 		static float _monovalentIonConcentration;
 		static int _maxPrimers;
 		static float _thermodynamicTemperature;
+		static bool _testRun;
+		static bool _runSearch;
+		static std::string _testStr;
+		static std::string _searchFile;
 	};
 } // end of DeGenPrime
 #endif // GLOBAL_SETTINGS

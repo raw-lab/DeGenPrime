@@ -18,17 +18,18 @@ namespace DeGenPrime
 	void DataSequence::PushBack(DataNode node) { _list.push_back(node); }
 	void DataSequence::PopBack() { _list.pop_back(); }
 
-	void DataSequence::Print(int id)
+	std::string DataSequence::Print()
 	{
-		double accum_ratio = 0.0;
-		double accum_weight = 0.0;
-		cout << "DataSequence ID [" << id;
-		cout << "]\tLength: [" << _list.size() << "]" << endl;
-		cout << "Sequence Codes: ";
-		cout << Codes();
-		cout << "\nBasic Melting Temperature: " << BasicTemperature() << endl;
-		cout << "Nearest Neighbor Melting Temperature: " << NNMeltingTemperature() << endl;
-		return;
+		string ret = "Sequence Codes: ";
+		ret += Codes();
+		ret += "\nLength: " + to_string(_list.size()) + " bps\n";
+		ret += "Enthalpy: " + to_string(Enthalpy()) + " kcal\n";
+		ret += "Entropy: " + to_string(Entropy()) + " cal\n";
+		ret += "Gibbs: " + to_string(Gibbs()) + " kcal\n";
+		ret += "GC Content: " + to_string(GCRatio()) + "\n";
+		ret += "Basic Melting Temperature: " + to_string(BasicTemperature()) + " deg C\n";
+		ret += "Nearest Neighbor Melting Temperature: " + to_string(NNMeltingTemperature()) + " deg C\n";
+		return ret;
 	}
 
 	std::string DataSequence::Codes()
@@ -239,8 +240,8 @@ namespace DeGenPrime
 
 	float DataSequence::RlnK() const
 	{
-		float r = 1.9872;
-		r *= log(pow(10,9)/(GlobalSettings::GetPrimerConcentration()/4.0));
+		float r = 1.987;
+		r *= log((pow(10,-9) * (GlobalSettings::GetPrimerConcentration())/4.0));
 		return r;
 	}
 
@@ -251,17 +252,14 @@ namespace DeGenPrime
 
 	float DataSequence::NNMeltingTemperature() const
 	{
-		float numerator = -1.0 * Enthalpy() - 3.4;
-		float denominator = -1.0 * Entropy();
-
+		float numerator = Enthalpy();
+		float denominator = Entropy();
 		float rlnk = RlnK();
-		float salt_mod = 0.368 * size() * log(GlobalSettings::GetMonoIonConcentration()*pow(10,-3));
-
-		denominator += rlnk + salt_mod;
+		float salt_mod = 0.368 * (size() - 1) * log(GlobalSettings::GetMonoIonConcentration()*pow(10,-3));
+		denominator += salt_mod;
+		denominator += rlnk;
 		denominator /= 1000.0;
-
-		float offset = MonoIonMod();
-		float kelvin = (numerator/denominator) + offset;
+		float kelvin = numerator/denominator;
 		return (kelvin - 273.15);
 	}
 

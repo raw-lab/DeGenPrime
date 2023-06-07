@@ -6,6 +6,7 @@
 #include "DataSequence.h"
 #include "SequenceList.h"
 #include "Sequence.h"
+#include "GlobalSettings.h"
 #include "global.h"
 
 using namespace std;
@@ -67,10 +68,12 @@ namespace DeGenPrime
 	void SequenceList::PopBack() { _list.pop_back(); }
 	void SequenceList::FilterDashes()
 	{
-		for(int i = _list.size() - 1;i > -1;i--)
+		int begin = GlobalSettings::GetBeginningNucleotide();
+		int ending = GlobalSettings::GetEndingNucleotide();
+		for(int i = 0;i < _list.size();i++)
 		{
 			int dash_count = 0;
-			for(int j = 0;j < _list[i].GetCodes().size();j++)
+			for(int j = begin;j < ending;j++)
 			{
 				if(_list[i].GetCodes()[j] == '-')
 				{

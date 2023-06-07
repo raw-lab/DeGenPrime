@@ -1,4 +1,5 @@
 // GlobalSettings.cpp
+#include <string>
 #include "GlobalSettings.h"
 #include "global.h"
 
@@ -21,6 +22,10 @@ namespace DeGenPrime
 	void GlobalSettings::SetThermodynamicTemperature(float temp) {_thermodynamicTemperature = temp;}
 	void GlobalSettings::SetBeginFlag(bool begin) {_beginflag = begin;}
 	void GlobalSettings::SetEndFlag(bool ending) {_endflag = ending;}
+	void GlobalSettings::SetRunTest(bool test) {_testRun = test;}
+	void GlobalSettings::SetRunSearch(bool search) {_runSearch = search;}
+	void GlobalSettings::SetTestValue(string str) {_testStr = str;}
+	void GlobalSettings::SetSearchFile(std::string str) {_searchFile = str;}
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
@@ -35,4 +40,8 @@ namespace DeGenPrime
 	float GlobalSettings::GetMonoIonConcentration() { return _monovalentIonConcentration; }
 	int GlobalSettings::GetMaximumReturnPrimers() { return _maxPrimers; }
 	float GlobalSettings::GetThermodynamicTemperature() { return _thermodynamicTemperature; }
+	bool GlobalSettings::GetRunTest() { return _testRun; }
+	bool GlobalSettings::GetRunSearch() { return _runSearch; }
+	string GlobalSettings::GetTestValue() { return _testStr; }
+	string GlobalSettings::GetSearchFile() { return _searchFile; }
 } // End of DeGenPrime

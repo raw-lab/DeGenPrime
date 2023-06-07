@@ -39,7 +39,7 @@
 // SETTINGS_FILE_NOT_FOUND 2							//
 // NO_PRIMERS_FOUND 3								//
 // IMPROPER_FILE_FORMAT 4							//
-// BAD_INPUT_FILE									//
+// BAD_INPUT_FILE	5								//
 //				DEFAULT SETTINGS					//
 // DEFAULT_AMPLICON_LENGTH (Default 0) Default minimum amplicon	//
 // DEFAULT_BEGIN_NUCLEOTIDE (Default 0) Default minimum		//
@@ -73,7 +73,7 @@
 
 #define MAX_PRIMER_LENGTH 22
 #define MIN_PRIMER_LENGTH 18
-#define MAX_GC_EXTREMA_RATIO 0.6
+#define MAX_GC_EXTREMA_RATIO 0.7
 #define MIN_GC_TOTAL_RATIO 0.4
 #define MAX_GC_TOTAL_RATIO 0.6
 #define MIN_DEGENERATE_THRESHOLD 0.3
@@ -84,8 +84,8 @@
 #define MAX_PRIMER_TEMP 65.0
 #define MAX_TEMP_DIFFERENCE 1.0
 #define MAX_PRIMER_RETURNS 10
-#define MIN_SALT_CONC 50.0
-#define MIN_PRIMER_CONC 50.0
+#define MIN_SALT_CONC 10.0
+#define MIN_PRIMER_CONC 25.0
 
 #define PROGRAM_SUCCESS 0
 #define FILE_MISALIGNED 1
@@ -107,5 +107,8 @@
 #define DEFAULT_THERMODYNAMIC_TEMPERATURE 37.0
 #define DEFAULT_BEGIN_FLAG false
 #define DEFAULT_END_FLAG false
+#define DEFAULT_RUN_TEST false
+#define DEFAULT_RUN_SEARCH false
+#define DEFAULT_TEST_VAL false
 
 #endif // GLOBAL_DEGENPRIME

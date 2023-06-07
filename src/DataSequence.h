@@ -75,7 +75,7 @@ namespace DeGenPrime
 		void PushBack(DataNode node);
 		void PopBack();
 
-		void Print(int id);
+		std::string Print();
 		std::string Codes();
 
 		DataSequence SubSeq(int startIndex,int length);

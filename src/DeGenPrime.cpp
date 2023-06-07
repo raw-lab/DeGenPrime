@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <stdio.h>
 #include <string>
-// #include <sys/timeb.h>
+#include <sys/time.h>
 #include <vector>
 #include "DataNode.h"
 #include "DataSequence.h"
@@ -34,20 +34,31 @@ float GlobalSettings::_primerConcentration = DEFAULT_PRIMER_CONC;
 float GlobalSettings::_monovalentIonConcentration = DEFAULT_SALT_CONC;
 int GlobalSettings::_maxPrimers = DEFAULT_MAX_PRIMERS;
 float GlobalSettings::_thermodynamicTemperature = DEFAULT_THERMODYNAMIC_TEMPERATURE;
+bool GlobalSettings::_testRun = DEFAULT_RUN_TEST;
+bool GlobalSettings::_runSearch = DEFAULT_RUN_SEARCH;
+string GlobalSettings::_testStr = "";
+string GlobalSettings::_searchFile = "";
+
 
 void ProcessTags(int argc, char *argv[]);
 void PrintHelp();
+string TestValue(DataSequence data);
 
 int main(int argc, char *argv[])
 {
 	// Set up clock
-	// struct timeval begin, end;
-	// gettimeofday(&begin, 0);
+	struct timeval begin, end;
+	gettimeofday(&begin, 0);
 	
-	// Check if user wants help
-	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || strcmp("--help", argv[1]) == 0) ) )
+	// Check if user wants help or wants to test a k-mer
+	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || 
+		strcmp("--help", argv[1]) == 0) ) )
 	{
 		PrintHelp();
+	}
+	else if(argc == 2 && strstr(argv[1], "--test:") != NULL)
+	{
+		argc++;
 	}
 
 	// Process Tags
@@ -58,8 +69,7 @@ int main(int argc, char *argv[])
 
 	// Create Filename/path
 	string filename = argv[argc - 1];
-	std::filesystem::path path = std::filesystem::current_path();
-	string filepath = path.u8string();
+	string filepath = std::filesystem::current_path();
 
 	// Open Input File
 	ifstream ifs;
@@ -148,10 +158,13 @@ int main(int argc, char *argv[])
 	// Sequence Information Before Filtering
 	ofs << "Before Filter, the number of Sequences in the list is: " << list.size() << endl;
 	ofs << list.PrintSequenceNames();
+	int last = list.GetSequenceList()[0].size() < GlobalSettings::GetEndingNucleotide() ? 
+		list.GetSequenceList()[0].size() : GlobalSettings::GetEndingNucleotide();
+	GlobalSettings::SetEndingNucleotide(last);
 	list.FilterDashes();
 	
 	// Sequence Information After Filtering
-	ofs << "After Filter, the number of Sequences in the list is: " << list.size() << endl;
+	ofs << "\nAfter Filter, the number of Sequences in the list is: " << list.size() << endl;
 	ofs << list.PrintSequenceNames() << endl;
 
 	// Create Forward and Reverse DataSequences
@@ -168,15 +181,11 @@ int main(int argc, char *argv[])
 	}
 	else // User specified a range
 	{
-		calc.InitializeBoundedPrimers(data, GlobalSettings::GetBeginningNucleotide(), true);
+		calc.InitializeBoundedPrimers(data, GlobalSettings::GetBeginningNucleotide());
 		int rev_lowerBound = data.RevIndex(GlobalSettings::GetEndingNucleotide());
-		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound, false);
-		/*
-		cout << "Inside Bounded Primers block." << endl;
-		cout << "GetEndNucleotide: [" << GlobalSettings::GetEndingNucleotide();
-		cout << "] GetBeginNucleotide: [" << GlobalSettings::GetBeginningNucleotide() << "]\n";
-		cout << "GetMinimumAmplicon: [" << GlobalSettings::GetMinimumAmplicon() << "]\n";
-		*/
+		cout << "value of rev_Lowerbound: " << rev_lowerBound << endl;
+		rev_calc.InitializeBoundedPrimers(rev, rev_lowerBound);
+
 		int range = GlobalSettings::GetEndingNucleotide() - GlobalSettings::GetBeginningNucleotide();
 		int amp = GlobalSettings::GetMinimumAmplicon();
 		int min = (range >= amp) ? range : amp;
@@ -212,19 +221,27 @@ int main(int argc, char *argv[])
 	// Create PrimerPairList
 	PrimerPairList pairlist;
 	pairlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
-	cout << "Before filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
 	ofs << "Before filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
+	cout << "Before filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
 
 	// Filter PrimerPairList
 	ofs << pairlist.FilterAmpliconLength();
 	ofs << pairlist.FilterTemperatureDifference();
 	ofs << pairlist.FilterMessage("final", 0);
-	cout << "After filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
+	cout << "\nAfter filters, the number of forward-reverse primer pairs in this list is: " << pairlist.size() << endl;
 
 	// Sort PrimerPairList by least temperature difference.
 	ofs << "\nSorting remaining " << pairlist.size();
 	ofs << " primer pairs in the list by temperature difference." << endl;
+	cout << "\nSorting remaining " << pairlist.size();
+	cout << " primer pairs in the list by temperature difference." << endl;
 	pairlist.Sort();
+
+	// Check if user wants to examine certain primers.
+	if(GlobalSettings::GetRunSearch())
+	{
+
+	}
 
 	// Loop through top desired primer pairs to filter them for annealing temperature
 	// and output the final list of primer pairs.
@@ -270,11 +287,11 @@ int main(int argc, char *argv[])
 	
 	// Show closing messages and clock to user, then close the program.
 	cout << "Output details saved to primers_" << filename.substr(0, filename.length() - 3) << "txt" << endl;
-	// gettimeofday(&end, 0);
-	// long seconds = end.tv_sec - begin.tv_sec;
-	// long microseconds = end.tv_usec - begin.tv_usec;
-	// double elapsed = seconds + microseconds*1e-6;
-	// printf("Program running time measured: %.3f seconds.\n", elapsed);
+	gettimeofday(&end, 0);
+	long seconds = end.tv_sec - begin.tv_sec;
+	long microseconds = end.tv_usec - begin.tv_usec;
+	double elapsed = seconds + microseconds*1e-6;
+	printf("Program running time measured: %.3f seconds.\n", elapsed);
 	cout << "Program complete." << endl;
 	exit(PROGRAM_SUCCESS);
 }
@@ -302,7 +319,7 @@ void ProcessTags(int argc, char *argv[])
 		// We want to check what the tag is with strstr()
 		// and store the given value to global settings with strchr()
 		ptr = strchr(argv[i], ':') + 1;
-		if(ptr != NULL)
+		if(ptr != NULL && strstr(argv[i], "--test:") == NULL)
 		{
 			value = atoi(ptr);
 		}
@@ -338,9 +355,19 @@ void ProcessTags(int argc, char *argv[])
 		{
 			GlobalSettings::SetMonoIonConcentration(value);
 		}
+		else if(strstr(argv[i], "--search_list:") != NULL)
+		{
+
+		}
 		else if(strstr(argv[i], "--max_primers:") != NULL)
 		{
 			GlobalSettings::SetMaximumReturnPrimers(value);
+		}
+		else if(strstr(argv[i], "--test:") != NULL)
+		{
+			string str = ptr;
+			GlobalSettings::SetTestValue(str);
+			GlobalSettings::SetRunTest(true);
 		}
 		else
 		{
@@ -351,15 +378,18 @@ void ProcessTags(int argc, char *argv[])
 	// We need to check here if user has entered improper values for their tags.
 	// close the program if any improper tags were entered.
 
-	/*
-	// User cannot specify an amplicon length with beginning or ending nucleotides.
-	if(containsAmplicon && (containsBegin || containsEnd))
+	if(GlobalSettings::GetRunTest())
 	{
-		cout << "Syntax error.  DeGenPrime cannot have an --amplicon tag ";
-		cout << "with a --begin or --end tag." << endl;
-		exit(SETTINGS_FILE_NOT_FOUND);
+		DataSequence data;
+		for(char c : GlobalSettings::GetTestValue())
+		{
+			DataNode node(c,c,1.0);
+			data.PushBack(node);
+		}
+		string message = TestValue(data);
+		cout << message;
+		exit(PROGRAM_SUCCESS);
 	}
-	*/
 
 	// User cannot enter a starting nucleotide without also entering an ending nucleotide
 	if(containsBegin != containsEnd)
@@ -432,4 +462,114 @@ void PrintHelp()
 	cout << "a maximum value of " << MAX_PRIMER_RETURNS << " and this program will reduce ";
 	cout << "any value larger to this value.\n";
 	exit(PROGRAM_SUCCESS);
+}
+
+string TestValue(DataSequence data)
+{
+	string message = data.Print();
+	PrimerCalculator prime, clone;
+	prime.InitializeTestPrimer(data);
+	clone.InitializeTestPrimer(data);
+	bool flag = false;
+	if(data.size() < MIN_PRIMER_LENGTH || data.size() > MAX_PRIMER_LENGTH)
+	{
+		message += "Primer not within allowed size for filtering.\n";
+	}
+	else
+	{
+		message += "\nFiltered by:\n";
+		string trash = prime.FilterDegeneracy(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterDegeneracy (";
+			int count = 0;
+			for(int i = 0;i < data.size();i++)
+			{
+				char c = data.GetDataSequence()[i].GetMostCommon();
+				if(c == 'A' || c == 'C' || c == 'G'
+					|| c == 'T' || c == '-')
+				{
+					continue;
+				}
+				else
+				{
+					count++;
+				}
+			}
+			message += to_string(count) + " out of " + to_string(data.size());
+			message += ")\n";
+			flag = true;
+		}
+		trash = prime.FilterGCContent(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterGCContent (";
+			float ratio = data.GCRatio();
+			if(ratio < MIN_GC_TOTAL_RATIO)
+			{
+				message += " primer GC ratio: " + to_string(data.GCRatio());
+				message += " less than " + to_string(MIN_GC_TOTAL_RATIO);
+			}
+			else if(ratio > MAX_GC_TOTAL_RATIO)
+			{
+				message += "primer GC ratio: " + to_string(data.GCRatio());
+				message += " more than " + to_string(MAX_GC_TOTAL_RATIO) + " ";
+			}
+			DataSequence ending = data.SubSeq(data.size() - 6, 5);
+			ratio = ending.GCRatio();
+			if(ratio > MAX_GC_EXTREMA_RATIO)
+			{
+				message += "primer end GC ratio: " + to_string(ratio);
+				message += " more than " + to_string(MAX_GC_EXTREMA_RATIO) + " ";
+			}
+			message += ")\n";
+			flag = true;
+		}
+		trash = prime.FilterRepeats(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterRepeats\n";
+			flag = true;
+		}
+		trash = prime.FilterComplementaryEnds(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterComplementaryEnds\n";
+			flag = true;
+		}
+		/*
+		trash = prime.FilterHairpins(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterHairpins\n";
+			flag = true;
+		}*/
+		trash = prime.FilterDimers(data);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterDimers (";
+			DataSequence ending = data.SubSeq(data.size() - 6, 5);
+			message += "ending delta g: " + to_string(ending.Gibbs());
+			message += ")\n";
+			flag = true;
+		}
+		trash = prime.FilterTemperature(data, 0.0);
+		if(prime.size() < clone.size())
+		{
+			prime = clone;
+			message += "\tFilterTemperature\n";
+			flag = true;
+		}
+		if(flag == false)
+		{
+			message += "\t(None)\n";
+		}
+	}
+	return message;
 }

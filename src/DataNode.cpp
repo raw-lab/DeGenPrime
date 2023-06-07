@@ -346,10 +346,10 @@ namespace DeGenPrime
 				enthalpy =  -7.9;
 				break;
 			case 4355:	// 'AC', 'CA'
-				enthalpy = -8.5;
+				enthalpy = (this_mc == 65) ? -8.4 : -8.5;
 				break;
 			case 4615:	// 'AG', 'GA'
-				enthalpy = -8.2;
+				enthalpy = (this_mc == 65) ? -7.8 : -8.2;
 				break;
 			case 5460:	// 'AT', 'TA'
 				enthalpy = -7.2;
@@ -362,10 +362,10 @@ namespace DeGenPrime
 				enthalpy = (this_mc == 67) ? -10.6 : -9.8;
 				break;
 			case 5628:	// 'CT', 'TC'
-				enthalpy = -7.8;
+				enthalpy = (this_mc == 67) ? -7.8 : -8.2;
 				break;
 			case 5964:	// 'GT', 'TG'
-				enthalpy = -8.4;
+				enthalpy = (this_mc == 71) ? -8.4 : -8.5;
 				break;
 			default:	// either contains '-'
 				break;
@@ -391,10 +391,10 @@ namespace DeGenPrime
 				entropy =  -22.2;
 				break;
 			case 4355:	// 'AC', 'CA'
-				entropy = -22.7;
+				entropy = (this_mc == 65) ? -22.4 : -22.7;
 				break;
 			case 4615:	// 'AG', 'GA'
-				entropy = -22.2;
+				entropy = (this_mc == 65) ? -21.0 : -22.2;
 				break;
 			case 5460:	// 'AT', 'TA'
 				entropy = (this_mc == 65) ? -20.4 : -21.3;
@@ -407,10 +407,10 @@ namespace DeGenPrime
 				entropy = (this_mc == 67) ? -27.2 : -24.4;
 				break;
 			case 5628:	// 'CT', 'TC'
-				entropy = -21.0;
+				entropy = (this_mc == 67) ? -21.0 : -22.2;
 				break;
 			case 5964:	// 'GT', 'TG'
-				entropy = -22.4;
+				entropy = (this_mc == 71) ? -22.4 : -22.7;
 				break;
 			default:	// either contains '-'
 				break;
@@ -420,16 +420,48 @@ namespace DeGenPrime
 
 	float DataNode::Gibbs(DataNode node) const
 	{
-		// Delta G = Delta H - Temperature * Delta S
-		// Temperature for the Equation is in Celsius, but will be given in celsius
-		// Delta S is in cal/K * mol, Delta H is kcal/mol
-		float gibbs = Enthalpy(node);
-		//gibbs -= (temperature + 273.15) * ( Entropy(node) / 1000.0 );
-		gibbs -= (GlobalSettings::GetThermodynamicTemperature() + 273.15) * (Entropy(node) / 1000.0);
-
-		char node_char = node.GetMostCommon();
-		char this_char = GetMostCommon();
-
+		// Delta G is kcal/mol
+		float gibbs = 0.0;
+		int node_mc = (node.GetMostCommon() == '-') ? 0 : (int)node.GetMostCommon();
+		int this_mc = (GetMostCommon() == '-') ? 0 : (int)GetMostCommon();
+		switch(node_mc * this_mc)
+		{
+			// 'A' = 65, 'C' = 67, 'G' = 71, 'T' = 84
+			// Values from: https://www.pnas.org/doi/10.1073/pnas.95.4.1460
+			// Values given in units of cal/(k * mol)
+			case 4225:	// 'AA'
+				gibbs = -1.00;
+				break;
+			case 7056:	// 'TT'
+				gibbs =  -1.00;
+				break;
+			case 4355:	// 'AC', 'CA'
+				gibbs = (this_mc == 65) ? -1.44 : -1.45;
+				break;
+			case 4615:	// 'AG', 'GA'
+				gibbs = (this_mc == 65) ? -1.28 : -1.30;
+				break;
+			case 5460:	// 'AT', 'TA'
+				gibbs = (this_mc == 65) ? -0.88 : -0.58;
+				break;
+			case 4489:	// 'CC'
+				gibbs = -1.84;
+				break;
+			case 5041:	// 'GG'
+				gibbs = -1.84;
+				break;
+			case 4757:	// 'CG', 'GC'
+				gibbs = (this_mc == 67) ? -2.17 : -2.24;
+				break;
+			case 5628:	// 'CT', 'TC'
+				gibbs = (this_mc == 67) ? -1.28 : -1.30;
+				break;
+			case 5964:	// 'GT', 'TG'
+				gibbs = (this_mc == 71) ? -1.44 : -1.45;
+				break;
+			default:	// either contains '-'
+				break;
+		}
 		return gibbs;
 	}
 

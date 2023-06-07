@@ -51,8 +51,9 @@ namespace DeGenPrime
 	public:
 		PrimerCalculator();
 		
+		void InitializeTestPrimer(DataSequence data);
 		void InitializePrimers(DataSequence data);
-		void InitializeBoundedPrimers(DataSequence data, int lowerBound, bool fwdSeq);
+		void InitializeBoundedPrimers(DataSequence data, int lowerBound);
 
 		std::string FilterAll(DataSequence data, SequenceList list);
 		std::string FilterDegeneracy(DataSequence data);

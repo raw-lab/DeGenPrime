@@ -141,11 +141,13 @@ namespace DeGenPrime
 			float fwd_gibbs = primer_fwd.Gibbs();
 			float rev_gibbs = primer_rev.Gibbs();
 
-			DataSequence most_stable = (fwd_gibbs > rev_gibbs) ? primer_fwd : primer_rev;
-			float temp = (fwd_gibbs > rev_gibbs) ? primer_fwd.NNMeltingTemperature() 
+
+			// The most stable is the primer with the lowest gibbs
+			DataSequence most_stable = (fwd_gibbs < rev_gibbs) ? primer_fwd : primer_rev;
+			float temp = (fwd_gibbs < rev_gibbs) ? primer_fwd.NNMeltingTemperature() 
 				: primer_rev.NNMeltingTemperature();
 			
-			DataSequence product = (fwd_gibbs > rev_gibbs) ? fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].AmpSize())
+			DataSequence product = (fwd_gibbs < rev_gibbs) ? fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].AmpSize())
 				: rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].AmpSize());
 
 			float anneal = most_stable.BasicAnneal(product);

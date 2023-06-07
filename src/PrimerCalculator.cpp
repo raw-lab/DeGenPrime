@@ -16,7 +16,14 @@ using namespace std;
 namespace DeGenPrime
 {
 	PrimerCalculator::PrimerCalculator() { }
-	
+
+	void PrimerCalculator::InitializeTestPrimer(DataSequence data)
+	{
+		Primer test(0,data.size());
+		PushBack(test);
+		_OriginalSize = size();
+	}
+
 	void PrimerCalculator::InitializePrimers(DataSequence data)
 	{
 		int endIndex = data.size() - GlobalSettings::GetMinimumAmplicon();
@@ -39,18 +46,18 @@ namespace DeGenPrime
 		_OriginalSize = size();
 	}
 
-	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound, bool fwdSeq)
+	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound)
 	{
 		int loopBound = lowerBound;
-		
 		// Set a flag to check if lowerBound should be used or not
+		/*
 		bool flag = fwdSeq ? GlobalSettings::GetBeginFlag() : GlobalSettings::GetEndFlag();
 		if(flag)
 		{
 			int revInd = fwdSeq ? GlobalSettings::GetEndingNucleotide() :
 				GlobalSettings::GetBeginningNucleotide();
 			loopBound = data.RevIndex(revInd) - MAX_PRIMER_LENGTH;
-		}
+		}*/
 
 		// Check the loopBound is appropriate
 		loopBound = loopBound > 0 ? loopBound : 0;
@@ -58,7 +65,7 @@ namespace DeGenPrime
 		{
 			loopBound = data.size() - MAX_PRIMER_LENGTH;
 		}
-
+		/*
 		// Change global settings to reflect the new begin/end nucleotide
 		if(flag && fwdSeq)
 		{
@@ -70,7 +77,7 @@ namespace DeGenPrime
 			int rev = data.RevIndex(loopBound);
 			GlobalSettings::SetEndingNucleotide(rev);
 			GlobalSettings::SetEndFlag(false);
-		}
+		}*/
 		
 		// Needs to loop through all primers in the forward direction
 		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
@@ -94,7 +101,13 @@ namespace DeGenPrime
 		ret += FilterComplementaryEnds(data);
 		ret += FilterHairpins(data);
 		ret += FilterDimers(data);
-		ret += FilterTemperature(data, 0);
+		float range = GlobalSettings::GetMaximumTemperature() - GlobalSettings::GetMinimumTemperature();
+		float offset = 0.0;
+		do
+		{
+			ret += FilterTemperature(data, offset);
+			offset += range/10.0;
+		} while(size() > 100 && offset < range);
 		ret += FilterMessage("final", _OriginalSize - size());
 		return ret;
 	}
@@ -236,15 +249,17 @@ namespace DeGenPrime
 				if(c == 'C' || c == 'G')
 				{
 					gc_total_count++;
-					if(j >= p.size() - 5)
+					if(j > (p.size() - 6))
 					{
 						gc_end_count++;
 					}
 				}
 			}
-			float end_ratio = (float)(gc_end_count) / 5.0;
+			float end_ratio = ((float)(gc_end_count) / 5.0);
 			float total_ratio = (float)(gc_total_count) / (float)(p.size());
-			if(end_ratio > MAX_GC_EXTREMA_RATIO || total_ratio < MIN_GC_TOTAL_RATIO || total_ratio > MAX_GC_TOTAL_RATIO)
+			bool ending = end_ratio > MAX_GC_EXTREMA_RATIO;
+			bool total = (total_ratio < MIN_GC_TOTAL_RATIO || total_ratio > MAX_GC_TOTAL_RATIO);
+			if(ending || total)
 			{
 				Erase(i);
 				filtercount++;
@@ -395,7 +410,7 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterComplementaryEnds", filtercount);
 		return ret;
 	}
-
+	
 	string PrimerCalculator::FilterHairpins(DataSequence data)
 	{
 		string ret;
@@ -415,7 +430,7 @@ namespace DeGenPrime
 			// -	if matches >= sqrt(sub_length) raise flag, reject primer.
 			//		(usually sqrt(sub_length) is 2.xxx, but can be 3 for larger primers.)
 
-			for(int j = 3;j < p.size() - 3;j++)
+			for(int j = 3;j < p.size() - 4;j++)
 			{
 				if(flag)
 				{
@@ -460,6 +475,7 @@ namespace DeGenPrime
 	{
 		string ret;
 		int filtercount = 0;
+		float value = 0.0;
 		for(int i = _primers.size() - 1;i >= 0;i--)
 		{
 			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
@@ -469,9 +485,8 @@ namespace DeGenPrime
 			// -	self dimers are most likely to form when these nucleotides have too low of enthalpy
 			// -	filter primers with 3' end < -3.0
 			DataSequence ending = p.SubSeq(p.size() - 6, 5);
-			
-			float temp = 37.0;
-			if(ending.Gibbs() < -3.0)
+			value = ending.Gibbs();
+			if(value < -3.0)
 			{
 				Erase(i);
 				filtercount++;
