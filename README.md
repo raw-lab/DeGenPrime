@@ -16,7 +16,7 @@ Limitations
 Exit Codes
 Acknowledgements
 Copyright
-University of North Carolina at Charlotte, Bryan Fulghum, Sophie Turner, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
+University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
 The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.
 Introduction
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks:
@@ -33,7 +33,7 @@ Citing DeGenPrime
 DeGenPrime is free software to use.  If you use it however, we ask that you please cite the software in publications with:
 
 
-Fulghum B, Turner S, and White RA III.  DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  PUBLICATION INFO.
+Fulghum B, Tanker S, and White RA III.  DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  PUBLICATION INFO.
 The source code for DeGenPrime can be found here: https://github.com/raw-lab/DeGenPrime
 
 System Requirements
