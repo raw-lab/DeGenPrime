@@ -31,6 +31,7 @@ namespace DeGenPrime
 		Primer GetReverse() const;
 
 		std::string Print(DataSequence fwd_data, DataSequence rev_data);
+		std::string PrintShort(DataSequence fwd_data, DataSequence rev_data);
 
 		int AmpSize() const;
 		float TempDiff() const;

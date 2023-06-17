@@ -31,8 +31,13 @@ namespace DeGenPrime
 		static void SetBeginFlag(bool begin);
 		static void SetEndFlag(bool ending);
 		static void SetRunTest(bool test);
-		static void SetRunSearch(bool search);
+		static void SetSearchFwd(bool search);
+		static void SetSearchRev(bool search);
+		static void SetDoSearchFile(bool search);
+		static void SetSortByTemp(bool temp);
 		static void SetTestValue(std::string str);
+		static void SetSearchFwdArg(std::string str);
+		static void SetSearchRevArg(std::string str);
 		static void SetSearchFile(std::string str);
 	
 		static int GetMinimumAmplicon();
@@ -49,8 +54,13 @@ namespace DeGenPrime
 		static int GetMaximumReturnPrimers();
 		static float GetThermodynamicTemperature();
 		static bool GetRunTest();
-		static bool GetRunSearch();
+		static bool GetSearchFwd();
+		static bool GetSearchRev();
+		static bool GetSortByTemp();
+		static bool GetDoSearchFile();
 		static std::string GetTestValue();
+		static std::string GetSearchFwdArg();
+		static std::string GetSearchRevArg();
 		static std::string GetSearchFile();
 
 	private:
@@ -68,8 +78,13 @@ namespace DeGenPrime
 		static int _maxPrimers;
 		static float _thermodynamicTemperature;
 		static bool _testRun;
-		static bool _runSearch;
+		static bool _SearchFwd;
+		static bool _SearchRev;
+		static bool _DoSearchFile;
+		static bool _sortbytemp;
 		static std::string _testStr;
+		static std::string _searchFwdArg;
+		static std::string _searchRevArg;
 		static std::string _searchFile;
 	};
 } // end of DeGenPrime

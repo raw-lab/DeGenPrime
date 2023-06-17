@@ -45,7 +45,11 @@ namespace DeGenPrime
 		PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list);
 		PrimerPairList SubList(int startIndex, int length);
 
-		void Append(PrimerPairList list);		
+		void Append(PrimerPairList list);
+		
+		void CreateFromRange(DataSequence fwd_seq, DataSequence rev_seq,
+			std::vector<Primer> fwd_list, std::vector<Primer> rev_list, 
+			int fwd_begin, int fwd_end, int rev_begin, int rev_end);
 		void CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list);
 		void Erase(int index);
 		void PushBack(PrimerPair pair);
@@ -54,10 +58,13 @@ namespace DeGenPrime
 		std::string FilterAmpliconLength();
 		std::string FilterTemperatureDifference();
 		int FilterAnnealingTemp(DataSequence fwd, DataSequence rev, int ignore);
+		int PartitionCount(int fwd_size, int rev_size) const;
 
 		void Sort();
 		void PrintSize();
+
 		std::string PrintAll(DataSequence fwd, DataSequence rev);
+		std::string PrintAllShort(DataSequence fwd, DataSequence rev);
 
 		std::vector<PrimerPair> GetPairs() const;
 
@@ -66,8 +73,8 @@ namespace DeGenPrime
 		bool comparator(const PrimerPair& lhs, const PrimerPair& rhs);
 		int _OriginalSize;
 		std::vector<PrimerPair> _pairs;
-		DataSequence _fwd;
-		DataSequence _rev;
+		// DataSequence _fwd;
+		// DataSequence _rev;
 	};
 } // End of DeGenPrime
 #endif // PRIMER_PAIR_LIST

@@ -1,24 +1,28 @@
 # DeGenPrime
 Degenerate primer builder for protein functional genes
 
-DeGenPrime – Manual
-Copyright
-Introduction
-Citing DeGenPrime
-System Requirements
-Syntax
-Command-line arguments
-Input
-Output
-Example
-How DeGenPrime works
-Limitations
-Exit Codes
-Acknowledgements
-Copyright
-University of North Carolina at Charlotte, Bryan Fulghum, Sophie Turner, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
+## DeGenPrime – Manual
+- Copyright
+- Introduction
+- Citing DeGenPrime
+- System Requirements
+- Syntax
+- Command-line arguments
+- Input
+- Output
+- Example
+- How DeGenPrime works
+- Limitations
+- Exit Codes
+- Acknowledgements
+- Copyright
+
+University of North Carolina at Charlotte, Bryan Fulghum, Sophie Turner, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.
+
 The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.
-Introduction
+
+## Introduction
+
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks:
 Low Degeneracy
 Few Deletions
@@ -39,7 +43,8 @@ The source code for DeGenPrime can be found here: https://github.com/raw-lab/DeG
 System Requirements
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 Syntax
-./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
+
+`./DeGenPrime [--tags] <filename>` (the filename must always be the last argument, or this program will throw a segmentation error.)
 Command-line arguments
 Valid tags include:
 --amplicon:<int>, Set the minimum amplicon length.

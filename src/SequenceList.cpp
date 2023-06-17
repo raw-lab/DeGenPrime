@@ -66,10 +66,12 @@ namespace DeGenPrime
 		return;
 	}
 	void SequenceList::PopBack() { _list.pop_back(); }
-	void SequenceList::FilterDashes()
+	SequenceList SequenceList::FilterDashes()
 	{
+		SequenceList ret;
 		int begin = GlobalSettings::GetBeginningNucleotide();
 		int ending = GlobalSettings::GetEndingNucleotide();
+		if(_list.size() < 2)return _list;
 		for(int i = 0;i < _list.size();i++)
 		{
 			int dash_count = 0;
@@ -83,10 +85,24 @@ namespace DeGenPrime
 			float tolerance = (float)dash_count / (float)_list[i].GetCodes().size();
 			if(tolerance >= MAX_DASH_HORIZONTAL_TOLERANCE)
 			{
+				ret.PushBack(_list[i]);
 				Erase(i);
 			}
 		}
-		return;
+		return ret;
+	}
+	void SequenceList::RemoveDashes()
+	{
+		for(Sequence seq : _list)
+		{
+			for(int i = seq.size() - 1;i >= 0;i--)
+			{
+				if(seq.GetCodes()[i] == '-')
+				{
+					seq.Erase(i);
+				}
+			}
+		}
 	}
 	string SequenceList::PrintSequenceNames() const
 	{
@@ -246,6 +262,9 @@ namespace DeGenPrime
 				break;
 			case 'V': // Valine
 				ret += "GTN";
+				break;
+			case '*': // Stop Codon
+				ret += "TRR";
 				break;
 			default:
 				break;

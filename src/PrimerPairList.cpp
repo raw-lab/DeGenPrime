@@ -1,6 +1,7 @@
 // PrimerPairList.cpp
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -15,11 +16,14 @@ using namespace std;
 
 namespace DeGenPrime
 {
-	PrimerPairList::PrimerPairList() { }
+	PrimerPairList::PrimerPairList() 
+	{
+		_OriginalSize = 0;
+	}
 	PrimerPairList::PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list)
 	{
-		_fwd = fwd_seq;
-		_rev = rev_seq;
+		// _fwd = fwd_seq;
+		// _rev = rev_seq;
 		_pairs = pair_list;
 		_OriginalSize = size();
 	}
@@ -43,10 +47,29 @@ namespace DeGenPrime
 		}
 	}
 
+	void PrimerPairList::CreateFromRange(DataSequence fwd_seq, DataSequence rev_seq,
+		std::vector<Primer> fwd_list, std::vector<Primer> rev_list, 
+		int fwd_begin, int fwd_end, int rev_begin, int rev_end)
+	{
+		int x_begin = fwd_begin >= 0 ? fwd_begin : 0;
+		int x_end = fwd_end > fwd_seq.size() ? fwd_seq.size() : fwd_end;
+		int y_begin = rev_begin >= 0 ? rev_begin : 0;
+		int y_end = rev_end > rev_seq.size() ? rev_seq.size() : rev_end;
+		for(int i = x_begin;i < x_end;i++)
+		{
+			for(int j = y_begin;j < y_end;j++)
+			{
+				PrimerPair p(fwd_list[i], rev_list[j], fwd_seq, rev_seq);
+				_pairs.push_back(p);
+			}
+		}
+		_OriginalSize = _pairs.size();
+	}
+
 	void PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
 	{
-		_fwd = fwd_seq;
-		_rev = rev_seq;
+		// _fwd = fwd_seq;
+		// _rev = rev_seq;
 		for(int i = 0;i < fwd_list.size();i++)
 		{
 			for(int j = 0;j < rev_list.size();j++)
@@ -185,7 +208,39 @@ namespace DeGenPrime
 		return ret;
 	}
 
+	string PrimerPairList::PrintAllShort(DataSequence fwd, DataSequence rev)
+	{
+		string ret = "";
+		for(int i =0;i < _pairs.size();i++)
+		{
+			ret += "Pair #" + to_string(i + 1) + " ";
+			ret += _pairs[i].PrintShort(fwd, rev);
+		}
+		return ret;
+	}
+
 	std::vector<PrimerPair> PrimerPairList::GetPairs() const { return _pairs; }
+
+	int PrimerPairList::PartitionCount(int fwd_size, int rev_size) const
+	{
+		int rect = fwd_size * rev_size;
+		const int area = 1600;
+		double ratio = (float)rect/(float)area;
+		if(ratio <= 1.0)
+		{
+			return 1;
+		}
+		else
+		{
+			int r = (int)ceil(ratio);
+			int n = 2;
+			while(pow(n,2) < r)
+			{
+				n++;
+			}
+			return (pow(n,2));
+		}
+	}
 
 	int PrimerPairList::size() const
 	{

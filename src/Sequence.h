@@ -30,6 +30,7 @@ namespace DeGenPrime
 		void SetName(std::string name);
 		void SetList(std::vector<char> list);
 
+		void Erase(int index);
 		void PushBack(char c);
 		void PushBack(std::string str);
 		void PopBack();

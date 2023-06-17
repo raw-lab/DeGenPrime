@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cctype>
 #include <cstring>
 #include <cmath>
@@ -19,7 +20,8 @@ namespace DeGenPrime
 
 	void PrimerCalculator::InitializeTestPrimer(DataSequence data)
 	{
-		Primer test(0,data.size());
+		Primer test(0, data.size());
+		// Primer test(0,data.size(), data);
 		PushBack(test);
 		_OriginalSize = size();
 	}
@@ -39,7 +41,8 @@ namespace DeGenPrime
 		{
 			for(int j = 0;j <= endIndex;j++)
 			{
-				Primer id(j,i);
+				Primer id(j, i);
+				//Primer id(j,i, data);
 				PushBack(id);
 			}
 		}
@@ -49,15 +52,6 @@ namespace DeGenPrime
 	void PrimerCalculator::InitializeBoundedPrimers(DataSequence data, int lowerBound)
 	{
 		int loopBound = lowerBound;
-		// Set a flag to check if lowerBound should be used or not
-		/*
-		bool flag = fwdSeq ? GlobalSettings::GetBeginFlag() : GlobalSettings::GetEndFlag();
-		if(flag)
-		{
-			int revInd = fwdSeq ? GlobalSettings::GetEndingNucleotide() :
-				GlobalSettings::GetBeginningNucleotide();
-			loopBound = data.RevIndex(revInd) - MAX_PRIMER_LENGTH;
-		}*/
 
 		// Check the loopBound is appropriate
 		loopBound = loopBound > 0 ? loopBound : 0;
@@ -65,49 +59,36 @@ namespace DeGenPrime
 		{
 			loopBound = data.size() - MAX_PRIMER_LENGTH;
 		}
-		/*
-		// Change global settings to reflect the new begin/end nucleotide
-		if(flag && fwdSeq)
-		{
-			GlobalSettings::SetBeginningNucleotide(loopBound);
-			GlobalSettings::SetBeginFlag(false);
-		}
-		else if(flag)
-		{
-			int rev = data.RevIndex(loopBound);
-			GlobalSettings::SetEndingNucleotide(rev);
-			GlobalSettings::SetEndFlag(false);
-		}*/
 		
 		// Needs to loop through all primers in the forward direction
 		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
 		{
 			for(int j = 0;j <= loopBound;j++)
 			{
-				Primer id(j,i);
+				Primer id(j, i);
+				//Primer id(j,i, data);
 				PushBack(id);
 			}
 		}
 		_OriginalSize = size();
 	}
 
-	string PrimerCalculator::FilterAll(DataSequence data, SequenceList list)
+	void PrimerCalculator::Sort()
+	{
+		sort(_primers.begin(), _primers.end());
+	}
+
+	string PrimerCalculator::FilterAll(DataSequence data)
 	{
 		string ret = "";
 		ret += FilterDegeneracy(data);
-		ret += FilterDeletions(data, list);
+		ret += FilterDeletions(data);
 		ret += FilterGCContent(data);
 		ret += FilterRepeats(data);
 		ret += FilterComplementaryEnds(data);
 		ret += FilterHairpins(data);
 		ret += FilterDimers(data);
-		float range = GlobalSettings::GetMaximumTemperature() - GlobalSettings::GetMinimumTemperature();
-		float offset = 0.0;
-		do
-		{
-			ret += FilterTemperature(data, offset);
-			offset += range/10.0;
-		} while(size() > 100 && offset < range);
+		ret += FilterTemperature(data, 0.0);
 		ret += FilterMessage("final", _OriginalSize - size());
 		return ret;
 	}
@@ -127,7 +108,6 @@ namespace DeGenPrime
 			//	- or more than 1 B,D,H,V
 			//	- or more than 2 others. (count B,D,H,V as 2 any other as 1, ends as 3)
 			int degeneracy_count = 0;
-			std::vector<char> junk;
 			for(int j = 0;j < p.size();j++)
 			{
 				if(degeneracy_count >= 3)
@@ -140,14 +120,12 @@ namespace DeGenPrime
 				{
 					case 'N':
 						degeneracy_count += 3;
-						junk.push_back(c);
 						break;
 					case 'B':
 					case 'D':
 					case 'V':
 					case 'H':
 						degeneracy_count += (2 * position_multiplier);
-						junk.push_back(c);
 						break;
 					case 'A':
 					case 'C':
@@ -157,7 +135,6 @@ namespace DeGenPrime
 						break;
 					default:
 						degeneracy_count += position_multiplier;
-						junk.push_back(c);
 						break;
 				}
 			}
@@ -171,7 +148,7 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	string PrimerCalculator::FilterDeletions(DataSequence data, SequenceList list)
+	string PrimerCalculator::FilterDeletions(DataSequence data)
 	{
 		string ret = "";
 		int filtercount = 0;
@@ -181,7 +158,6 @@ namespace DeGenPrime
 			bool flag = false;
 			int total_deletions_count = 0;
 			// Filter sequences for deletions
-			//	- Filter primer with any deletion in any sequence on the first/last 3.
 			//	- Filter primer with any three consecutive datasequence chars of '-'
 			//	- Filter primer with more than 6 total deletions.
 			//	- Filter any primer whose deletions make it smaller than MIN_PRIMER_SIZE
@@ -193,6 +169,7 @@ namespace DeGenPrime
 				}
 				int consecutive_deletions_count = 0;
 
+				/* Old method, depends on SequenceList..not good
 				if(j < 3 || j > p.size() - 3)
 				{
 					for(Sequence seq : list.GetSequenceList())
@@ -203,11 +180,19 @@ namespace DeGenPrime
 							break;
 						}
 					}
-				}
+				}*/
 				if(p.GetDataSequence()[j].GetCode() == '-')
 				{
 					total_deletions_count++;
-					consecutive_deletions_count++;	
+					consecutive_deletions_count++;
+					if(j < 3 || j > (p.size() - 4))
+					{
+						flag = true;
+					}
+				}
+				else
+				{
+					consecutive_deletions_count = 0;
 				}
 				if(total_deletions_count > 6 || consecutive_deletions_count > 2)
 				{
@@ -387,8 +372,7 @@ namespace DeGenPrime
 		}
 		ret = FilterMessage("FilterRepeats", filtercount);
 		return ret;
-	}
-	*/
+	}*/
 
 	string PrimerCalculator::FilterComplementaryEnds(DataSequence data)
 	{
@@ -410,7 +394,7 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterComplementaryEnds", filtercount);
 		return ret;
 	}
-	
+
 	string PrimerCalculator::FilterHairpins(DataSequence data)
 	{
 		string ret;
@@ -419,44 +403,58 @@ namespace DeGenPrime
 		{
 			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
 			bool flag = false;
-			int match_count = 0;
+			
+			// Filter all sequences that would form hairpins loops
+			// -	for triloops,
+			//	compare the code five nucleotides away for complement
+			//	if match, check 2nd nucleotide for 'G'
+			//	check 2nd to last nucleotide for 'A'
+			//	filter if those conditions are met
+			// -	for tetraloops, compare the nucleotide six nucleotides away for complement
+			//	if match filter
 
-			// Filter all sequences that would form Hairpins.
-			// -	define a fold point within range <3, size - 4> (j)
-			// -	split primer into two subsequences
-			// -  determine which end of the primer is closest to the fold point
-			// -	reverse and invert the end sequence
-			// -	count matches between the subsequences
-			// -	if matches >= sqrt(sub_length) raise flag, reject primer.
-			//		(usually sqrt(sub_length) is 2.xxx, but can be 3 for larger primers.)
-
-			for(int j = 3;j < p.size() - 4;j++)
+			for(int j = 0;j + 4 < p.size();j++)
 			{
 				if(flag)
 				{
 					break;
 				}
-				
-				DataSequence begin = p.SubSeq(0, j - 1);
-				DataSequence end = p.SubSeq(j + 1, p.size() - j - 1);
-				int size_difference = end.size() - begin.size();
-				if(size_difference != 0)
+				char first = p.GetDataSequence()[j].GetMostCommon();
+				char second = (p.GetDataSequence()[j+4].InvNode()).GetMostCommon();
+				if(first != second)
 				{
-					if(size_difference > 0)
-					{
-						// Get first chars of end sequence
-						end = end.SubSeq(0,begin.size());
-					}
-					else
-					{
-						// Get last chars of begin sequence
-						begin = begin.SubSeq(begin.size() - end.size(), end.size());
-					}
+					continue;
 				}
-
-				end = end.RevSeq().InvSeq();
-				match_count = begin.CountMatches(end);
-				if((float)match_count >= sqrt(end.size()))
+				first = p.GetDataSequence()[j+1].GetMostCommon();
+				if(first != 'G')
+				{
+					continue;
+				}
+				second = p.GetDataSequence()[j+3].GetMostCommon();
+				if(second == 'A')
+				{
+					flag = true;
+				}
+			}
+			for(int j = 0;j + 5 < p.size();j++)
+			{
+				if(flag)
+				{
+					break;
+				}
+				char first = p.GetDataSequence()[j].GetMostCommon();
+				char second = (p.GetDataSequence()[j+5].InvNode()).GetMostCommon();
+				if(first != second)
+				{
+					continue;
+				}
+				first = p.GetDataSequence()[j+1].GetMostCommon();
+				if(first != 'G')
+				{
+					continue;
+				}
+				second = p.GetDataSequence()[j+4].GetMostCommon();
+				if(second == 'A')
 				{
 					flag = true;
 				}
@@ -470,6 +468,8 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterHairpins", filtercount);
 		return ret;
 	}
+	/*
+	*/
 
 	string PrimerCalculator::FilterDimers(DataSequence data)
 	{
@@ -484,8 +484,17 @@ namespace DeGenPrime
 			// -	use the 3' end of the primer (last 5 nucleotides) as a reference check
 			// -	self dimers are most likely to form when these nucleotides have too low of enthalpy
 			// -	filter primers with 3' end < -3.0
-			DataSequence ending = p.SubSeq(p.size() - 6, 5);
-			value = ending.Gibbs();
+
+			// Pull Deletions off the sequence
+			for(int j = 0;j < p.size();j++)
+			{
+				if(p.GetDataSequence()[j].GetMostCommon() == '-')
+				{
+					p.Erase(j);
+				}
+			}
+			DataSequence ending = (p.size() > 5) ? p.SubSeq(p.size() - 6, 5) : p;
+			value = ending.isEmpty() ? 0 : ending.Gibbs();
 			if(value < -3.0)
 			{
 				Erase(i);
@@ -574,6 +583,35 @@ namespace DeGenPrime
 			ret += to_string(size()) + "]\n";
 		}
 		return ret;
+	}
+
+	int PrimerCalculator::IndexOf(DataSequence data, string str) const
+	{
+		int index = -1;
+		bool flag = false;
+
+		// Build a DataSequence of the chars in str
+		DataSequence s;
+		for(char c : str)
+		{
+			DataNode node(c,c,1.0);
+			s.PushBack(node);
+		}
+
+		for(int i = 0;i < _primers.size();i++)
+		{
+			if(flag)
+			{
+				break;
+			}
+			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
+			if(p.checkMatch(s))
+			{
+				index = i;
+				flag = true;
+			}
+		}
+		return index;
 	}
 
 	int PrimerCalculator::size() const { return _primers.size(); }

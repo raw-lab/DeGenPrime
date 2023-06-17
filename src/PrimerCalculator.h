@@ -55,9 +55,9 @@ namespace DeGenPrime
 		void InitializePrimers(DataSequence data);
 		void InitializeBoundedPrimers(DataSequence data, int lowerBound);
 
-		std::string FilterAll(DataSequence data, SequenceList list);
+		std::string FilterAll(DataSequence data);
 		std::string FilterDegeneracy(DataSequence data);
-		std::string FilterDeletions(DataSequence data, SequenceList list);
+		std::string FilterDeletions(DataSequence data);
 		std::string FilterGCContent(DataSequence data);
 		std::string FilterRepeats(DataSequence data);
 		std::string FilterComplementaryEnds(DataSequence data);
@@ -69,11 +69,13 @@ namespace DeGenPrime
 		void PushBack(Primer primer);
 
 		void PrintSize();
-		void PrintAll(); // Test Function
+		void PrintAll();
+		void Sort();
 
 		void SetPrimers(std::vector<Primer> primerList);
 		
 		std::vector<Primer> GetPrimers() const;
+		int IndexOf(DataSequence data, std::string str) const;
 		int size() const;
 	private:
 		int _OriginalSize;

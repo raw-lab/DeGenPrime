@@ -49,7 +49,8 @@ namespace DeGenPrime
 		void Erase(int index);
 		void PushBack(Sequence seq); // Do not use reg push_back
 		void PopBack();	// Do not use reg pop_back
-		void FilterDashes();
+		SequenceList FilterDashes();
+		void RemoveDashes();
 
 		std::string PrintSequenceNames() const;
 		std::string DecodeProteins() const;

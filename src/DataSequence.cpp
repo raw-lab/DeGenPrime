@@ -13,14 +13,28 @@ using namespace std;
 namespace DeGenPrime
 {
 	DataSequence::DataSequence() { }
+	DataSequence::DataSequence(std::string str) 
+	{
+		for(char c : str)
+		{
+			DataNode node(c,c,1.0);
+			_list.push_back(node);
+		}
+	}
 
 	void DataSequence::SetList(std::vector<DataNode> catalog) {_list = catalog; }
 	void DataSequence::PushBack(DataNode node) { _list.push_back(node); }
 	void DataSequence::PopBack() { _list.pop_back(); }
+	void DataSequence::Erase(int index)
+	{
+		_list.erase(_list.begin() + index);
+	} 
 
 	std::string DataSequence::Print()
 	{
-		string ret = "Sequence Codes: ";
+		string ret = "Sequence MC: ";
+		ret += MC();
+		ret += "\nSequence Codes: ";
 		ret += Codes();
 		ret += "\nLength: " + to_string(_list.size()) + " bps\n";
 		ret += "Enthalpy: " + to_string(Enthalpy()) + " kcal\n";
@@ -29,6 +43,7 @@ namespace DeGenPrime
 		ret += "GC Content: " + to_string(GCRatio()) + "\n";
 		ret += "Basic Melting Temperature: " + to_string(BasicTemperature()) + " deg C\n";
 		ret += "Nearest Neighbor Melting Temperature: " + to_string(NNMeltingTemperature()) + " deg C\n";
+		ret += "\n";
 		return ret;
 	}
 
@@ -38,6 +53,16 @@ namespace DeGenPrime
 		for(int i = 0;i < _list.size();i++)
 		{
 			ret += _list[i].GetCode();
+		}
+		return ret;
+	}
+
+	std::string DataSequence::MC()
+	{
+		string ret = "";
+		for(int i = 0;i < _list.size();i++)
+		{
+			ret += _list[i].GetMostCommon();
 		}
 		return ret;
 	}
@@ -301,6 +326,74 @@ namespace DeGenPrime
 		return temperature;
 	}
 
+	float DataSequence::Quality() const
+	{
+		float quality = 0.0;
+		// The lower this number the higher the quality.
+		
+		// Primers outside of size range should not be considered
+		if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
+		{
+			return 0.0;
+		}
+
+		// First we want to measure nucleotide repetition in the sequence
+		int most_repeats = 0;
+		for(char c : {'A', 'C', 'G', 'T'})
+		{
+			int char_match_count = 0;
+			for(int i = 0;i < _list.size() - 1;i++)
+			{
+				if(_list[i].GetMostCommon() == c &&
+					_list[i+1].GetMostCommon() == c)
+				{
+					char_match_count++;
+				}
+			}
+			if(char_match_count > most_repeats)
+			{
+				most_repeats = char_match_count;
+			}
+		}
+		switch(most_repeats)
+		{
+			case 3:
+				quality += 1.0;
+				break;
+			case 4:
+				quality += 2.0;
+				break;
+			case 5:
+				quality += 3.0;
+				break;
+			default:
+				break;
+		}
+
+		// Check if there is a GC clamp
+		int gc = 0;
+		for(int i = 1;i <=5;i++)
+		{
+			if(_list[size() - i].GetMostCommon() == 'G' ||
+				_list[size() - i].GetMostCommon() == 'C')
+			{
+				gc++;
+			}
+		}
+		switch(gc)
+		{
+			case 0:
+				quality += 5.0;
+				break;
+			case 1:
+				quality += 1.0;
+				break;
+			default:
+				break;
+		}
+		return quality;
+	}
+
 	int DataSequence::CountMatches(DataSequence data) const
 	{
 		int matches = 0;
@@ -332,5 +425,22 @@ namespace DeGenPrime
 			}
 		}
 		return true;
+	}
+
+	bool DataSequence::isEmpty() const
+	{
+		bool ret = true;
+		for(DataNode node : _list)
+		{
+			if(ret == false)
+			{
+				break;
+			}
+			if(node.GetMostCommon() != '-')
+			{
+				ret = false;
+			}
+		}
+		return ret;
 	}
 } // End of DeGenPrime

@@ -70,13 +70,16 @@ namespace DeGenPrime
 	{
 	public:
 		DataSequence();
+		DataSequence(std::string str);
 		
 		void SetList(std::vector<DataNode> catalog);
 		void PushBack(DataNode node);
 		void PopBack();
+		void Erase(int index);
 
 		std::string Print();
 		std::string Codes();
+		std::string MC();
 
 		DataSequence SubSeq(int startIndex,int length);
 		DataSequence InvSeq();
@@ -92,6 +95,7 @@ namespace DeGenPrime
 		float ProductMelt() const;
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
+		float Quality() const;
 		
 		std::vector<DataNode> GetDataSequence() const;
 
@@ -101,6 +105,7 @@ namespace DeGenPrime
 		int size() const;
 
 		bool checkMatch(DataSequence data) const;
+		bool isEmpty() const;
 	private:
 		std::vector<DataNode> _list;
 	};
