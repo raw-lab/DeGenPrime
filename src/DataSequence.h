@@ -60,6 +60,7 @@
 #ifndef DATA_SEQUENCE
 #define DATA_SEQUENCE
 
+#include <fstream>
 #include <vector>
 #include "DataNode.h"
 #include "global.h"
@@ -72,6 +73,7 @@ namespace DeGenPrime
 		DataSequence();
 		DataSequence(std::string str);
 		
+		void Consensus(std::string filename, std::ofstream& ofs);
 		void SetList(std::vector<DataNode> catalog);
 		void PushBack(DataNode node);
 		void PopBack();
@@ -95,6 +97,7 @@ namespace DeGenPrime
 		float ProductMelt() const;
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
+		float AverageRatio() const;
 		float Quality() const;
 		
 		std::vector<DataNode> GetDataSequence() const;

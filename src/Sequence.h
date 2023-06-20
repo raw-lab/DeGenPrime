@@ -16,6 +16,7 @@
 #ifndef SEQUENCE
 #define SEQUENCE
 
+#include "DataSequence.h"
 #include <string>
 #include <vector>
 
@@ -29,6 +30,8 @@ namespace DeGenPrime
 
 		void SetName(std::string name);
 		void SetList(std::vector<char> list);
+		void CalculateScore(DataSequence data);
+		void RemoveDashes();
 
 		void Erase(int index);
 		void PushBack(char c);
@@ -39,12 +42,17 @@ namespace DeGenPrime
 		void Reverse();
 		
 		std::string GetName() const;
+		std::string Fasta() const;
 		std::vector<char> GetCodes() const;
 
+		int Score() const;
 		int size() const;
+
+		bool operator <(const Sequence& rhs) const;
 	private:
 		std::vector<char> _codes;
 		std::string _name;
+		int _score;
 	};
 
 } // End of DeGenPrime

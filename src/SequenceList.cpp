@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cctype>
 #include <iostream>
 #include <string>
@@ -43,7 +44,18 @@ namespace DeGenPrime
 		return data_seq;
 	}
 	
-	void SequenceList::SetList(vector<Sequence> catalog) {_list = catalog; }
+	void SequenceList::SetList(vector<Sequence> catalog) 
+	{
+		_list.clear(); 
+		for(Sequence seq : catalog)
+		{
+			_list.push_back(seq);
+		}
+	}
+	void SequenceList::Clear()
+	{
+		_list.clear();
+	}
 	void SequenceList::Erase(int index)
 	{
 		_list.erase(_list.begin() + index);
@@ -66,12 +78,15 @@ namespace DeGenPrime
 		return;
 	}
 	void SequenceList::PopBack() { _list.pop_back(); }
+	void SequenceList::Sort()
+	{
+		sort(_list.begin(), _list.end());
+	}
 	SequenceList SequenceList::FilterDashes()
 	{
 		SequenceList ret;
 		int begin = GlobalSettings::GetBeginningNucleotide();
 		int ending = GlobalSettings::GetEndingNucleotide();
-		if(_list.size() < 2)return _list;
 		for(int i = 0;i < _list.size();i++)
 		{
 			int dash_count = 0;
@@ -91,19 +106,29 @@ namespace DeGenPrime
 		}
 		return ret;
 	}
+
 	void SequenceList::RemoveDashes()
 	{
-		for(Sequence seq : _list)
+		std::vector<Sequence> seq_temp;
+		std::vector<char> chars;
+		for(int i = 0;i < _list.size();i++)
 		{
-			for(int i = seq.size() - 1;i >= 0;i--)
+			Sequence seq(_list[i].GetName());
+			for(int j = 0;j < _list[i].GetCodes().size();j++)
 			{
-				if(seq.GetCodes()[i] == '-')
+				char c = _list[i].GetCodes()[j];
+				if(c != '-')
 				{
-					seq.Erase(i);
+					chars.push_back(c);
 				}
 			}
+			seq.SetList(chars);
+			chars.clear();
+			seq_temp.push_back(seq);
 		}
+		SetList(seq_temp);
 	}
+
 	string SequenceList::PrintSequenceNames() const
 	{
 		string ret = "";
@@ -118,7 +143,17 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	string SequenceList::DecodeProteins() const
+	std::string SequenceList::CreateFasta() const
+	{
+		string fasta = "";
+		for(Sequence seq : _list)
+		{
+			fasta += seq.Fasta();
+		}
+		return fasta;
+	}
+
+	std::string SequenceList::DecodeProteins() const
 	{
 		string ret = "";
 		int count = 0;
@@ -197,6 +232,19 @@ namespace DeGenPrime
 
 	std::vector<Sequence> SequenceList::GetSequenceList() const { return _list; }
 	int SequenceList::size() const { return _list.size(); }
+	int SequenceList::IndexOf(std::string name)
+	{
+		int index = -1;
+		for(int i = 0;i < _list.size();i++)
+		{
+			if(_list[i].GetName() == name)
+			{
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
 
 	std::string SequenceList::Codon(char c) const
 	{

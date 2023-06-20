@@ -1,6 +1,8 @@
 // DataSequence.cpp
 #include <cmath>
 #include <iostream>
+#include <iomanip>
+#include <fstream>
 #include <vector>
 #include <string>
 #include "DataNode.h"
@@ -65,6 +67,31 @@ namespace DeGenPrime
 			ret += _list[i].GetMostCommon();
 		}
 		return ret;
+	}
+
+	void DataSequence::Consensus(std::string filename, std::ofstream& ofs)
+	{
+		string ret = filename + "\n\n";
+		string codes = Codes();
+		int final_index = codes.length() - 1;
+		int lines = codes.length() / 60;
+		int remainder = codes.length() % 60;
+		int index = 0;
+		// Model
+		// 'Con (####-####) '
+		string start = "";
+		for(int i = 0;i < lines;i++)
+		{
+			index = i * 60;
+			ofs << "Con (" << std::setfill('0') << std::setw(4) << index;
+			ofs << "-" << std::setfill('0') << std::setw(4) << index + 59;
+			ofs << ") " << codes.substr(index,60) << endl;
+		}
+		index += 60;
+		codes.erase(0,index);
+		ofs << "Con (" << std::setfill('0') << std::setw(4) << index;
+		ofs << "-" << std::setfill('0') << std::setw(4) << final_index;
+		ofs << ") " << codes << endl;
 	}
 
 	DataSequence DataSequence::SubSeq(int startIndex, int length)
@@ -324,6 +351,17 @@ namespace DeGenPrime
 		b /= size();
 		temperature -= b;
 		return temperature;
+	}
+
+	float DataSequence::AverageRatio() const
+	{
+		float average = 0.0;
+		for(DataNode node : _list)
+		{
+			average += node.Ratio();
+		}
+		average /= _list.size();
+		return average;
 	}
 
 	float DataSequence::Quality() const

@@ -46,14 +46,17 @@ namespace DeGenPrime
 		DataSequence ProcessList();
 		
 		void SetList(std::vector<Sequence> catalog);
+		void Clear();
 		void Erase(int index);
 		void PushBack(Sequence seq); // Do not use reg push_back
 		void PopBack();	// Do not use reg pop_back
+		void Sort();
 		SequenceList FilterDashes();
 		void RemoveDashes();
 
 		std::string PrintSequenceNames() const;
 		std::string DecodeProteins() const;
+		std::string CreateFasta() const;
 		void PrintSection(int index, int length) const;
 
 		bool TestAlignment() const;
@@ -61,6 +64,7 @@ namespace DeGenPrime
 		std::vector<char> CharsAt(int index) const;
 		std::vector<Sequence> GetSequenceList() const;
 		int size() const;
+		int IndexOf(std::string name);
 	private:
 		std::vector<Sequence> _list;
 		std::string Codon(char c) const;
