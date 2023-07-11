@@ -8,6 +8,7 @@
 #ifndef PRIMER_CLASS
 #define PRIMER_CLASS
 
+#include <string>
 #include "DataSequence.h"
 
 namespace DeGenPrime
@@ -19,19 +20,20 @@ namespace DeGenPrime
 		Primer(int index, int length);
 		//Primer(int index, int length, DataSequence src_data);
 
-		void Print();
-		void SetQuality(float quality);
+		void SetPenalty(float penalty);
 
 		int Length() const;
 		int Index() const;
-		float Quality() const;
+		float Penalty() const;
+
+		std::string Print();
 
 		bool operator <(const Primer& rhs) const;
 
 	private:
 		int _Length;
 		int _Index;
-		float _Quality;
+		float _Penalty;
 	};
 } // End of DeGenPrime
 #endif // PRIMER_CLASS

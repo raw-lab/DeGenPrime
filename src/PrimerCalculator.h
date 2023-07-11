@@ -54,6 +54,7 @@ namespace DeGenPrime
 		void InitializeTestPrimer(DataSequence data);
 		void InitializePrimers(DataSequence data);
 		void InitializeBoundedPrimers(DataSequence data, int lowerBound);
+		void InitializeFromRegion(std::vector<Primer> region);
 
 		std::string FilterAll(DataSequence data);
 		std::string FilterDegeneracy(DataSequence data);
@@ -69,7 +70,7 @@ namespace DeGenPrime
 		void PushBack(Primer primer);
 
 		void PrintSize();
-		void PrintAll();
+		std::string PrintAll();
 		void Sort();
 
 		void SetPrimers(std::vector<Primer> primerList);

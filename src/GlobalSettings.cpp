@@ -12,6 +12,7 @@ namespace DeGenPrime
 	void GlobalSettings::SetMinimumAmplicon(int amplicon) { _ampLength = (0 < amplicon) ? amplicon : 0; }
 	void GlobalSettings::SetBeginningNucleotide(int begin){ _beginningNucleotide = (0 < begin) ? begin : 0; }
 	void GlobalSettings::SetEndingNucleotide(int ending) {_endingNucleotide = ending; }
+	void GlobalSettings::SetNonDegenerate(bool non) {_nonDegenerate = non; }
 	void GlobalSettings::SetMeasureByAmpliconSize(bool size) {_measureByAmpliconSize = size; }
 	void GlobalSettings::SetProteinSequence(bool seq) {_proteinSequence = seq; }
 	void GlobalSettings::SetMinimumTemperature(float temp) {_minTemp = (MIN_PRIMER_TEMP < temp) ? temp : MIN_PRIMER_TEMP;}
@@ -35,6 +36,7 @@ namespace DeGenPrime
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
 	int GlobalSettings::GetEndingNucleotide() { return _endingNucleotide; }
+	bool GlobalSettings::GetNonDegenerate() { return _nonDegenerate; }
 	bool GlobalSettings::GetMeasureByAmpliconSize() { return _measureByAmpliconSize; }
 	bool GlobalSettings::GetProteinSequence() { return _proteinSequence; }
 	bool GlobalSettings::GetBeginFlag() { return _beginflag; }

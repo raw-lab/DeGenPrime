@@ -31,7 +31,8 @@ namespace DeGenPrime
 	PrimerPairList PrimerPairList::SubList(int startIndex, int length)
 	{
 		PrimerPairList sub_list;
-		for(int i = startIndex;i < startIndex+length;i++)
+		int amt = (_pairs.size() <= length) ? _pairs.size() : length; 
+		for(int i = startIndex;i < startIndex+amt;i++)
 		{
 				sub_list.PushBack(_pairs[i]);
 		}
@@ -126,7 +127,7 @@ namespace DeGenPrime
 				filtercount++;
 			}
 		}
-		ret = FilterMessage("FilterTemperatureDifference", filtercount);
+		ret = FilterMessage("FilterTempDiff", filtercount);
 		return ret;
 	}
 
@@ -134,10 +135,11 @@ namespace DeGenPrime
 	{
 		bool final = func == "final";
 		string ret = "";
-		ret += final ? "After all filters: " : ("After " + func + ": ");
-		ret += "Filtered: [";
+		ret += final ? "After filters, removed " : (func + " filtered ");
+		// ret += final ? "After all filters: " : ("After " + func + ": ");
+		// ret += "Filtered: [";
 		ret += final ? to_string(_OriginalSize - size()) : to_string(filtercount);
-		ret += "] Primer Pairs (";
+		ret += " Primer Pairs (";
 		ret += final ? to_string(100.0 * ((float)(_OriginalSize - size())/(float)_OriginalSize)) :
 			to_string(100.0 * ((float)filtercount/(float)_OriginalSize));
 		ret += "% of total.)\n";
@@ -167,15 +169,23 @@ namespace DeGenPrime
 
 			// The most stable is the primer with the lowest gibbs
 			DataSequence most_stable = (fwd_gibbs < rev_gibbs) ? primer_fwd : primer_rev;
+			DataSequence least_stable = (fwd_gibbs < rev_gibbs) ? primer_rev : primer_fwd;
 			float temp = (fwd_gibbs < rev_gibbs) ? primer_fwd.NNMeltingTemperature() 
 				: primer_rev.NNMeltingTemperature();
+			float l_temp = (fwd_gibbs < rev_gibbs) ? primer_rev.NNMeltingTemperature()
+				: primer_fwd.NNMeltingTemperature();
 			
 			DataSequence product = (fwd_gibbs < rev_gibbs) ? fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].AmpSize())
 				: rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].AmpSize());
+			DataSequence l_product = (fwd_gibbs < rev_gibbs) ? rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].AmpSize())
+				: fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].AmpSize());
 
 			float anneal = most_stable.BasicAnneal(product);
+			float l_anneal = least_stable.BasicAnneal(l_product);
 			float diff = (temp - anneal);
-			if(diff < -10.0 || diff > 10.0)
+			float l_diff = (l_temp - l_anneal);
+			
+			if((diff < -10.0 || diff > 10.0) && (l_diff < -10 || l_diff > 10.0))
 			{
 				Erase(i);
 				filtered++;

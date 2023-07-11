@@ -63,6 +63,7 @@
 #include <fstream>
 #include <vector>
 #include "DataNode.h"
+#include "Primer.h"
 #include "global.h"
 
 namespace DeGenPrime
@@ -73,15 +74,17 @@ namespace DeGenPrime
 		DataSequence();
 		DataSequence(std::string str);
 		
-		void Consensus(std::string filename, std::ofstream& ofs);
 		void SetList(std::vector<DataNode> catalog);
 		void PushBack(DataNode node);
 		void PopBack();
 		void Erase(int index);
 
 		std::string Print();
-		std::string Codes();
+		std::string Codes() const;
+		std::string Consensus(std::vector<int> fwd_ind, std::vector<int> fwd_len, bool cons);
 		std::string MC();
+		std::string SectionCodes(int index, int length);
+		std::string SeqInfo(); // Use with SubSeq
 
 		DataSequence SubSeq(int startIndex,int length);
 		DataSequence InvSeq();
@@ -98,7 +101,8 @@ namespace DeGenPrime
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
 		float AverageRatio() const;
-		float Quality() const;
+		// float Quality() const;
+		float Penalty() const;
 		
 		std::vector<DataNode> GetDataSequence() const;
 
@@ -106,6 +110,7 @@ namespace DeGenPrime
 		int RevIndex(int index) const;
 		int IndexOf(DataSequence data) const;
 		int size() const;
+		int ActualSize() const;
 
 		bool checkMatch(DataSequence data) const;
 		bool isEmpty() const;

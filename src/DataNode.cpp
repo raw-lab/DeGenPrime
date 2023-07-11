@@ -1,4 +1,5 @@
 // DataNode.cpp
+#include <cmath>
 #include <iostream>
 #include <vector>
 #include "DataNode.h"
@@ -148,6 +149,15 @@ namespace DeGenPrime
 		cout << "] Ratio: [" << _ratio;
 		cout << "%]";
 	}
+
+	std::string DataNode::NodeInfo()
+	{
+		string ret = "Code: [" + string(1, _code);
+		ret += "] MC: [" + string(1, _most_common);
+		ret += "] Ratio: [" + to_string(_ratio);
+		ret += "%]\n";
+		return ret;
+	}
 	
 	void DataNode::ChooseCode(int Count[6], int Size)
 	{
@@ -295,10 +305,19 @@ namespace DeGenPrime
 			case 'C':
 			case 'G':
 			case 'T':
-			case '-':
 				return; // These codes are not degenerate
 				break;
 			default:
+				int perc = ceil(_ratio * 100);
+				if(perc < MIN_DEGENERATE_THRESHOLD)
+				{
+					return; // In this case, keep the degenerate code
+				}
+				else
+				{
+					_code = _most_common; // Not enough degeneracy
+				}
+				/*
 				if(1.0 - _ratio >= MIN_DEGENERATE_THRESHOLD)
 				{
 					return; // In this case, keep the degenerate code
@@ -308,6 +327,7 @@ namespace DeGenPrime
 					_code = _most_common; // Not enough degeneracy
 				}
 				break;
+				*/
 		}
 		return;
 	}

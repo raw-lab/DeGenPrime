@@ -1,4 +1,6 @@
 // DataSequence.cpp
+#include <bits/stdc++.h>
+#include <cctype>
 #include <cmath>
 #include <iostream>
 #include <iomanip>
@@ -8,6 +10,7 @@
 #include "DataNode.h"
 #include "DataSequence.h"
 #include "GlobalSettings.h"
+#include "Primer.h"
 #include "global.h"
 
 using namespace std;
@@ -49,7 +52,7 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	std::string DataSequence::Codes()
+	std::string DataSequence::Codes() const
 	{
 		string ret = "";
 		for(int i = 0;i < _list.size();i++)
@@ -69,29 +72,137 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	void DataSequence::Consensus(std::string filename, std::ofstream& ofs)
+	std::string DataSequence::SectionCodes(int index, int length)
 	{
-		string ret = filename + "\n\n";
+		string ret = "Con (";
+		int temp = index;
+		int mod = 4;
+		while(temp > 0)
+		{
+			temp /= 10;
+			mod--;
+		}
+		for(int i = 0;i < mod;i++)
+		{
+			ret += "0";
+		}
+		ret += to_string(index) + "-";
+		temp = index + length;
+		mod = 4;
+		while(temp > 0)
+		{
+			temp /= 10;
+			mod--;
+		}
+		for(int i = 0;i < mod;i++)
+		{
+			ret += "0";
+		}
+		ret += to_string(index + length - 1) + ") ";
 		string codes = Codes();
+		codes = codes.substr(index, length);
+		ret += codes + "\n";
+		return ret;
+	}
+
+	std::string DataSequence::SeqInfo()
+	{
+		string ret = "";
+		for(int i = 0;i < _list.size();i++)
+		{
+			ret += "Index [" + to_string(i);
+			ret += "] " + _list[i].NodeInfo();
+		}
+		return ret;
+	}
+
+	string DataSequence::Consensus(std::vector<int> fwd_ind, std::vector<int> fwd_len, bool cons)
+	{
+		string codes = Codes();
+		string ret = "";
+		for(int i = 0;i < 76;i++)
+		{
+			ret += "-";
+		}
+		int len = ret.length();
+		string ret2 = ret;
+		ret += "\n\tSize of dashes: " + to_string(len);
+		ret += "\n" + ret2 + "\n";
+		transform(codes.begin(), codes.end(), codes.begin(), ::tolower);
+		if(cons)
+		{
+			ret += "\t(conserved regions capitalized.)\n"; 
+			for(int i = 0;i < fwd_ind.size();i++)
+			{
+				int len = fwd_len[i];
+				string sub = codes.substr(fwd_ind[i], fwd_len[i]);
+				transform(sub.begin(), sub.end(), sub.begin(), ::toupper);
+				codes.replace(fwd_ind[i], fwd_len[i], sub);
+			}
+		}
 		int final_index = codes.length() - 1;
 		int lines = codes.length() / 60;
-		int remainder = codes.length() % 60;
 		int index = 0;
 		// Model
-		// 'Con (####-####) '
-		string start = "";
+		// ' (#####-#####): '
 		for(int i = 0;i < lines;i++)
 		{
 			index = i * 60;
-			ofs << "Con (" << std::setfill('0') << std::setw(4) << index;
-			ofs << "-" << std::setfill('0') << std::setw(4) << index + 59;
-			ofs << ") " << codes.substr(index,60) << endl;
+			int mod = 5;
+			int temp = index;
+			if(temp == 0)mod--;
+			while(temp > 0)
+			{
+				temp /= 10;
+				mod--;
+			}
+			ret += " (";
+			for(int j = 0;j < mod;j++)
+			{
+				ret += "0";
+			}
+			ret += to_string(index) + "-";
+			mod = 5;
+			temp = index + 59;
+			while(temp > 0)
+			{
+				temp /= 10;
+				mod--;
+			}
+			for(int j = 0;j < mod;j++)
+			{
+				ret += "0";
+			}
+			ret += to_string(index + 59) + "): " + codes.substr(i*60,60) + "\n";
 		}
 		index += 60;
 		codes.erase(0,index);
-		ofs << "Con (" << std::setfill('0') << std::setw(4) << index;
-		ofs << "-" << std::setfill('0') << std::setw(4) << final_index;
-		ofs << ") " << codes << endl;
+		int mod = 5;
+		int temp = index;
+		while(temp > 0)
+		{
+			temp /= 10;
+			mod--;
+		}
+		ret += " (";
+		for(int j = 0;j < mod;j++)
+		{
+			ret += "0";
+		}
+		ret += to_string(index) + "-";
+		mod = 5;
+		temp = final_index;
+		while(temp > 0)
+		{
+			temp /= 10;
+			mod--;
+		}
+		for(int j = 0;j < mod;j++)
+		{
+			ret += "0";
+		}
+		ret += to_string(final_index) + "): " + codes + "\n";
+		return ret;
 	}
 
 	DataSequence DataSequence::SubSeq(int startIndex, int length)
@@ -220,6 +331,15 @@ namespace DeGenPrime
 
 	std::vector<DataNode> DataSequence::GetDataSequence() const { return _list; }
 	int DataSequence::size() const { return _list.size(); }
+	int DataSequence::ActualSize() const
+	{
+		int s = 0;
+		for(int i = 0;i < _list.size();i++)
+		{
+			if(_list[i].GetMostCommon() != '-')s++;
+		}
+		return s;
+	}
 
 	int DataSequence::RevIndex(int index) const
 	{
@@ -333,22 +453,26 @@ namespace DeGenPrime
 
 	float DataSequence::BasicAnneal(DataSequence product)
 	{
+		
 		float temperature = 0.3 * NNMeltingTemperature();
-		// temperature += (0.7 * product.NNMeltingTemperature()); -- Old, slow, incorrect
+		// cout << "Tm * 0.3 = " << temperature << endl;
 		temperature += (0.7 * product.ProductMelt());
+		// cout << "Add 0.7 * product melt = " << (0.7 * product.ProductMelt()) << endl; 
 		temperature -= 14.9;
+		// cout << "Subtract 14.9, final result = " << temperature << endl;
 		return temperature;
 	}
 
 	float DataSequence::ProductMelt() const
 	{
 		float temperature = 81.5;
+		// float temperature = 0.0;
 		temperature += 16.6 * log(GlobalSettings::GetMonoIonConcentration()* pow(10,-3))/log(10);
 		temperature += 41.0 * GCRatio();
 		// Different sources use different values for the following constant.
 		// All values range between 500 and 750.
-		float b = 600.0;
-		b /= size();
+		float b = 675.0;
+		b /= ActualSize();
 		temperature -= b;
 		return temperature;
 	}
@@ -364,17 +488,17 @@ namespace DeGenPrime
 		return average;
 	}
 
-	float DataSequence::Quality() const
+	float DataSequence::Penalty() const
 	{
-		float quality = 0.0;
-		// The lower this number the higher the quality.
-		
+		float penalty = 0.0; // The lower this number the higher the quality.
+
 		// Primers outside of size range should not be considered
 		if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
 		{
-			return 0.0;
+			return 10000.0;
 		}
 
+		// Internal repetition
 		// First we want to measure nucleotide repetition in the sequence
 		int most_repeats = 0;
 		for(char c : {'A', 'C', 'G', 'T'})
@@ -395,41 +519,194 @@ namespace DeGenPrime
 		}
 		switch(most_repeats)
 		{
+			case 0:
+			case 1:
+			case 2:
+				break;
 			case 3:
-				quality += 1.0;
+				penalty += 0.5;
 				break;
 			case 4:
-				quality += 2.0;
+				penalty += 1.0;
 				break;
 			case 5:
-				quality += 3.0;
+				penalty += 2.0;
 				break;
 			default:
+				penalty += (0.75 * most_repeats);
 				break;
 		}
 
-		// Check if there is a GC clamp
-		int gc = 0;
-		for(int i = 1;i <=5;i++)
+		// GC Clamp
+		char c = _list[size() - 1].GetMostCommon();
+		if(c != 'G' && c != 'C')
 		{
-			if(_list[size() - i].GetMostCommon() == 'G' ||
-				_list[size() - i].GetMostCommon() == 'C')
+			penalty += 1.0;
+		}
+
+		// Dimers
+		string last = "";
+		for(int i = 0;i < 5;i++)
+		{
+			int index = _list.size() - 6 + i;
+			if(_list[index].GetMostCommon() == '-')
 			{
-				gc++;
+				continue;
+			}
+			last += string(1, _list[index].GetMostCommon());
+		}
+		DataSequence ending(last);
+		float gibbs = ending.Gibbs();
+		penalty += (gibbs < -3.0) ? ((-1.0 * gibbs) - 3.0) : 0;
+
+		// Hairpins
+		for(int j = 0;j + 4 < _list.size();j++)
+		{
+			char first = _list[j].GetMostCommon();
+			char second = _list[j+4].GetMostCommon();
+			if(first == '-' || second == '-')
+			{
+				continue;
+			}
+			switch(second)
+			{
+				case 'A':
+					second = 'T';
+					break;
+				case 'C':
+					second = 'G';
+					break;
+				case 'G':
+					second = 'C';
+					break;
+				case 'T':
+					second = 'A';
+					break;
+				default:
+					continue;
+					break;
+			}
+			if(first != second)
+			{
+				continue;
+			}
+			first = _list[j+1].GetMostCommon();
+			if(first != 'G')
+			{
+				continue;
+			}
+			second = _list[j+3].GetMostCommon();
+			if(second == 'A')
+			{
+				penalty += 0.5;
 			}
 		}
-		switch(gc)
+		for(int j = 0;j + 5 < _list.size();j++)
 		{
-			case 0:
-				quality += 5.0;
-				break;
-			case 1:
-				quality += 1.0;
-				break;
-			default:
-				break;
+			char first = _list[j].GetMostCommon();
+			char second = _list[j+5].GetMostCommon();
+			if(first == '-' || second == '-')
+			{
+				continue;
+			}
+			switch(second)
+			{
+				case 'A':
+					second = 'T';
+					break;
+				case 'C':
+					second = 'G';
+					break;
+				case 'G':
+					second = 'C';
+					break;
+				case 'T':
+					second = 'A';
+					break;
+				default:
+					continue;
+					break;
+			}
+			if(first != second)
+			{
+				continue;
+			}
+			first = _list[j+1].GetMostCommon();
+			if(first != 'G')
+			{
+				continue;
+			}
+			second = _list[j+4].GetMostCommon();
+			if(second == 'A')
+			{
+				penalty += 1.0;
+			}
 		}
-		return quality;
+
+		// GC Content
+		if(GCRatio() < MIN_GC_TOTAL_RATIO)
+		{
+			penalty += 25.0 * (MIN_GC_TOTAL_RATIO - GCRatio());
+		}
+		else if(GCRatio() > MAX_GC_TOTAL_RATIO)
+		{
+			penalty += 25.0 * (GCRatio() - MAX_GC_TOTAL_RATIO);
+		}
+		float gc = 0.0;
+		for(int i = _list.size() - 6;i < _list.size();i++)
+		{
+			if(_list[i].GetMostCommon() == 'C' || _list[i].GetMostCommon() == 'G')gc++;
+		}
+		gc /= 5.0;
+		if(gc > MAX_GC_EXTREMA_RATIO)
+		{
+			penalty += 27.0 * (gc - MAX_GC_EXTREMA_RATIO);
+		}
+
+		// Temperature
+		if(NNMeltingTemperature() < MIN_PRIMER_TEMP)
+		{
+			penalty += 10.0 * (MIN_PRIMER_TEMP - NNMeltingTemperature());
+		}
+		else if(NNMeltingTemperature() > MAX_PRIMER_TEMP)
+		{
+			penalty += 10.0 * (NNMeltingTemperature() - MAX_PRIMER_TEMP);
+		}
+
+		// Degeneracy and Deletions
+		string nondegen = "ACGT";
+		string degen2 = "WSRYKM";
+		string degen3 = "BDHV";
+		int del_count = 0;
+		for(int i = 0;i < _list.size();i++)
+		{
+			string s = string(1, _list[i].GetCode());
+			if(nondegen.find(s) != string::npos)
+			{
+				continue;
+			}
+			else if(s == "-")
+			{
+				del_count++;
+				continue;
+			}
+			else if(degen2.find(s) != string::npos)
+			{
+				penalty += 2.0;
+				continue;
+			}
+			else if(degen3.find(s) != string::npos)
+			{
+				penalty += 6.0;
+				continue;
+			}
+			else
+			{
+				penalty += 12.0;
+			}
+		}
+		penalty += (8.0 * del_count);
+		return penalty;
 	}
 
 	int DataSequence::CountMatches(DataSequence data) const

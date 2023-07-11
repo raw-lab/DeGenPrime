@@ -57,7 +57,7 @@ namespace DeGenPrime
 		std::string PrintSequenceNames() const;
 		std::string DecodeProteins() const;
 		std::string CreateFasta() const;
-		void PrintSection(int index, int length) const;
+		std::string Section(int index, int length) const;
 
 		bool TestAlignment() const;
 

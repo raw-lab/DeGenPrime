@@ -73,6 +73,24 @@ namespace DeGenPrime
 		_OriginalSize = size();
 	}
 
+	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region)
+	{
+		for(Primer p : region)
+		{
+			int region_size = p.Length();
+			for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
+			{
+				int endIndex = region_size - i;
+				for(int j = 0;j < endIndex;j++)
+				{
+					Primer pr(p.Index() + j, i);
+					PushBack(pr);
+				}
+			}
+		}
+		_OriginalSize = size();
+	}
+
 	void PrimerCalculator::Sort()
 	{
 		sort(_primers.begin(), _primers.end());
@@ -86,8 +104,8 @@ namespace DeGenPrime
 		ret += FilterGCContent(data);
 		ret += FilterRepeats(data);
 		ret += FilterComplementaryEnds(data);
-		ret += FilterHairpins(data);
-		ret += FilterDimers(data);
+		// ret += FilterHairpins(data);
+		// ret += FilterDimers(data);
 		ret += FilterTemperature(data, 0.0);
 		ret += FilterMessage("final", _OriginalSize - size());
 		return ret;
@@ -158,7 +176,9 @@ namespace DeGenPrime
 			bool flag = false;
 			int total_deletions_count = 0;
 			// Filter sequences for deletions
+			// ** EDIT ** Removing this criteria
 			//	- Filter primer with any three consecutive datasequence chars of '-'
+			// ** EDIT **
 			//	- Filter primer with more than 6 total deletions.
 			//	- Filter any primer whose deletions make it smaller than MIN_PRIMER_SIZE
 			for(int j = 0;j < p.size();j++)
@@ -167,34 +187,23 @@ namespace DeGenPrime
 				{
 					break;
 				}
-				int consecutive_deletions_count = 0;
-
-				/* Old method, depends on SequenceList..not good
-				if(j < 3 || j > p.size() - 3)
-				{
-					for(Sequence seq : list.GetSequenceList())
-					{
-						if(seq.GetCodes()[_primers[i].Index() + j] == '-')
-						{
-							flag = true;
-							break;
-						}
-					}
-				}*/
+				// int consecutive_deletions_count = 0;
 				if(p.GetDataSequence()[j].GetCode() == '-')
 				{
 					total_deletions_count++;
-					consecutive_deletions_count++;
+					// consecutive_deletions_count++;
 					if(j < 3 || j > (p.size() - 4))
 					{
 						flag = true;
 					}
 				}
+				/*
 				else
 				{
 					consecutive_deletions_count = 0;
-				}
-				if(total_deletions_count > 6 || consecutive_deletions_count > 2)
+				}*/
+				// if(total_deletions_count > 6 || consecutive_deletions_count > 2)
+				if(total_deletions_count > 6)
 				{
 					flag = true;
 				}
@@ -285,7 +294,7 @@ namespace DeGenPrime
 
 				// Choose k starting at index j + 1 and run through size - 4
 				int k = j + 1;
-				while(k < p.size() - 4)
+				while(k < p.size() - 5)
 				{
 					if(two.GetDataSequence()[0].GetMostCommon() == 
 						p.GetDataSequence()[k].GetMostCommon())
@@ -503,7 +512,6 @@ namespace DeGenPrime
 		}
 		ret = FilterMessage("FilterDimers", filtercount);
 		return ret;
-
 	}
 
 	string PrimerCalculator::FilterTemperature(DataSequence data, float offset)
@@ -539,13 +547,13 @@ namespace DeGenPrime
 		switch(size)
 		{
 			case 2:
-				b = 3;
+				b = 4;
 				break;
 			case 3:
-				b = 2;
+				b = 3;
 				break;
 			default:
-				b = 1;
+				b = 2;
 				break;
 		}
 		return b;
@@ -556,13 +564,14 @@ namespace DeGenPrime
 		cout << "The number of primers in the list is: " << size() << endl;
 	}
 
-	void PrimerCalculator::PrintAll()
+	std::string PrimerCalculator::PrintAll()
 	{
+		string ret = "";
 		for(Primer p : _primers)
 		{
-			p.Print();
+			ret += p.Print();
 		}
-		cout << endl;
+		return ret;
 	}
 
 	void PrimerCalculator::SetPrimers(std::vector<Primer> primerList) { _primers = primerList; }
@@ -571,10 +580,10 @@ namespace DeGenPrime
 	std::string PrimerCalculator::FilterMessage(std::string func, int filtercount)
 	{
 		bool final = func == "final";
-		string ret = "After ";
-		ret += final ? "all filters: " : (func + ": ");
-		ret += "Filtered [" + to_string(filtercount);
-		ret += "] Primers. (";
+		string ret = "";
+		ret += final ? "After all filters: " : (func + " filtered ");
+		ret += to_string(filtercount);
+		ret += " Primers. (";
 		ret += to_string(100.0 * ((float)filtercount)/((float)_OriginalSize));
 		ret += "% of total.)\n";
 		if(final)

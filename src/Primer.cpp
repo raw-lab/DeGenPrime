@@ -14,30 +14,26 @@ namespace DeGenPrime
 		_Length = length;
 		_Index = index;
 	}
-	/*
-	Primer::Primer(int index, int length, DataSequence src_data)
-	{
-		_Length = length;
-		_Index = index;
-		DataSequence sub = src_data.SubSeq(index, length);
-		_Quality = sub.Quality();
-	}*/
 
-	void Primer::Print()
+	std::string Primer::Print()
 	{
-		cout << "[index=" << _Index;
-		cout << "][length=" << _Length;
-		cout << "]\t";
+		string ret = "[index=" + to_string(_Index);
+		ret += "][length=" + to_string(_Length);
+		ret += "]\n";
+		return ret;
 	}
 
-	void Primer::SetQuality(float quality) {_Quality = quality;}
+	void Primer::SetPenalty(float penalty) 
+	{
+		_Penalty = penalty;
+	}
 
 	bool Primer::operator <(const Primer& rhs) const
 	{
-		return (_Quality < rhs.Quality());
+		return (_Penalty < rhs.Penalty());
 	}
 
 	int Primer::Length() const { return _Length; }
 	int Primer::Index() const { return _Index; }
-	float Primer::Quality() const { return _Quality; }
+	float Primer::Penalty() const { return _Penalty; }
 } // End of DeGenPrime

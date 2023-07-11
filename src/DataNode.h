@@ -34,6 +34,7 @@
 #ifndef DATA_NODE
 #define DATA_NODE
 
+#include <string>
 #include <vector>
 
 namespace DeGenPrime
@@ -46,6 +47,7 @@ namespace DeGenPrime
 
 		DataNode InvNode();
 		void Print(); // Test Function
+		std::string NodeInfo();
 
 		float Enthalpy(DataNode node) const;
 		float Entropy(DataNode node) const;

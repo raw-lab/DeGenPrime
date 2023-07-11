@@ -134,7 +134,20 @@ namespace DeGenPrime
 		string ret = "";
 		for(int i = 0;i < _list.size();i++)
 		{
-			ret += "Sequence(" + to_string(i);
+			int mod = 4;
+			int temp = i;
+			if(temp == 0)mod--;
+			while(temp > 0)
+			{
+				temp /= 10;
+				mod--;
+			}
+			ret += "\tSequence(";
+			for(int j = 0;j < mod;j++)
+			{
+				ret += "0";
+			}
+			ret += to_string(i);
 			ret += "):[";
 			ret += _list[i].GetName() + "] Size:[";
 			ret += to_string(_list[i].size());
@@ -174,8 +187,21 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	void SequenceList::PrintSection(int index, int length) const
+	std::string SequenceList::Section(int index, int length) const
 	{
+		string ret = "";
+		for(int i = 0;i < _list.size();i++)
+		{
+			Sequence seq = GetSequenceList()[i];
+			ret += seq.GetName();
+			for(int j = index;j < index + length;j++)
+			{
+				ret += string(1, _list[i].GetCodes()[j]);
+			}
+			ret += "\n";
+		}
+		return ret;
+		/*
 		cout << "Sequence Data from " << index << " to ";
 		cout << index + length - 1 << endl;
 		for(int i = 0;i < _list.size();i++)
@@ -189,6 +215,7 @@ namespace DeGenPrime
 			}
 		}
 		cout << endl;
+		*/
 	}
 
 	bool SequenceList::TestAlignment() const
@@ -237,7 +264,9 @@ namespace DeGenPrime
 		int index = -1;
 		for(int i = 0;i < _list.size();i++)
 		{
-			if(_list[i].GetName() == name)
+			string seq_name = _list[i].GetName();
+			seq_name = seq_name.substr(0,name.length());
+			if(name.compare(seq_name) == 0)
 			{
 				index = i;
 				break;

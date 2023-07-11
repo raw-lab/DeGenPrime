@@ -28,28 +28,28 @@ namespace DeGenPrime
 	std::string PrimerPair::Print(DataSequence fwd_data, DataSequence rev_data)
 	{
 		string ret = "";
-		ret += "Forward Primer: Index[" + to_string(_fwd.Index());
-		ret += "] Reverse Index[" + to_string(fwd_data.RevIndex(_fwd.Index()));
-		ret += "] Length: [" + to_string(_fwd.Length()) + "] ";
 		DataSequence fwdSub = fwd_data.SubSeq(_fwd.Index(), _fwd.Length());
+		DataSequence revSub = rev_data.SubSeq(_rev.Index(), _rev.Length());
+		int fwdSDiff = fwdSub.size() - fwdSub.ActualSize();
+		int revSDiff = revSub.size() - revSub.ActualSize();
+		ret += "Forward Primer:  Fwd Index[" + to_string(_fwd.Index());
+		ret += "] Length: [" + to_string(fwdSub.ActualSize()) + "]";
+		ret += (fwdSDiff > 0) ? (" (" + to_string(fwdSDiff) + " deletions)\n") :
+			("\n");
 		ret += "Codes: [" + fwdSub.Codes();
 		ret += "]\nTm(NN): [" + to_string(fwdSub.NNMeltingTemperature()) + "] ";
 		ret += "Tm(Basic): [" + to_string(fwdSub.BasicTemperature()) + "]\n";
-		ret += "Quality: [" + to_string(_fwd.Quality()) + "]\n";
-		ret += "Reverse Primer: Index[" + to_string(_rev.Index());
-		ret += "] Reverse Index[" + to_string(rev_data.RevIndex(_rev.Index()));
-		ret += "] Length: [" + to_string(_rev.Length()) + "] ";
-		DataSequence revSub = rev_data.SubSeq(_rev.Index(), _rev.Length());
+		ret += "Penalty: [" + to_string(fwdSub.Penalty()) + "]\n";
+		ret += "Reverse Primer: Rev Index[" + to_string(rev_data.RevIndex(_rev.Index()));
+		ret += "] Length: [" + to_string(revSub.ActualSize()) + "]";
+		ret += (revSDiff > 0) ? (" (" + to_string(revSDiff) + " deletions)\n") :
+			("\n");
 		ret += "Codes: [" + revSub.Codes();
 		ret += "]\nTm(NN): [" + to_string(revSub.NNMeltingTemperature()) + "] ";
 		ret += "Tm(Basic): [" + to_string(revSub.BasicTemperature()) + "]\n";
-		ret += "Quality: [" + to_string(_rev.Quality()) + "]\n";
+		ret += "Penalty: [" + to_string(revSub.Penalty()) + "]\n";
 		ret += "Temperature Difference: [" + to_string(TempDiff());
-		ret += "] Amplicon Length: [" + to_string(AmpSize()) + "] ";
-		DataSequence mostStable = (fwdSub.Gibbs() > revSub.Gibbs()) ? fwdSub : revSub;
-		DataSequence product = fwdSub.Gibbs() > revSub.Gibbs() ? fwd_data.SubSeq(_fwd.Index(), AmpSize())
-			: rev_data.SubSeq(_rev.Index(), AmpSize());
-		ret += "Annealing Temp: [" + to_string(mostStable.BasicAnneal(product)) + "]\n\n";
+		ret += "] Amplicon Length: [" + to_string(AmpSize()) + "]\n\n";
 		return ret;
 	}
 
@@ -85,18 +85,18 @@ namespace DeGenPrime
 	
 	bool PrimerPair::operator <(const PrimerPair& rhs) const
 	{
-		if(GlobalSettings::GetSortByTemp())
+		/*if(GlobalSettings::GetSortByTemp())
 		{
 			return (_temp < rhs.TempDiff());
 		}
 		else
-		{
-			float q_l1 = _fwd.Quality();
-			float q_l2 = _rev.Quality();
-			float q_r1 = rhs.GetForward().Quality();
-			float q_r2 = rhs.GetReverse().Quality();
-			return((q_l1 + q_l2) < (q_r1 + q_r2));
-		}
+		{*/
+			float q_l1 = _fwd.Penalty();
+			float q_l2 = _rev.Penalty();
+			float q_r1 = rhs.GetForward().Penalty();
+			float q_r2 = rhs.GetReverse().Penalty();
+			return((q_l1 * q_l2) < (q_r1 * q_r2));
+		//}
 	}
 	
 } // End of DeGenPrime
