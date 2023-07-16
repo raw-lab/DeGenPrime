@@ -88,4 +88,4 @@ You are an evolutionary biologist who is trying to find evidence of an evolution
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
 
-[back to top](https://github.com/raw-lab/DeGenPrime/main/README.md)
+[back to top](https://github.com/raw-lab/DeGenPrime/)
