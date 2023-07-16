@@ -1,6 +1,5 @@
 # DeGenPrime
 
-[Copyright](###Copyright) <br />
 [Introduction](###Introduction) <br />
 [Citation](###Citation) <br />
 [Installation](###Installation) <br />
@@ -8,10 +7,7 @@
 [Input](###Input)<br />
 [Output](###Output) <br />
 [Examples](###Examples) <br />
-
-### Copyright  <br />
-University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
-The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
+[Copyright](###Copyright) <br />
 
 ### Introduction <br />
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks: <br />
@@ -87,5 +83,9 @@ You are an evolutionary biologist who is trying to find evidence of an evolution
 ```
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
+
+### Copyright  <br />
+University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
+The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
 
 [back to top](https://github.com/raw-lab/DeGenPrime/)
