@@ -1,7 +1,5 @@
 # DeGenPrime
 
-
-DeGenPrime – Manual <br />
 [Copyright](###Copyright) <br />
 [Introduction](###Introduction) <br />
 [Citation](###Citation) <br />
@@ -89,4 +87,3 @@ You are an evolutionary biologist who is trying to find evidence of an evolution
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
 
-How DeGenPrime Works
