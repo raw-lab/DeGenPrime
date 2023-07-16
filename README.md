@@ -84,9 +84,8 @@ You would use:<br />
 
 You are an evolutionary biologist who is trying to find evidence of an evolutionary link between a newly discovered archaea from the Sea of Salt and primordial bacterium from that region.  The archaea is a halophile and thermophile.  Your theory is that this archaea evolved from the bacterium when it acquired its salt and temperature resistance which enabled it to occupy new niches and evolve through adaptive radiation.  You have aggregated the genetic data from these species into a file called microbe_genes.faa (not aligned) and want to get a PCR reaction with salt and temperature conditions similar to those found in the archaean’s natural habitat.  The Sea of Salt is about 10 times saltier than regular ocean water and has a consistent temperature of 60 +/- 1 degrees Celsius because it is heated from geothermal activity.  You determine the concentration of salt in the Sea of Salt is about 6.3 mM and you want to use a primer concentration of 100 nM to be certain your primer will bond.
 
-[back to top](#DeGenPrime)
-
 ```
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
 
+[back to top](https://github.com/raw-lab/DeGenPrime/edit/main/README.md)
