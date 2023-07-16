@@ -2,7 +2,7 @@
 
 
 DeGenPrime – Manual <br />
-Copyright [here](### Copyright) <br />
+Copyright [here](###Copyright) <br />
 Introduction <br />
 Citing DeGenPrime <br />
 System Requirements <br />
