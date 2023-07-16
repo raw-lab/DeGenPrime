@@ -1,45 +1,48 @@
 # DeGenPrime
-Degenerate primer builder for protein functional genes
 
-DeGenPrime – Manual
-Copyright
-Introduction
-Citing DeGenPrime
-System Requirements
-Syntax
-Command-line arguments
-Input
-Output
-Example
-How DeGenPrime works
-Limitations
-Exit Codes
-Acknowledgements
-Copyright
+
+DeGenPrime – Manual <br />
+Copyright <br />
+Introduction <br />
+Citing DeGenPrime <br />
+System Requirements <br />
+Syntax <br />
+Command-line arguments <br />
+Input<br />
+Output <br />
+Example <br />
+How DeGenPrime works <br />
+Limitations <br />
+Exit Codes <br />
+Acknowledgements <br />
+
+### Copyright  <br />
 University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
-The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.
-Introduction
-DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks:
-Low Degeneracy
-Few Deletions
-GC content within the 40-60% range.
-Low repetition
-Non-complementary ends
-Minimal risk of hairpins or self and cross-dimerization
-Melting temperature within specified range.
-The range of melting temperatures for PCR primers can be specified by the user but must be within the absolute range of 50.0 – 65.0 degrees Celsius.
+The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
+
+### Introduction <br />
+DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks: <br />
+- Low Degeneracy
+- Few Deletions
+- GC content within the 40-60% range.
+- Low repetition
+- Non-complementary ends
+- Minimal risk of hairpins or self and cross-dimerization
+- Melting temperature within specified range.
+- The range of melting temperatures for PCR primers can be specified by the user but must be within the absolute range of 50.0 – 65.0 degrees Celsius.
 DeGenPrime runs off hard filters with no exceptions.  If no primers are found that can pass all of these filters the program will warn the user that no suitable primers were found.
-Citing DeGenPrime
+
+### Citing DeGenPrime  <br />
 DeGenPrime is free software to use.  If you use it however, we ask that you please cite the software in publications with:
+Fulghum B, Tanker S, White RA III.  DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  
+
+### Installation 
 
 
-Fulghum B, Tanker S, and White RA III.  DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  PUBLICATION INFO.
-The source code for DeGenPrime can be found here: https://github.com/raw-lab/DeGenPrime
-
-System Requirements
+### System Requirements  <br />
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 Syntax
-./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
+```./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
 Command-line arguments
 Valid tags include:
 --amplicon:<int>, Set the minimum amplicon length.
@@ -53,8 +56,9 @@ Valid tags include:
 --primer_conc:<int>, Sets the concentration of the PCR primer in nM.  This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
 --protein, Tells the program that the input sequence is a protein sequence, and the program should unwrap the protein sequence into its base nucleotides instead of trying to find a PCR.  This will produce degenerate nucleotide codes whenever there is any ambiguity.
 --salt_conc:<int>, Sets the concentration of monovalent ions in mM.  This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
---max_primers:<int>, Sets the maximum number of output primers.  This has a maximum value of 10 and this program will reduce any value larger to this value.
-Input
+--max_primers:<int>, Sets the maximum number of output primers.  This has a maximum value of 10 and this program will reduce any value larger to this value.```
+
+### Input
 Input files to DeGenPrime can be in fasta, or clustal format.  (.fasta, .faa, .fna, or .clust.)
 Output
 DeGenPrime will output a few progress messages as the program runs, the recommended primers and their details, and the program runtime at the end to the console.  DeGenPrime also records the operation details and the primers to an output file.  The output filename is selected based on the specified input file.  For example:
@@ -65,7 +69,7 @@ Any errors that occur during runtime will also be written on the console.
 Examples
 You are a federal prosecutor trying to build a case against Dr. Scientist who stands accused of performing illegal genetic engineering experiments on human zygotes.  Your team believes that they made genetic modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the allegedly modified zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.  You would use:
 
-./DeGenPrime --begin:10000 --end:12000000 --max_primers:10 zygote_21.faa
+```./DeGenPrime --begin:10000 --end:12000000 --max_primers:10 zygote_21.faa```
 
 You are an immunologist who wants to identify mutations that might have occurred in the genes of a local strain of the influenza A virus so you can produce a new vaccine for the upcoming flu season.  Microbiologists have reported changes to the geometry of the surface proteins of infected cells and this leads you to hypothesize that a mutation has occurred in segment 4 or segment 6 of the virus.  You obtain the genetic data of these segments from last season’s influenza A as well as data from the current strain into two files called influenzaA_4.faa and influenzaA_6.faa.  You know that the surface proteins normally contain 500 +/- 50 amino acids (which implies 1500 +/- 150 bps in the coding sequence) and you want the top 5 primers for a PCR reaction that will cover at least 40% of the coding region.  Your files are not aligned.  You would use:
 
