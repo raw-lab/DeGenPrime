@@ -2,19 +2,14 @@
 
 
 DeGenPrime – Manual <br />
-Copyright [here](###Copyright) <br />
-Introduction <br />
-Citing DeGenPrime <br />
-System Requirements <br />
-Syntax <br />
-Command-line arguments <br />
-Input<br />
-Output <br />
-Example <br />
-How DeGenPrime works <br />
-Limitations <br />
-Exit Codes <br />
-Acknowledgements <br />
+[Copyright](###Copyright) <br />
+[Introduction](###Introduction) <br />
+[Citation](###Citation) <br />
+[Installation](###Installation) <br />
+[Options](###Options)<br />
+[Input](###Input)<br />
+[Output](###Output) <br />
+[Examples](###Examples) <br />
 
 ### Copyright  <br />
 University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
@@ -32,14 +27,15 @@ DeGenPrime selects the top PCR primer pairs for one or more phylogenetically sim
 - The range of melting temperatures for PCR primers can be specified by the user but must be within the absolute range of 50.0 – 65.0 degrees Celsius.
 DeGenPrime runs off hard filters with no exceptions.  If no primers are found that can pass all of these filters the program will warn the user that no suitable primers were found.
 
-### Citing DeGenPrime  <br />
-DeGenPrime is free software to use.  If you use it however, we ask that you please cite the software in publications with:
-Fulghum B, Tanker S, White RA III.  DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  
+### Citation  <br />
+DeGenPrime is free software to use. <br /> 
+If you use it however, we ask that you please cite the software in publications with:<br />
+Fulghum B, Tanker S, White RA III. DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  <br />
 
 ### Installation   <br />
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 
-### DeGenPrime Options <br />
+### Options <br />
 
 ```
 ./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
