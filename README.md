@@ -1,7 +1,7 @@
 # DeGenPrime
 
-[Introduction](###Introduction) <br />
-[Citation](###Citation) <br />
+[Introduction](#introduction) <br />
+[Citation](#citation) <br />
 [Installation](###Installation) <br />
 [Options](###Options)<br />
 [Input](###Input)<br />
@@ -9,7 +9,7 @@
 [Examples](###Examples) <br />
 [Copyright](###Copyright) <br />
 
-### Introduction <br />
+### Introduction
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks: <br />
 - Low Degeneracy
 - Few Deletions
@@ -22,10 +22,12 @@ DeGenPrime selects the top PCR primer pairs for one or more phylogenetically sim
 DeGenPrime runs off hard filters with no exceptions.
 If no primers are found that can pass all of these filters the program will warn the user that no suitable primers were found.
 
-### Citation  <br />
-DeGenPrime is free software to use. <br /> 
-If you use it however, we ask that you please cite the software in publications with:<br />
-Fulghum B, Tanker S, White RA III. DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.  <br />
+### Citation
+DeGenPrime is free software to use.
+
+If you use it however, we ask that you please cite the software in publications with:
+
+Fulghum B, Tanker S, White RA III. DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.
 
 ### Installation   <br />
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
