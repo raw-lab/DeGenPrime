@@ -2,12 +2,12 @@
 
 [Introduction](#introduction) <br />
 [Citation](#citation) <br />
-[Installation](#installation) <br />
-[Options](#options)
-[Input](#input)
-[Output](#output)  
-[Examples](#examples)  
-[Copyright](#copyright)  
+[Installation](#installation)  <br />
+[Options](#options)  <br />
+[Input](#input)  <br />
+[Output](#output)  <br />
+[Examples](#examples)  <br />
+[Copyright](#copyright)  <br />
 
 ### Introduction
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks: <br />
@@ -39,7 +39,7 @@ make install
 
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 
-### Options <br />
+### Options  
 
 ```
 ./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
@@ -71,7 +71,7 @@ DeGenPrime will output a few progress messages as the program runs, the recommen
 
 #### Standard outputs
 - primers_filename.txt (a list of primers) <br />
-- Any errors that occur during runtime will also be written on the console or to stout.<br />
+- Any errors that occur during runtime will also be written on the console.<br />
 
 ### Examples
 You are a federal prosecutor trying to build a case against Dr. Scientist who stands accused of performing illegal genetic engineering experiments on human zygotes.  Your team believes that they made genetic modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the allegedly modified zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.<br /> You would use:<br />
@@ -93,7 +93,7 @@ You are an evolutionary biologist who is trying to find evidence of an evolution
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
 
-### Copyright  <br />
+### Copyright  
 University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
 The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
 
