@@ -2,12 +2,12 @@
 
 [Introduction](#introduction) <br />
 [Citation](#citation) <br />
-[Installation](###Installation) <br />
-[Options](###Options)<br />
-[Input](###Input)<br />
-[Output](###Output) <br />
-[Examples](###Examples) <br />
-[Copyright](###Copyright) <br />
+[Installation](#installation) <br />
+[Options](#options)
+[Input](#input)
+[Output](#output)  
+[Examples](#examples)  
+[Copyright](#copyright)  
 
 ### Introduction
 DeGenPrime selects the top PCR primer pairs for one or more phylogenetically similar DNA sequences which are aligned or not aligned on the basis of minimizing melting temperature difference for forward and reverse primers which pass the following filter checks: <br />
@@ -24,12 +24,19 @@ If no primers are found that can pass all of these filters the program will warn
 
 ### Citation
 DeGenPrime is free software to use.
-
 If you use it however, we ask that you please cite the software in publications with:
-
 Fulghum B, Tanker S, White RA III. DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.
 
-### Installation   <br />
+### Installation
+```console
+git clone https://github.com/raw-lab/DeGenPrime.git
+mkdir build
+cd build
+cmake ../src
+make -j4
+make install
+```
+
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 
 ### Options <br />
@@ -39,18 +46,18 @@ DeGenPrime is designed to run as a stand-alone console application on any platfo
 
 Command-line arguments
 Valid tags include:
---amplicon:           <int>, Set the minimum amplicon length. <br />
---begin:              <int>, Set the beginning nucleotide.  If the user inputs an integer < 0, the program will default this value to zero.<br />
---end:                <int>, Set the ending nucleotide.  If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.<br />
---global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.<br />
---help or --h,         prints this help menu.<br />
---local or --l,        for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for local alignment.<br />
---min_temp:           <int>, Sets the minimum primer melting temperature.  This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.<br />
---max_temp:           <int>, Sets the maximum primer melting temperature.  This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.<br />
---primer_conc:        <int>, Sets the concentration of the PCR primer in nM.  This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.<br />
---protein,             Tells the program that the input sequence is a protein sequence, and the program should unwrap the protein sequence into its base nucleotides instead of trying to find a PCR.  This will produce degenerate nucleotide codes whenever there is any ambiguity.<br />
---salt_conc:          <int>, Sets the concentration of monovalent ions in mM.  This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.<br />
---max_primers:        <int>, Sets the maximum number of output primers.  This has a maximum value of 10 and this program will reduce any value larger to this value.<br />
+--amplicon:           <int>, Set the minimum amplicon length. 
+--begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
+--end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
+--global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
+--help or --h,         prints this help menu.
+--local or --l,        for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for local alignment.
+--min_temp:           <int>, Sets the minimum primer melting temperature. This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.
+--max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
+--primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
+--protein,             Tells the program that the input sequence is a protein sequence, and the program should unwrap the protein sequence into its base nucleotides instead of trying to find a PCR. This will produce degenerate nucleotide codes whenever there is any ambiguity.
+--salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
+--max_primers:        <int>, Sets the maximum number of output primers. This has a maximum value of 10 and this program will reduce any value larger to this value.
 ```
 
 ### Input
