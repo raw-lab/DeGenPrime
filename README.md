@@ -42,10 +42,13 @@ DeGenPrime is designed to run as a stand-alone console application on any platfo
 ### Options  
 
 ```
-./DeGenPrime [--tags] <filename> (the filename must always be the last argument, or this program will throw a segmentation error.)
+./DeGenPrime [--tags] <filename>
+```
+The filename must always be the last argument, or this program will throw a segmentation error.
 
-Command-line arguments
+#### Command-line arguments
 Valid tags include:
+```
 --amplicon:           <int>, Set the minimum amplicon length. 
 --begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
 --end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
