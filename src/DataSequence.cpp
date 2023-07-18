@@ -10,7 +10,6 @@
 #include "DataNode.h"
 #include "DataSequence.h"
 #include "GlobalSettings.h"
-#include "Primer.h"
 #include "global.h"
 
 using namespace std;

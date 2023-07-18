@@ -22,6 +22,7 @@ namespace DeGenPrime
 	{
 		Primer test(0, data.size());
 		// Primer test(0,data.size(), data);
+		test.SetPenalty(data.Penalty());
 		PushBack(test);
 		_OriginalSize = size();
 	}
@@ -42,7 +43,8 @@ namespace DeGenPrime
 			for(int j = 0;j <= endIndex;j++)
 			{
 				Primer id(j, i);
-				//Primer id(j,i, data);
+				DataSequence sub = data.SubSeq(j,i);
+				id.SetPenalty(sub.Penalty());
 				PushBack(id);
 			}
 		}
@@ -66,14 +68,15 @@ namespace DeGenPrime
 			for(int j = 0;j <= loopBound;j++)
 			{
 				Primer id(j, i);
-				//Primer id(j,i, data);
+				DataSequence sub = data.SubSeq(j,i);
+				id.SetPenalty(sub.Penalty());
 				PushBack(id);
 			}
 		}
 		_OriginalSize = size();
 	}
 
-	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region)
+	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region, DataSequence data)
 	{
 		for(Primer p : region)
 		{
@@ -84,6 +87,8 @@ namespace DeGenPrime
 				for(int j = 0;j < endIndex;j++)
 				{
 					Primer pr(p.Index() + j, i);
+					DataSequence sub = data.SubSeq(pr.Index(), pr.Length());
+					pr.SetPenalty(sub.Penalty());
 					PushBack(pr);
 				}
 			}
@@ -104,8 +109,6 @@ namespace DeGenPrime
 		ret += FilterGCContent(data);
 		ret += FilterRepeats(data);
 		ret += FilterComplementaryEnds(data);
-		// ret += FilterHairpins(data);
-		// ret += FilterDimers(data);
 		ret += FilterTemperature(data, 0.0);
 		ret += FilterMessage("final", _OriginalSize - size());
 		return ret;
@@ -327,61 +330,6 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterRepeats", filtercount);
 		return ret;
 	}
-
-	/*
-	string PrimerCalculator::FilterRepeats(DataSequence data)
-	{
-		string ret;
-		int filtercount = 0;
-		for(int i = _primers.size() - 1;i >= 0;i--)
-		{	
-			// Define the primer
-			DataSequence p = data.SubSeq(_primers[i].Index(), _primers[i].Length());
-			bool flag = false;
-
-			// Filter sequences with too much repition of nucleotides
-			//	- raise flag if four matches are found to any pair, more than one codon, or any higher
-			//	- break loop if flag or length * (match count) < remaining checks * match count
-			//	- there is no need to check subsequences longer than sqrt the total length.
-			for(int length = 2; length < sqrt(p.size());length++)
-			{
-				if(flag)
-				{
-					break;
-				}
-
-				for(int j = 0;j < p.size() - length;j++)
-				{
-					if(flag)
-					{
-						break;
-					}
-					DataSequence first = p.SubSeq(j,length);
-					int match_count = 0;
-					for(int k = j+1; k < p.size() - length + 1;k++)
-					{
-						if(flag)
-						{
-							break;
-						}
-						DataSequence second = p.SubSeq(k,length);
-						if(first.checkMatch(second))
-						{
-							match_count++;
-							flag = (match_count > TooManyRepeats(length));
-						}
-					} // End of InnerMost loop
-				}
-			} // End of subsequence loop
-			if(flag)
-			{
-				Erase(i);
-				filtercount++;
-			}
-		}
-		ret = FilterMessage("FilterRepeats", filtercount);
-		return ret;
-	}*/
 
 	string PrimerCalculator::FilterComplementaryEnds(DataSequence data)
 	{

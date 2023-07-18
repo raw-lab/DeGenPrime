@@ -63,7 +63,6 @@
 #include <fstream>
 #include <vector>
 #include "DataNode.h"
-#include "Primer.h"
 #include "global.h"
 
 namespace DeGenPrime
@@ -101,7 +100,6 @@ namespace DeGenPrime
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
 		float AverageRatio() const;
-		// float Quality() const;
 		float Penalty() const;
 		
 		std::vector<DataNode> GetDataSequence() const;

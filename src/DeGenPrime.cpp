@@ -342,8 +342,8 @@ int main(int argc, char *argv[])
 	PrimerCalculator calc, rev_calc;
 	if(GlobalSettings::GetNonDegenerate()) // User wants conserved regions
 	{
-		calc.InitializeFromRegion(conserved_fwd_primers);
-		rev_calc.InitializeFromRegion(conserved_rev_primers);
+		calc.InitializeFromRegion(conserved_fwd_primers, data);
+		rev_calc.InitializeFromRegion(conserved_rev_primers, rev);
 	}
 	else if(GlobalSettings::GetMeasureByAmpliconSize()) // User wants minimum amplicon length
 	{
@@ -370,50 +370,20 @@ int main(int argc, char *argv[])
 	}
 
 	// Display number of possible primers, run filters and output filter percentages.
-	cout << Banner(" Forward Primers ");
-	ofs << Banner(" Forward Primers ");
-	if(GlobalSettings::GetNonDegenerate())
+	if(GlobalSettings::GetNonDegenerate() == false)
 	{
-		cout << "Assigning Penalty to " << calc.size() << " forward primers." << endl;
-		ofs << "Assigning Penalty to " << calc.size() << " forward primers." << endl;
-	}
-	else
-	{
+		cout << Banner(" Forward Primers ");
+		ofs << Banner(" Forward Primers ");
 		cout << "Before Filters, number of forward primers: [" << calc.size() << "]\n" << endl;
 		ofs << "Before Filters, number of forward primers: [" << calc.size() << "]\n" << endl;
 		ofs << calc.FilterAll(data) << endl;
 		cout << "After Filters: [" << calc.size() << "]\n" << endl;
-	}
-	cout << Banner(" Reverse Primers ");
-	ofs << Banner(" Reverse Primers ");
-	if(GlobalSettings::GetNonDegenerate())
-	{
-		cout << "Assigning Penalty to " << rev_calc.size() << " reverse primers." << endl;
-		ofs << "Assigning Penalty to " << rev_calc.size() << " reverse primers." << endl;
-	}
-	else
-	{
+		cout << Banner(" Reverse Primers ");
+		ofs << Banner(" Reverse Primers ");
 		cout << "Before Filters, number of reverse primers: [" << rev_calc.size() << "]\n" << endl;
 		ofs << "Before Filters, number of reverse primers: [" << rev_calc.size() << "]\n" << endl;
 		ofs << rev_calc.FilterAll(rev) << endl;
 		cout << "After Filters: [" << rev_calc.size() << "]\n" << endl;
-	}
-
-	// Assign Quality to Primers and Sort
-	if(calc.size() != 0 && rev_calc.size() != 0)
-	{
-		for(Primer prime : calc.GetPrimers())
-		{
-			DataSequence sub = data.SubSeq(prime.Index(), prime.Length());
-			prime.SetPenalty(sub.Penalty());
-		}
-		for(Primer rev_prime : rev_calc.GetPrimers())
-		{
-			DataSequence rev_sub = rev.SubSeq(rev_prime.Index(), rev_prime.Length());
-			rev_prime.SetPenalty(rev_sub.Penalty());
-		}
-		calc.Sort();
-		rev_calc.Sort();
 	}
 
 	if(GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev())
@@ -718,6 +688,63 @@ int main(int argc, char *argv[])
 	{
 		cout << Banner(" File search mode ");
 		ofs << Banner(" File search mode ");
+
+		string tsv_file = filepath + "/" + GlobalSettings::GetSearchFile();
+		ifstream tsv;
+		tsv.open(tsv_file);
+		if(tsv.fail())
+		{
+			cout << "Error Could not open target search file \'" << tsv_file << "\'" << endl;
+			exit(BAD_INPUT_FILE);
+		}
+
+		int top_primer_count = 1;
+		string line = "";
+		while(getline(tsv, line) && top_primer_count < 11)
+		{
+			// If the first char in the string is a letter, it's the column title
+			// and we want to skip this line.
+			char first_char = line.at(0);
+			if(std::isdigit(first_char) == false)
+			{
+				continue;
+			}
+
+			string p_l = "";
+			for(int i = 0;i < line.length();i++)
+			{
+				if(isalpha(line[i]))
+				{
+					p_l += line[i];
+				}
+			}
+
+			cout << "Testing Degeprime Primer #" << top_primer_count << " " << p_l << endl;
+			ofs << "Testing Degeprime Primer #" << top_primer_count << " " << p_l << endl;
+			top_primer_count++;
+			int index = calc.IndexOf(data, p_l);
+			DataSequence d_l(p_l);
+			if(index != -1)
+			{
+				float pen = d_l.Penalty();
+				cout << "Forward primer found at: \'" << index;
+				cout << "\' Penalty: \'" << pen << "\'" << endl;
+				ofs << "Forward primer found at: \'" << index;
+				ofs << "\' Penalty: \'" << pen << "\'" << endl;
+			}
+			else
+			{
+				cout << "Forward primer not found!  Printing primer details." << endl;
+				ofs << "Forward primer not found!  Printing primer details." << endl;
+				cout << TestValue(d_l, false) << endl;
+				ofs << TestValue(d_l, false) << endl;
+			}
+
+		}
+
+		tsv.close();
+
+		/* THIS IS THE OLD PRIMER_3 SEARCH_FILE
 		string bould_file = filepath + "/" + GlobalSettings::GetSearchFile();
 		ifstream b_file;
 		b_file.open(bould_file);
@@ -726,6 +753,7 @@ int main(int argc, char *argv[])
 			cout << "Error.  Could not open target search file \'" << bould_file << "\'" << endl;
 			exit(BAD_INPUT_FILE);
 		}
+
 		cout << "Searching \'" << bould_file << "\' for sequences and primers.\n";
 		ofs << "Searching \'" << bould_file << "\' for sequences and primers.\n";
 
@@ -959,6 +987,7 @@ int main(int argc, char *argv[])
 		
 		input.close();
 		summary.close();
+		*/
 	} // End of Search_file section
 
 	// Close input/output file streams.
@@ -1208,6 +1237,7 @@ string TestValue(DataSequence data, bool details)
 	}
 	else
 	{
+		message += "Penalty: " + to_string(data.Penalty()) + "\n";
 		message += "Filtered by:\n";
 		string trash = prime.FilterDeletions(data);
 		if(prime.size() < clone.size())
@@ -1257,7 +1287,7 @@ string TestValue(DataSequence data, bool details)
 				message += "primer GC ratio: " + to_string(data.GCRatio());
 				message += " more than " + to_string(MAX_GC_TOTAL_RATIO);
 			}
-			DataSequence ending = data.SubSeq(data.size() - 6, 5);
+			DataSequence ending = data.SubSeq(data.size() - 5, 5);
 			ratio = ending.GCRatio();
 			if(ratio > MAX_GC_EXTREMA_RATIO)
 			{
@@ -1282,23 +1312,6 @@ string TestValue(DataSequence data, bool details)
 			message += "\tFilterComplementaryEnds\n";
 			flag = true;
 		}
-		/*trash = prime.FilterHairpins(data);
-		if(prime.size() < clone.size())
-		{
-			prime = clone;
-			message += "\tFilterHairpins\n";
-			flag = true;
-		}
-		trash = prime.FilterDimers(data);
-		if(prime.size() < clone.size())
-		{
-			prime = clone;
-			message += "\tFilterDimers (";
-			DataSequence ending = data.SubSeq(data.size() - 6, 5);
-			message += "ending delta g: " + to_string(ending.Gibbs());
-			message += ")\n";
-			flag = true;
-		}*/
 		trash = prime.FilterTemperature(data, 0.0);
 		if(prime.size() < clone.size())
 		{
