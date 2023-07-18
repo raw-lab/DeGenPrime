@@ -202,16 +202,13 @@ namespace DeGenPrime
 			int j = 0;
 			int fwd_index = _pairs[i].GetForward().Index();
 			int rev_index = _pairs[i].GetReverse().Index();
-			cout << "Comparing PP[i](" << i << "), f_ind=" << fwd_index << " r_ind=" << rev_index << endl;
 			while(i > j)
 			{
 				int f_index = _pairs[j].GetForward().Index();
 				int r_index = _pairs[j].GetReverse().Index();
-				cout << "PP[j](" << j << ") f_ind=" << f_index << " r_ind=" << r_index << endl;
 				if(fwd_index == _pairs[j].GetForward().Index() ||
 					rev_index == _pairs[j].GetReverse().Index())
 				{
-					cout << "Match found, erasing primer[" << i << "]" << endl;
 					Erase(i);
 					filtered++;
 					break;
