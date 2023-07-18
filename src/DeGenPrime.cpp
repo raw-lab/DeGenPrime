@@ -561,14 +561,17 @@ int main(int argc, char *argv[])
 
 			// Loop through top desired primer pairs to filter them for annealing temperature
 			// and output the final list of primer pairs.
+			int rem;
 			if(start)
 			{
 				top = pairlist.SubList(0,desiredpairs);
+				rem = desiredpairs;
 			}
 			else
 			{
 				PrimerPairList subPairList = pairlist.SubList(0, desiredpairs - top.size());
 				top.Append(subPairList);
+				rem = desiredpairs - top.size();
 			}
 			
 			if(top.size() == 0)
@@ -577,11 +580,12 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				remaining = pairlist.size() - desiredpairs;
+				remaining = pairlist.size() - rem;
 				if(start)
 				{
 					nextIndex = desiredpairs;
 					filtercount = top.FilterAnnealingTemp(data, rev, 0);
+					filtercount += top.FilterUnique();
 					goodprimers = MAX_PRIMER_RETURNS - filtercount;
 					start = false;
 				}
@@ -590,10 +594,11 @@ int main(int argc, char *argv[])
 					nextlength = (filtercount < remaining) ? filtercount : remaining;
 					PrimerPairList next = pairlist.SubList(nextIndex,nextlength);
 					filtercount = next.FilterAnnealingTemp(data, rev, goodprimers);
+					top.Append(next);
+					filtercount += top.FilterUnique();
 					goodprimers = MAX_PRIMER_RETURNS - filtercount;
 					nextIndex += nextlength;
 					remaining -= nextlength;
-					top.Append(next);
 				}
 			}
 			

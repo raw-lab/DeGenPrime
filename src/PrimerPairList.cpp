@@ -194,6 +194,45 @@ namespace DeGenPrime
 		return filtered;
 	}
 
+	int PrimerPairList::FilterUnique()
+	{
+		int filtered = 0;
+		for(int i = _pairs.size() - 1;i >= 1;i--)
+		{
+			int j = 0;
+			int fwd_index = _pairs[i].GetForward().Index();
+			int rev_index = _pairs[i].GetReverse().Index();
+			cout << "Comparing PP[i](" << i << "), f_ind=" << fwd_index << " r_ind=" << rev_index << endl;
+			while(i > j)
+			{
+				int f_index = _pairs[j].GetForward().Index();
+				int r_index = _pairs[j].GetReverse().Index();
+				cout << "PP[j](" << j << ") f_ind=" << f_index << " r_ind=" << r_index << endl;
+				if(fwd_index == _pairs[j].GetForward().Index() ||
+					rev_index == _pairs[j].GetReverse().Index())
+				{
+					cout << "Match found, erasing primer[" << i << "]" << endl;
+					Erase(i);
+					filtered++;
+					break;
+				}
+				else
+				{
+					j++;
+				}
+			}
+		}
+		if(filtered == 0)
+		{
+			cout << "All primers were unique" << endl;
+		}
+		else
+		{
+			cout << "FilterUnique filtered " << filtered << " primers." << endl;
+		}
+		return filtered;
+	}
+
 	bool PrimerPairList::comparator(const PrimerPair& lhs, const PrimerPair& rhs)
 	{
 		float temp1 = lhs.TempDiff();

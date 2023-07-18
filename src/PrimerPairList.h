@@ -58,6 +58,7 @@ namespace DeGenPrime
 		std::string FilterAmpliconLength();
 		std::string FilterTemperatureDifference();
 		int FilterAnnealingTemp(DataSequence fwd, DataSequence rev, int ignore);
+		int FilterUnique();
 		int PartitionCount(int fwd_size, int rev_size) const;
 
 		void Sort();
