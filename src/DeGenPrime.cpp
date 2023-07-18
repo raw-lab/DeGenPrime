@@ -452,13 +452,10 @@ int main(int argc, char *argv[])
 		const int part = pairlist.PartitionCount(calc.size(), rev_calc.size());
 		if(part != 1)
 		{
-			cout << "Splitting primer pairs into " << part;
-			cout << " partitions with approximately 1600 primerpairs each.\n" << endl;
-			ofs << "Splitting primer pairs into " << part;
-			ofs << " partitions with approximately 1600 primerpairs each.\n" << endl;
+			cout << "Splitting primer pairs into " << part << " partitions.\n" << endl;
+			ofs << "Splitting primer pairs into " << part << " partitions.\n" << endl;
 		}
 		const int len_part = sqrt(part);
-		bool start = true;
 		bool done = false;
 		bool move_horiz = false;
 		int count = 1;
@@ -473,8 +470,8 @@ int main(int argc, char *argv[])
 
 		// Declare Filtering variables
 		const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
-		int nextIndex, filtercount, remaining, goodprimers, nextlength;
-
+		int nextIndex, filtercount, remaining, nextlength;
+		int goodprimers = 0;
 		// Run data partition in loop
 		while(count <= part)
 		{
@@ -561,46 +558,33 @@ int main(int argc, char *argv[])
 
 			// Loop through top desired primer pairs to filter them for annealing temperature
 			// and output the final list of primer pairs.
-			int rem;
-			if(start)
-			{
-				top = pairlist.SubList(0,desiredpairs);
-				rem = desiredpairs;
-			}
-			else
-			{
-				PrimerPairList subPairList = pairlist.SubList(0, desiredpairs - top.size());
-				top.Append(subPairList);
-				rem = desiredpairs - top.size();
-			}
-			
-			if(top.size() == 0)
+			// const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
+			// int nextIndex, filtercount, goodprimers, nextlength;
+			if(pairlist.size() == 0)
 			{
 				continue;
 			}
-			else
+
+			remaining = pairlist.size();
+			nextIndex = 0;
+			filtercount = 0;
+			nextlength = desiredpairs - goodprimers;
+			if(nextlength > remaining)
 			{
-				remaining = pairlist.size() - rem;
-				if(start)
-				{
-					nextIndex = desiredpairs;
-					filtercount = top.FilterAnnealingTemp(data, rev, 0);
-					filtercount += top.FilterUnique();
-					goodprimers = MAX_PRIMER_RETURNS - filtercount;
-					start = false;
-				}
-				while(filtercount != 0 && remaining > 0)
-				{
-					nextlength = (filtercount < remaining) ? filtercount : remaining;
-					PrimerPairList next = pairlist.SubList(nextIndex,nextlength);
-					filtercount = next.FilterAnnealingTemp(data, rev, goodprimers);
-					top.Append(next);
-					filtercount += top.FilterUnique();
-					goodprimers = MAX_PRIMER_RETURNS - filtercount;
-					nextIndex += nextlength;
-					remaining -= nextlength;
-				}
+				nextlength = remaining;
 			}
+			do
+			{
+				PrimerPairList subPairList = pairlist.SubList(nextIndex, nextlength);
+				remaining -= nextlength;
+				nextIndex += nextlength;
+				top.Append(subPairList);
+				filtercount = top.FilterAnnealingTemp(data, rev, goodprimers);
+				filtercount += top.FilterUnique();
+				goodprimers = MAX_PRIMER_RETURNS - filtercount;
+				nextlength = (filtercount < remaining) ? filtercount : remaining;
+			} while(filtercount != 0 && remaining > 0);
+
 			
 			if(top.size() < desiredpairs)
 			{
