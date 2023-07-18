@@ -219,14 +219,6 @@ namespace DeGenPrime
 				}
 			}
 		}
-		if(filtered == 0)
-		{
-			cout << "All primers were unique" << endl;
-		}
-		else
-		{
-			cout << "FilterUnique filtered " << filtered << " primers." << endl;
-		}
 		return filtered;
 	}
 
