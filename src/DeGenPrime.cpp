@@ -1102,6 +1102,7 @@ void ProcessTags(int argc, char *argv[])
 		}
 		else
 		{
+			cout << "Warning: Unrecognized tag \'" << argv[i] << "\'" << endl;
 			continue;
 		}
 	}
