@@ -449,14 +449,29 @@ int main(int argc, char *argv[])
 	{
 		cout << Banner(" Primer Pair Filtering ");
 		ofs << Banner(" Primer Pair Filtering ");
-
+		cout << "Forward Calc Size = " << calc.size() << endl;
+		ofs << "Forward Calc Size = " << calc.size() << endl;
+		cout << "Reverse Calc Size = " << rev_calc.size() << endl;
+		ofs << "Reverse Calc Size = " << rev_calc.size() << endl;
 		const int part = pairlist.PartitionCount(calc.size(), rev_calc.size());
+		if(part != 1)
+		{
+			cout << "Splitting primer pairs into " << part << " partitions.\n" << endl;
+			ofs << "Splitting primer pairs into " << part << " partitions.\n" << endl;
+		}
 		const int len_part = sqrt(part);
+		cout << "Partition Divisor = " << len_part << endl;
 		bool done = false;
 		bool move_horiz = false;
 		int count = 1;
+		// int fwd_len = ceil((float)calc.size()/(float)len_part);
+		// int rev_len = ceil((float)rev_calc.size()/(float)len_part);
 		int fwd_len = calc.size() / len_part;
+		// if(calc.size() % len_part != 0)fwd_len++;
 		int rev_len = rev_calc.size() / len_part;
+		// if(rev_calc.size() % len_part != 0)rev_len++;
+		cout << "Forward Partition Number = " << fwd_len << endl;
+		cout << "Reverse Partition Number = " << rev_len << endl;
 		int x_mult = 0;
 		int y_mult = 0;
 		int x_start = 0;
@@ -466,29 +481,42 @@ int main(int argc, char *argv[])
 
 		// Declare Filtering variables
 		const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
-		const int limit = pow(desiredpairs, 2);
-		if(part != 1)
-		{
-			cout << "Splitting primer pairs into " << part << " partitions.\n" << endl;
-			ofs << "Splitting primer pairs into " << part << " partitions.\n" << endl;
-			cout << "Checking top " << limit << " partitions." << endl;
-			ofs << "Checking top " << limit << " partitions." << endl;
-		}
 		int nextIndex, filtercount, remaining, nextlength;
 		int goodprimers = 0;
-
 		// Run data partition in loop
-		while(count <= part && count <= limit)
+		while(count <= part)
 		{
+			cout << "Inside main while loop." << endl;
+			cout << "Count = " << count << endl;
 			if(done)
 			{
+				cout << "Done flag detected! Ending while loop." << endl;
 				break;
 			}
 			bool isSquare = ceil((double)sqrt(count)) == floor((double)sqrt(count));
+			if(isSquare)
+			{
+				cout << "Count is Square." << endl;
+			}
+			else
+			{
+				cout << "Count is not a square number." << endl;
+			}
 			bool isOneLessThanSquare = ceil((double)sqrt(count + 1))
 				== floor((double)sqrt(count + 1));
+			if(isOneLessThanSquare)
+			{
+				cout << "Count is one less than Square." << endl;
+			}
+			else
+			{
+				cout << "Count is not one less than a square number." << endl;
+			}
 
 			// Create Primer Pair List
+			cout << "Calling CreateFromRange with parameters:" << endl;
+			cout << "\tx_start=" << x_start << " x_end=" << x_end;
+			cout << " y_start=" << y_start << " y_end=" << y_end << endl;
 			pairlist.CreateFromRange(data, rev, calc.GetPrimers(),
 				rev_calc.GetPrimers(), x_start, x_end, y_start, y_end);
 			cout << "Partition #" << to_string(count);
@@ -499,33 +527,44 @@ int main(int argc, char *argv[])
 			// Set next data block partition
 			if(count == 1)
 			{
+				cout << "Count was 1.  Setting move horiz = true and x_mult = 1." << endl;
 				move_horiz = true;
 				x_mult = 1;
 			}
 			else if(isSquare)
 			{
+				cout << "Count was a square number.  ";
 				y_mult = 0;
-				x_mult = sqrt((double)count);
+				x_mult = (int)sqrt((double)count);
+				cout << "Setting y_mult = 0, x_mult = " << x_mult << " and move_horiz = true." << endl;
 				move_horiz = true;
 			}
 			else if(isOneLessThanSquare)
 			{
+				cout << "Count was one less than a square number.  ";
 				x_mult++;
+				cout << "Setting x_mult = " << x_mult << " and move_horiz = true." << endl;
 				move_horiz = true;
 			}
 			else if(move_horiz)
 			{
+				cout << "Last move was horizontal.  ";
 				int place_holder = y_mult;
 				y_mult = x_mult;
 				x_mult = place_holder;
 				move_horiz = false;
+				cout << "Setting x_mult = " << x_mult << ", y_mult = " << y_mult;
+				cout << " and move_horiz = false." << endl;
 			}
 			else
 			{
+				cout << "Last move was vertical.  ";
 				int place_holder = y_mult;
 				y_mult = x_mult + 1;
 				x_mult = y_mult;
 				move_horiz = true;
+				cout << "Setting x_mult = " << x_mult << ", y_mult = " << y_mult;
+				cout << " and move_horiz = true." << endl;
 			}
 
 			// Adjust parameters
@@ -563,8 +602,6 @@ int main(int argc, char *argv[])
 
 			// Loop through top desired primer pairs to filter them for annealing temperature
 			// and output the final list of primer pairs.
-			// const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
-			// int nextIndex, filtercount, goodprimers, nextlength;
 			if(pairlist.size() == 0)
 			{
 				continue;
@@ -595,6 +632,7 @@ int main(int argc, char *argv[])
 			{
 				nextIndex = 0;
 				nextlength = desiredpairs - top.size();
+				cout << "Number of primers in top = " << top.size() << endl;
 			}
 			else
 			{
