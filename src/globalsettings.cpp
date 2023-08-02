@@ -26,11 +26,9 @@ namespace DeGenPrime
 	void GlobalSettings::SetRunTest(bool test) {_testRun = test;}
 	void GlobalSettings::SetSearchFwd(bool search) {_SearchFwd = search;}
 	void GlobalSettings::SetSearchRev(bool search) {_SearchRev = search;}
-	void GlobalSettings::SetDoSearchFile(bool search) {_DoSearchFile = search;}
 	void GlobalSettings::SetTestValue(string str) {_testStr = str;}
 	void GlobalSettings::SetSearchFwdArg(std::string str) {_searchFwdArg = str;}
 	void GlobalSettings::SetSearchRevArg(std::string str) {_searchRevArg = str;}
-	void GlobalSettings::SetSearchFile(std::string str) {_searchFile = str;}
 	void GlobalSettings::SetSortByTemp(bool temp) {_sortbytemp = temp;}
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
@@ -50,10 +48,8 @@ namespace DeGenPrime
 	bool GlobalSettings::GetRunTest() { return _testRun; }
 	bool GlobalSettings::GetSearchFwd() { return _SearchFwd; }
 	bool GlobalSettings::GetSearchRev() { return _SearchRev; }
-	bool GlobalSettings::GetDoSearchFile() { return _DoSearchFile; }
 	bool GlobalSettings::GetSortByTemp() { return _sortbytemp; }
 	string GlobalSettings::GetTestValue() { return _testStr; }
 	string GlobalSettings::GetSearchFwdArg() { return _searchFwdArg; }
 	string GlobalSettings::GetSearchRevArg() { return _searchRevArg; }
-	string GlobalSettings::GetSearchFile() { return _searchFile; }
 } // End of DeGenPrime

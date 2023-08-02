@@ -8,7 +8,8 @@
 //		PopBack(): Removes last node of list.
 //		Erase(int i): Removes the node at the argument index.
 //		string Print(): Returns a string of the primer information.
-//	    string Codes(): Prints all the Codes in the sequence to cout.
+//	    string Codes(): Returns the list of the Codes in the sequence to cout.
+//		string MC(): Reutrns the list of the Most common nucleotide chars.
 // 		SubSeq(start,length): Returns a length list of DataNodes beginning
 //				 of the start index.  Return is designed to be used
 //				 with SetList to make a newDataSequence.
@@ -48,16 +49,21 @@
 //				of the primer.  It uses the formula:
 //				Ta = 0.3 * Tm(primer) + 0.7 * Tm(product) - 14.9.
 //			http://www.premierbiosoft.com/tech_notes/PCR_Primer_Design.html
+//	Penalty(): Returns a floating point number showing the penalty of the primer.
+//		Primers get more penalty by being outside temperature ranges, having
+//		degenerate nucleotides, having too much repetition, and compelementary ends.
 // Accessors: GetDataSequence(): Returns _list.
-//				 size(): Returns the size of the list.
-//   CountMatches(DataSequence): Returns the number of nucleotides that match the
-//					   arguments's most common at each index.
-//		    RevIndex(index): Convert a forward index to a reverse index.
+//			size(): Returns the size of the list.
+//			ActualSize(): Returns the size of the list without deletions.
+//   	CountMatches(DataSequence): Returns the number of nucleotides that match the
+//			arguments's most common at each index.
+//		RevIndex(index): Convert a forward index to a reverse index.
 //	    IndexOf(DataSequence): Searches caller for a subsequence that matches
 //					   the argument and returns a value of that index.
 //					   Returns -1 if no match was found.
-//	 checkMatch(DataSequence): Returns true if argument has the same most common
+//	 	checkMatch(DataSequence): Returns true if argument has the same most common
 //					   nucleotides and size as the calling Datasequence.
+//		isEmpty(): Returns true if the primer is entirely deletions or size zero.
 // Private members: vector<DataNode> list: the list of data
 // ********************************************************************************
 
@@ -86,8 +92,6 @@ namespace DeGenPrime
 		std::string Codes() const;
 		std::string Consensus(std::vector<int> fwd_ind, std::vector<int> fwd_len, bool cons);
 		std::string MC();
-		std::string SectionCodes(int index, int length);
-		std::string SeqInfo(); // Use with SubSeq
 
 		DataSequence SubSeq(int startIndex,int length);
 		DataSequence InvSeq();

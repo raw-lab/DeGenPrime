@@ -1,4 +1,4 @@
-// ************************** class DataNode **************************
+// **************************** datanode.h ****************************
 // Purpose: Class DataNode is a class containing data from
 //		a SequenceList at a particular intersection
 //		across all Sequences in the list.

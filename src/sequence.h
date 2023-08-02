@@ -1,18 +1,18 @@
-// *********************** class Sequence *********************** //
-// Purpose: A class to directly store data read from a		//
-//		file into meaningful data.					//
-// Constructors:	- Default and String argument to			//
-//			  initialize the name of the sequence.		//
-// Mutators: SetName(string name): set name of sequence.		//
-//		 SetList(vector<char> list): set the list of chars.	//
-// Functions: PushBack(char c): Append char to the list.		//
-//		  PopBack(): Remove the last char of the list.		//
-// Accessors: GetName(): Returns the name					//
-//		  GetCodes(): Returns the list of chars.			//
-//		  size(): Returns the size of the list of chars.	//
-// Private members: string _name: name of the list.			//
-//			  vector<char> _codes: the list of chars.		//
-// ************************************************************** //
+// *********************** class Sequence *************************	//
+// Purpose: A class to directly store data read from a				//
+//		file into meaningful data.									//
+// Constructors:	- Default and String argument to				//
+//			  initialize the name of the sequence.					//
+// Mutators: SetName(string name): set name of sequence.			//
+//		 SetList(vector<char> list): set the list of chars.			//
+// Functions: PushBack(char c): Append char to the list.			//
+//		  PopBack(): Remove the last char of the list.				//
+// Accessors: GetName(): Returns the name							//
+//		  GetCodes(): Returns the list of chars.					//
+//		  size(): Returns the size of the list of chars.			//
+// Private members: string _name: name of the list.					//
+//			  vector<char> _codes: the list of chars.				//
+// ****************************************************************	//
 #ifndef SEQUENCE
 #define SEQUENCE
 

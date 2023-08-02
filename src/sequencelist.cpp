@@ -138,32 +138,12 @@ namespace DeGenPrime
 		{
 			line = "";
 			string seq_num = Format(i + 1,4);
-			/*
-			int mod = 4;
-			int temp = i;
-			if(temp == 0)mod--;
-			while(temp > 0)
-			{
-				temp /= 10;
-				mod--;
-			}*/
-			//ret += "\tSequence(";
 			line += "Sequence(" + seq_num + "):[";
 			line += Format(_list[i].GetName(), 16, Alignment::Right);
 			line += "] Size:[" + to_string(_list[i].size()); // All should be same size
 			line += "]";
 			ret += Format(line, STR_FORMAT, Alignment::Center);
 			ret += "\n";
-			/*
-			for(int j = 0;j < mod;j++)
-			{
-				ret += "0";
-			}
-			ret += to_string(i);
-			ret += "):[";
-			ret += _list[i].GetName() + "] Size:[";
-			ret += to_string(_list[i].size());
-			ret += "]\n";*/
 		}
 		return ret;
 	}
@@ -213,21 +193,6 @@ namespace DeGenPrime
 			ret += "\n";
 		}
 		return ret;
-		/*
-		cout << "Sequence Data from " << index << " to ";
-		cout << index + length - 1 << endl;
-		for(int i = 0;i < _list.size();i++)
-		{
-			Sequence seq = GetSequenceList()[i];
-			string name = seq.GetName();
-			cout << name;
-			for(int j = index;j < index + length;j++)
-			{
-				cout << _list[i].GetCodes()[j];
-			}
-		}
-		cout << endl;
-		*/
 	}
 
 	bool SequenceList::TestAlignment() const

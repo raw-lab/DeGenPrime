@@ -1,8 +1,10 @@
 // ***************************** PrimerID ***************************** //
 // Purpose:	Provide a data structure for information about a primer.	//
-// Members:	Length:	How many nucleotides are in the primer.		//
-//		Index:	Where the primer begins.				//
-// Functions:	Print():	Print data about the primer.			//
+// Members:	Length:	How many nucleotides are in the primer.				//
+//		Index:	Where the primer begins.								//
+//		Penalty: The penalty of the primer.								//
+// Functions:	Print():	Print data about the primer.				//
+// Operator: <: Used to sort primers by lowest penalty first.			//
 // ********************************************************************	//
 
 #ifndef PRIMER_CLASS
@@ -18,7 +20,6 @@ namespace DeGenPrime
 	public:
 		Primer();
 		Primer(int index, int length);
-		//Primer(int index, int length, DataSequence src_data);
 
 		void SetPenalty(float penalty);
 

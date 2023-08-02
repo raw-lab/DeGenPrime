@@ -182,33 +182,20 @@ namespace DeGenPrime
 			bool flag = false;
 			int total_deletions_count = 0;
 			// Filter sequences for deletions
-			// ** EDIT ** Removing this criteria
-			//	- Filter primer with any three consecutive datasequence chars of '-'
-			// ** EDIT **
-			//	- Filter primer with more than 6 total deletions.
-			//	- Filter any primer whose deletions make it smaller than MIN_PRIMER_SIZE
 			for(int j = 0;j < p.size();j++)
 			{
 				if(flag)
 				{
 					break;
 				}
-				// int consecutive_deletions_count = 0;
 				if(p.GetDataSequence()[j].GetCode() == '-')
 				{
 					total_deletions_count++;
-					// consecutive_deletions_count++;
 					if(j < 3 || j > (p.size() - 4))
 					{
 						flag = true;
 					}
 				}
-				/*
-				else
-				{
-					consecutive_deletions_count = 0;
-				}*/
-				// if(total_deletions_count > 6 || consecutive_deletions_count > 2)
 				if(total_deletions_count > 6)
 				{
 					flag = true;

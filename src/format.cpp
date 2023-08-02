@@ -99,19 +99,6 @@ namespace DeGenPrime
         return ret;
     }
 
-    string PrintRuler(int size)
-    {
-	    string ret = "";
-        string ruler = "";
-	    for(int i = 0;i < size;i++)
-	    {
-		    ruler += "-";
-	    }
-	    string message = "(" + to_string(size) + ")\n";
-        ret += ruler + "\n" + message + ruler + "\n";
-        return ret;
-    }
-
     int digits(int num)
     {
         int ret = 0;

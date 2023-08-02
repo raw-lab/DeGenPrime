@@ -1,9 +1,9 @@
-// ******************************* GlobalSettings.h *******************************	//
-// Purpose: Create a static class to evaluate and store the user settings.		//
-// Mutators: Set<setting>: 	Static members to initialize a particular value of 	//
-//					the class.  Compares that value to global	settings 	//
-//					file to ensure a reasonable value is saved.		//
-// Accessors: Get<setting>:	Returns the specified value.					//
+// ******************************* globalsettings.h *******************************	//
+// Purpose: Create a static class to evaluate and store the user settings.			//
+// Mutators: Set<setting>: 	Static members to initialize a particular value of 		//
+//					the class.  Compares that value to global	settings 			//
+//					file to ensure a reasonable value is saved.						//
+// Accessors: Get<setting>:	Returns the specified value.							//
 // ********************************************************************************	//
 #ifndef GLOBAL_SETTINGS
 #define GLOBAL_SETTINGS
@@ -34,12 +34,10 @@ namespace DeGenPrime
 		static void SetRunTest(bool test);
 		static void SetSearchFwd(bool search);
 		static void SetSearchRev(bool search);
-		static void SetDoSearchFile(bool search);
 		static void SetSortByTemp(bool temp);
 		static void SetTestValue(std::string str);
 		static void SetSearchFwdArg(std::string str);
 		static void SetSearchRevArg(std::string str);
-		static void SetSearchFile(std::string str);
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
@@ -59,11 +57,9 @@ namespace DeGenPrime
 		static bool GetSearchFwd();
 		static bool GetSearchRev();
 		static bool GetSortByTemp();
-		static bool GetDoSearchFile();
 		static std::string GetTestValue();
 		static std::string GetSearchFwdArg();
 		static std::string GetSearchRevArg();
-		static std::string GetSearchFile();
 
 	private:
 		static int _ampLength;
@@ -83,12 +79,10 @@ namespace DeGenPrime
 		static bool _testRun;
 		static bool _SearchFwd;
 		static bool _SearchRev;
-		static bool _DoSearchFile;
 		static bool _sortbytemp;
 		static std::string _testStr;
 		static std::string _searchFwdArg;
 		static std::string _searchRevArg;
-		static std::string _searchFile;
 	};
 } // end of DeGenPrime
 #endif // GLOBAL_SETTINGS

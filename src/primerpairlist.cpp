@@ -23,8 +23,6 @@ namespace DeGenPrime
 	}
 	PrimerPairList::PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list)
 	{
-		// _fwd = fwd_seq;
-		// _rev = rev_seq;
 		_pairs = pair_list;
 		_OriginalSize = size();
 	}
@@ -70,8 +68,6 @@ namespace DeGenPrime
 
 	void PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
 	{
-		// _fwd = fwd_seq;
-		// _rev = rev_seq;
 		for(int i = 0;i < fwd_list.size();i++)
 		{
 			for(int j = 0;j < rev_list.size();j++)
@@ -255,13 +251,6 @@ namespace DeGenPrime
 		float temp2 = rhs.TempDiff();
 		return (temp1 < temp2);
 	}
-
-	/*
-	void PrimerPairList::PrintSize()
-	{
-		cout << "The number of forward-reverse primer pairs in this list is: ";
-		cout << size() << endl;
-	}*/
 
 	string PrimerPairList::PrintAll(DataSequence fwd, DataSequence rev)
 	{

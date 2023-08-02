@@ -88,50 +88,6 @@ namespace DeGenPrime
 		return ret;
 	}
 
-	std::string DataSequence::SectionCodes(int index, int length)
-	{
-		string ret = "Con (";
-		int temp = index;
-		int mod = 4;
-		while(temp > 0)
-		{
-			temp /= 10;
-			mod--;
-		}
-		for(int i = 0;i < mod;i++)
-		{
-			ret += "0";
-		}
-		ret += to_string(index) + "-";
-		temp = index + length;
-		mod = 4;
-		while(temp > 0)
-		{
-			temp /= 10;
-			mod--;
-		}
-		for(int i = 0;i < mod;i++)
-		{
-			ret += "0";
-		}
-		ret += to_string(index + length - 1) + ") ";
-		string codes = Codes();
-		codes = codes.substr(index, length);
-		ret += codes + "\n";
-		return ret;
-	}
-
-	std::string DataSequence::SeqInfo()
-	{
-		string ret = "";
-		for(int i = 0;i < _list.size();i++)
-		{
-			ret += "Index [" + to_string(i);
-			ret += "] " + _list[i].NodeInfo();
-		}
-		return ret;
-	}
-
 	string DataSequence::Consensus(std::vector<int> fwd_ind, std::vector<int> fwd_len, bool cons)
 	{
 		string ret = "";
@@ -216,7 +172,7 @@ namespace DeGenPrime
 			}
 		}
 
-		if(p.size() < 2)return 0.0;
+		if(p.size() < 2)return 0.0; // Avoids Seg faults for mini-seqs.
 
 		// Add up NN enthalpies of the subsequence
 		for(int i = 0; i < p.size() - 1;i++)
@@ -248,7 +204,7 @@ namespace DeGenPrime
 			}
 		}
 
-		if(p.size() < 2)return 0.0;
+		if(p.size() < 2)return 0.0; // Avoids seg faults for mini-seqs.
 
 		// Add up NN entropies of the subsequence
 		for(int i = 0; i < p.size() - 1;i++)
@@ -281,7 +237,7 @@ namespace DeGenPrime
 			}
 		}
 
-		if(p.size() < 2)return 0.0;
+		if(p.size() < 2)return 0.0; // Avoids seg faults for mini-seqs.
 		
 		for(int i = 0;i < p.size() - 1;i++)
 		{
@@ -426,18 +382,14 @@ namespace DeGenPrime
 	{
 		
 		float temperature = 0.3 * NNMeltingTemperature();
-		// cout << "Tm * 0.3 = " << temperature << endl;
 		temperature += (0.7 * product.ProductMelt());
-		// cout << "Add 0.7 * product melt = " << (0.7 * product.ProductMelt()) << endl; 
 		temperature -= 14.9;
-		// cout << "Subtract 14.9, final result = " << temperature << endl;
 		return temperature;
 	}
 
 	float DataSequence::ProductMelt() const
 	{
 		float temperature = 81.5;
-		// float temperature = 0.0;
 		temperature += 16.6 * log(GlobalSettings::GetMonoIonConcentration()* pow(10,-3))/log(10);
 		temperature += 41.0 * GCRatio();
 		// Different sources use different values for the following constant.

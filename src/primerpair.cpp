@@ -32,8 +32,6 @@ namespace DeGenPrime
 		string line = "";
 		DataSequence fwdSub = fwd_data.SubSeq(_fwd.Index(), _fwd.Length());
 		DataSequence revSub = rev_data.SubSeq(_rev.Index(), _rev.Length());
-		//int fwdSDiff = fwdSub.size() - fwdSub.ActualSize();
-		//int revSDiff = revSub.size() - revSub.ActualSize();
 		
 		line = "Amplicon Size: [" + to_string(AmpSize()) + "]";
 		ret += Format(line, 25, Alignment::Center);
@@ -105,26 +103,6 @@ namespace DeGenPrime
 		ret += Format(line, STR_FORMAT / 4, Alignment::Right);
 		line = "[" + Format(revSub.NNMeltingTemperature(), 2) + "]";
 		ret += Format(line, STR_FORMAT / 4, Alignment::Left) + "\n";
-		/*
-		ret += "Forward Primer:  Fwd Index[" + to_string(_fwd.Index());
-		ret += "] Length: [" + to_string(fwdSub.ActualSize()) + "]";
-		ret += (fwdSDiff > 0) ? (" (" + to_string(fwdSDiff) + " deletions)\n") :
-			("\n");
-		ret += "Codes: [" + fwdSub.Codes();
-		ret += "]\nTm(NN): [" + to_string(fwdSub.NNMeltingTemperature()) + "] ";
-		ret += "Tm(Basic): [" + to_string(fwdSub.BasicTemperature()) + "]\n";
-		ret += "Penalty: [" + to_string(fwdSub.Penalty()) + "]\n";
-		ret += "Reverse Primer: Rev Index[" + to_string(rev_data.RevIndex(_rev.Index()));
-		ret += "] Length: [" + to_string(revSub.ActualSize()) + "]";
-		ret += (revSDiff > 0) ? (" (" + to_string(revSDiff) + " deletions)\n") :
-			("\n");
-		ret += "Codes: [" + revSub.Codes();
-		ret += "]\nTm(NN): [" + to_string(revSub.NNMeltingTemperature()) + "] ";
-		ret += "Tm(Basic): [" + to_string(revSub.BasicTemperature()) + "]\n";
-		ret += "Penalty: [" + to_string(revSub.Penalty()) + "]\n";
-		ret += "Temperature Difference: [" + to_string(TempDiff());
-		ret += "] Amplicon Length: [" + to_string(AmpSize()) + "]\n\n";
-		*/
 		return ret;
 	}
 
@@ -160,18 +138,11 @@ namespace DeGenPrime
 	
 	bool PrimerPair::operator <(const PrimerPair& rhs) const
 	{
-		/*if(GlobalSettings::GetSortByTemp())
-		{
-			return (_temp < rhs.TempDiff());
-		}
-		else
-		{*/
-			float q_l1 = _fwd.Penalty();
-			float q_l2 = _rev.Penalty();
-			float q_r1 = rhs.GetForward().Penalty();
-			float q_r2 = rhs.GetReverse().Penalty();
-			return((q_l1 * q_l2) < (q_r1 * q_r2));
-		//}
+		float q_l1 = _fwd.Penalty();
+		float q_l2 = _rev.Penalty();
+		float q_r1 = rhs.GetForward().Penalty();
+		float q_r2 = rhs.GetReverse().Penalty();
+		return((q_l1 * q_l2) < (q_r1 * q_r2));
 	}
 	
 } // End of DeGenPrime
