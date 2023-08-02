@@ -113,6 +113,7 @@ int main(int argc, char *argv[])
 		cout << "Decoded the proteins in the file.  Output saved to: ";
 		cout << filepath + "/" + filename.substr(0, found) + "_protein.fasta" << endl;
 		*/
+		cout << "Protein feature not yet implemented." << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
