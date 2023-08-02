@@ -3,9 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "SequenceReader.h"
-#include "Sequence.h"
-#include "SequenceList.h"
+#include "sequencereader.h"
+#include "sequence.h"
+#include "sequencelist.h"
 #include "global.h"
 
 using namespace std;

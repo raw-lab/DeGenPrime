@@ -16,8 +16,8 @@
 #ifndef PRIMER_PAIR
 #define PRIMER_PAIR
 
-#include "DataSequence.h"
-#include "Primer.h"
+#include "datasequence.h"
+#include "primer.h"
 
 namespace DeGenPrime
 {

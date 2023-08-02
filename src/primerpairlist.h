@@ -32,9 +32,9 @@
 
 #include <string>
 #include <vector>
-#include "PrimerPair.h"
-#include "Primer.h"
-#include "DataSequence.h"
+#include "primerpair.h"
+#include "primer.h"
+#include "datasequence.h"
 
 namespace DeGenPrime
 {
@@ -62,7 +62,7 @@ namespace DeGenPrime
 		int PartitionCount(int fwd_size, int rev_size) const;
 
 		void Sort();
-		void PrintSize();
+		//void PrintSize();
 
 		std::string PrintAll(DataSequence fwd, DataSequence rev);
 		std::string PrintAllShort(DataSequence fwd, DataSequence rev);

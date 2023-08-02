@@ -24,8 +24,8 @@
 
 #include <fstream>
 #include <string>
-#include "Sequence.h"
-#include "SequenceList.h"
+#include "sequence.h"
+#include "sequencelist.h"
 
 namespace DeGenPrime
 {

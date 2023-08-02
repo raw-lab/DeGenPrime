@@ -7,9 +7,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "DataNode.h"
-#include "DataSequence.h"
-#include "GlobalSettings.h"
+#include "datanode.h"
+#include "datasequence.h"
+#include "format.h"
+#include "globalsettings.h"
 #include "global.h"
 
 using namespace std;
@@ -36,17 +37,33 @@ namespace DeGenPrime
 
 	std::string DataSequence::Print()
 	{
-		string ret = "Sequence MC: ";
-		ret += MC();
-		ret += "\nSequence Codes: ";
-		ret += Codes();
-		ret += "\nLength: " + to_string(_list.size()) + " bps\n";
-		ret += "Enthalpy: " + to_string(Enthalpy()) + " kcal\n";
-		ret += "Entropy: " + to_string(Entropy()) + " cal\n";
-		ret += "Gibbs: " + to_string(Gibbs()) + " kcal\n";
-		ret += "GC Content: " + to_string(GCRatio()) + "\n";
-		ret += "Basic Melting Temperature: " + to_string(BasicTemperature()) + " deg C\n";
-		ret += "Nearest Neighbor Melting Temperature: " + to_string(NNMeltingTemperature()) + " deg C\n";
+		string ret = Format("Basic Information", STR_FORMAT, Alignment::Center) + "\n";
+		string line = "Sequence Codes: " + Codes();
+		ret += Format(line, 45, Alignment::Right);
+		line = "       Length: " + to_string(_list.size()) + " bps";
+		ret += Format(line, STR_FORMAT - 40, Alignment::Left) + "\n";
+		line = "Sequence MC: " + MC();
+		ret += Format(line, 45, Alignment::Right);
+		line = "   GC Content: ";
+		line += Format((float)100.0 * GCRatio(), 2) + "%";
+		ret += Format(line, STR_FORMAT - 45, Alignment::Left) + "\n";
+		ret += Format("Thermodynamic Information", STR_FORMAT, Alignment::Center) + "\n";
+		line = "Enthalpy: ";
+		line += Format(Enthalpy(), 2) + " kcal";
+		ret += Format(line, 25, Alignment::Center);
+		line = "Entropy: ";
+		line += Format(Entropy(), 2) + " cal";
+		ret += Format(line, 25, Alignment::Center);
+		line = "Gibbs: ";
+		line += Format(Gibbs(), 2) + " kcal";
+		ret += Format(line, STR_FORMAT - 50, Alignment::Center) + "\n";
+		ret += Format("Melting Temperature", STR_FORMAT, Alignment::Center) + "\n";
+		line = "Basic: ";
+		line += Format(BasicTemperature(), 2) + " deg C";
+		ret += Format(line, 30, Alignment::Center);
+		line = "Nearest Neighbor: ";
+		line += Format(NNMeltingTemperature(), 2) + " deg C";
+		ret += Format(line, STR_FORMAT - 30, Alignment::Center) + "\n";
 		ret += "\n";
 		return ret;
 	}
@@ -117,20 +134,13 @@ namespace DeGenPrime
 
 	string DataSequence::Consensus(std::vector<int> fwd_ind, std::vector<int> fwd_len, bool cons)
 	{
-		string codes = Codes();
 		string ret = "";
-		for(int i = 0;i < 76;i++)
-		{
-			ret += "-";
-		}
-		int len = ret.length();
-		string ret2 = ret;
-		ret += "\n\tSize of dashes: " + to_string(len);
-		ret += "\n" + ret2 + "\n";
+		string codes = Codes();
+		string start_num, end_num, range;
 		transform(codes.begin(), codes.end(), codes.begin(), ::tolower);
 		if(cons)
 		{
-			ret += "\t(conserved regions capitalized.)\n"; 
+			ret += Format("Conserved regions capitalized.", STR_FORMAT, Alignment::Center) + "\n";
 			for(int i = 0;i < fwd_ind.size();i++)
 			{
 				int len = fwd_len[i];
@@ -142,65 +152,21 @@ namespace DeGenPrime
 		int final_index = codes.length() - 1;
 		int lines = codes.length() / 60;
 		int index = 0;
-		// Model
-		// ' (#####-#####): '
 		for(int i = 0;i < lines;i++)
 		{
 			index = i * 60;
-			int mod = 5;
-			int temp = index;
-			if(temp == 0)mod--;
-			while(temp > 0)
-			{
-				temp /= 10;
-				mod--;
-			}
-			ret += " (";
-			for(int j = 0;j < mod;j++)
-			{
-				ret += "0";
-			}
-			ret += to_string(index) + "-";
-			mod = 5;
-			temp = index + 59;
-			while(temp > 0)
-			{
-				temp /= 10;
-				mod--;
-			}
-			for(int j = 0;j < mod;j++)
-			{
-				ret += "0";
-			}
-			ret += to_string(index + 59) + "): " + codes.substr(i*60,60) + "\n";
+			start_num = Format(index,5);
+			end_num = Format(index + 59, 5);
+			range = "(" + start_num + "-" + end_num + "): ";
+			ret += Format(range, 16, Alignment::Right);
+			ret += codes.substr(i*60,60) + "\n";
 		}
 		index += 60;
 		codes.erase(0,index);
-		int mod = 5;
-		int temp = index;
-		while(temp > 0)
-		{
-			temp /= 10;
-			mod--;
-		}
-		ret += " (";
-		for(int j = 0;j < mod;j++)
-		{
-			ret += "0";
-		}
-		ret += to_string(index) + "-";
-		mod = 5;
-		temp = final_index;
-		while(temp > 0)
-		{
-			temp /= 10;
-			mod--;
-		}
-		for(int j = 0;j < mod;j++)
-		{
-			ret += "0";
-		}
-		ret += to_string(final_index) + "): " + codes + "\n";
+		start_num = Format(index, 5);
+		end_num = Format(final_index, 5);
+		range = "(" + start_num + "-" + end_num + "): ";
+		ret += Format(range, 16, Alignment::Right) + codes + "\n";
 		return ret;
 	}
 
@@ -250,6 +216,8 @@ namespace DeGenPrime
 			}
 		}
 
+		if(p.size() < 2)return 0.0;
+
 		// Add up NN enthalpies of the subsequence
 		for(int i = 0; i < p.size() - 1;i++)
 		{
@@ -279,6 +247,8 @@ namespace DeGenPrime
 				p.PushBack(_list[i]);
 			}
 		}
+
+		if(p.size() < 2)return 0.0;
 
 		// Add up NN entropies of the subsequence
 		for(int i = 0; i < p.size() - 1;i++)
@@ -310,6 +280,8 @@ namespace DeGenPrime
 				p.PushBack(_list[i]);
 			}
 		}
+
+		if(p.size() < 2)return 0.0;
 		
 		for(int i = 0;i < p.size() - 1;i++)
 		{
@@ -490,11 +462,10 @@ namespace DeGenPrime
 	float DataSequence::Penalty() const
 	{
 		float penalty = 0.0; // The lower this number the higher the quality.
-
 		// Primers outside of size range should not be considered
 		if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
 		{
-			return 10000.0;
+			return 1000.0;
 		}
 
 		// Internal repetition

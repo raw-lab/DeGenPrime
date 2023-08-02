@@ -40,9 +40,9 @@
 #define PRIMER_CALCULATOR
 
 #include <vector>
-#include "Primer.h"
-#include "SequenceList.h"
-#include "DataSequence.h"
+#include "primer.h"
+#include "sequencelist.h"
+#include "datasequence.h"
 
 namespace DeGenPrime
 {

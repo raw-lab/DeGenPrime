@@ -62,7 +62,7 @@
 
 #include <fstream>
 #include <vector>
-#include "DataNode.h"
+#include "datanode.h"
 #include "global.h"
 
 namespace DeGenPrime

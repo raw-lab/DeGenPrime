@@ -9,7 +9,7 @@
 #define PRIMER_CLASS
 
 #include <string>
-#include "DataSequence.h"
+#include "datasequence.h"
 
 namespace DeGenPrime
 {

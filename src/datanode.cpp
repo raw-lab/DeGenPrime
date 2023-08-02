@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
-#include "DataNode.h"
-#include "GlobalSettings.h"
+#include "datanode.h"
+#include "globalsettings.h"
 #include "global.h"
 
 using namespace std;

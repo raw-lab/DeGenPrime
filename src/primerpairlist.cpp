@@ -5,11 +5,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "PrimerPairList.h"
-#include "PrimerPair.h"
-#include "Primer.h"
-#include "DataSequence.h"
-#include "GlobalSettings.h"
+#include "primerpairlist.h"
+#include "primerpair.h"
+#include "primer.h"
+#include "datasequence.h"
+#include "globalsettings.h"
+#include "format.h"
 #include "global.h"
 
 using namespace std;
@@ -109,7 +110,7 @@ namespace DeGenPrime
 				filtercount++;
 			}
 		}
-		ret = FilterMessage("FilterAmpliconLength", filtercount);
+		ret = FilterMessage("FilterAmpLength", filtercount);
 		return ret;
 	}
 
@@ -133,20 +134,46 @@ namespace DeGenPrime
 
 	string PrimerPairList::FilterMessage(std::string func, int filtercount)
 	{
+		bool start = func == "start";
 		bool final = func == "final";
 		string ret = "";
-		ret += final ? "After filters, removed " : (func + " filtered ");
-		// ret += final ? "After all filters: " : ("After " + func + ": ");
-		// ret += "Filtered: [";
-		ret += final ? to_string(_OriginalSize - size()) : to_string(filtercount);
-		ret += " Primer Pairs (";
-		ret += final ? to_string(100.0 * ((float)(_OriginalSize - size())/(float)_OriginalSize)) :
-			to_string(100.0 * ((float)filtercount/(float)_OriginalSize));
-		ret += "% of total.)\n";
-		if(final)
+		string line = "";
+		if(start)
 		{
-			ret += "Total primer pairs remaining: [";
-			ret += to_string(size()) + "]\n";
+			line = "Filter Name";
+			ret += Format(line, 25, Alignment::Center);
+			line = "Filtered  ";
+			ret += Format(line, 25, Alignment::Right);
+			line = "Percent";
+			ret += Format(line, STR_FORMAT - 50, Alignment::Left);
+		}
+		else if(final)
+		{
+			line = "";
+			for(int i = 0;i < STR_FORMAT;i++)
+			{
+				line += "-";
+			}
+			ret += line + "\n";
+			line = "Remaining";
+			ret += Format(line, 25, Alignment::Left);
+			line = to_string(size()) + "   ";
+			ret += Format(line, 25, Alignment::Right);
+			line = "(";
+			float percent = 100.0 * ((float)size())/((float)_OriginalSize);
+			line += Format(percent, 2) + "%)";
+			ret += Format(line, STR_FORMAT - 50, Alignment::Left) + "\n";
+		}
+		else
+		{
+			line = "     " + func;
+			ret += Format(line, 25, Alignment::Left);
+			line = to_string(filtercount) + "   ";
+			ret += Format(line, 25, Alignment::Right);
+			line = "(";
+			float percent = 100.0 * ((float)filtercount)/((float)_OriginalSize);
+			line += Format(percent, 2) + "%)";
+			ret += Format(line, STR_FORMAT - 50, Alignment::Left);
 		}
 		return ret;
 	}
@@ -228,20 +255,23 @@ namespace DeGenPrime
 		float temp2 = rhs.TempDiff();
 		return (temp1 < temp2);
 	}
-	
+
+	/*
 	void PrimerPairList::PrintSize()
 	{
 		cout << "The number of forward-reverse primer pairs in this list is: ";
 		cout << size() << endl;
-	}
+	}*/
 
 	string PrimerPairList::PrintAll(DataSequence fwd, DataSequence rev)
 	{
 		string ret = "";
+		string line = "";
 		for(int i = 0;i < _pairs.size();i++)
 		{
-			ret += "Primer pair #" + to_string(i + 1) + "\n";
-			ret += _pairs[i].Print(fwd, rev);
+			line = "Primer Pair #" + to_string(i + 1);
+			ret += Format(line, 25, Alignment::Center);
+			ret += _pairs[i].Print(fwd, rev) + "\n";
 		}
 		return ret;
 	}

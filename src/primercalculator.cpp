@@ -5,11 +5,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Primer.h"
-#include "SequenceList.h"
-#include "DataSequence.h"
-#include "PrimerCalculator.h"
-#include "GlobalSettings.h"
+#include "primer.h"
+#include "sequencelist.h"
+#include "datasequence.h"
+#include "primercalculator.h"
+#include "globalsettings.h"
+#include "format.h"
 #include "global.h"
 
 using namespace std;
@@ -104,6 +105,8 @@ namespace DeGenPrime
 	string PrimerCalculator::FilterAll(DataSequence data)
 	{
 		string ret = "";
+		ret += FilterMessage("before", 0);
+		ret += FilterMessage("start", 0);
 		ret += FilterDegeneracy(data);
 		ret += FilterDeletions(data);
 		ret += FilterGCContent(data);
@@ -348,7 +351,7 @@ namespace DeGenPrime
 				filtercount++;
 			}
 		}
-		ret = FilterMessage("FilterComplementaryEnds", filtercount);
+		ret = FilterMessage("FilterCompEnds", filtercount);
 		return ret;
 	}
 
@@ -476,7 +479,7 @@ namespace DeGenPrime
 				filtercount++;
 			}
 		}
-		ret = FilterMessage("FilterTemperature", filtercount);
+		ret = FilterMessage("FilterTemp", filtercount);
 		return ret;
 	}
 	
@@ -527,17 +530,52 @@ namespace DeGenPrime
 	std::vector<Primer> PrimerCalculator::GetPrimers() const { return _primers; }
 	std::string PrimerCalculator::FilterMessage(std::string func, int filtercount)
 	{
+		bool start = func == "start";
+		bool before = func == "before";
 		bool final = func == "final";
 		string ret = "";
-		ret += final ? "After all filters: " : (func + " filtered ");
-		ret += to_string(filtercount);
-		ret += " Primers. (";
-		ret += to_string(100.0 * ((float)filtercount)/((float)_OriginalSize));
-		ret += "% of total.)\n";
+		string line = "";
+		if(start)
+		{
+			line = "Filter Name";
+			ret += Format(line, 25, Alignment::Center);
+			line = "Filtered  ";
+			ret += Format(line, 25, Alignment::Right);
+			line = "   Percent";
+			ret += Format(line, STR_FORMAT - 50, Alignment::Left) + "\n";
+			return ret;
+		}
+		if(before)
+		{
+			ret = "Before filters [" + to_string(size());
+			ret += "] total primers.\n\n";
+			return ret;
+		}
+		line += final ? "After all filters" : ("     " + func);
+		ret += Format(line, 25, Alignment::Left);
+		line = to_string(filtercount) + "   ";
+		ret += Format(line, 25, Alignment::Right);
+		line = "(";
+		float percent = 100.0 * ((float)filtercount)/((float)_OriginalSize);
+		line += Format(percent, 2);
+		line += "% of total.)";
+		ret += Format(line, STR_FORMAT - 50, Alignment::Left) + "\n";
 		if(final)
 		{
-			ret += "Total primers remaining: [";
-			ret += to_string(size()) + "]\n";
+			line = "";
+			for(int i = 0;i < STR_FORMAT;i++)
+			{
+				line += "-";
+			}
+			ret += line + "\n";
+			line = "Remaining";
+			ret += Format(line, 25, Alignment::Left);
+			line = to_string(size()) + "   ";
+			ret += Format(line, 25, Alignment::Right);
+			line = "(";
+			percent = 100.0 * ((float)size())/((float)_OriginalSize);
+			line += Format(percent,2) + "% of total.)";
+			ret += Format(line, STR_FORMAT - 50, Alignment::Left) + "\n";
 		}
 		return ret;
 	}

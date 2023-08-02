@@ -32,8 +32,8 @@
 
 #include <iostream>
 #include <vector>
-#include "Sequence.h"
-#include "DataSequence.h"
+#include "sequence.h"
+#include "datasequence.h"
 
 namespace DeGenPrime
 {

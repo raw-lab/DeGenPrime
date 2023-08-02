@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "DataSequence.h"
-#include "Sequence.h"
+#include "datasequence.h"
+#include "sequence.h"
 
 using namespace std;
 

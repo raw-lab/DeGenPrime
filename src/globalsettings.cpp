@@ -1,6 +1,6 @@
 // GlobalSettings.cpp
 #include <string>
-#include "GlobalSettings.h"
+#include "globalsettings.h"
 #include "global.h"
 
 using namespace std;

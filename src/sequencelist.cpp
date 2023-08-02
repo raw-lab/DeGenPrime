@@ -3,11 +3,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "DataNode.h"
-#include "DataSequence.h"
-#include "SequenceList.h"
-#include "Sequence.h"
-#include "GlobalSettings.h"
+#include "datanode.h"
+#include "datasequence.h"
+#include "sequencelist.h"
+#include "sequence.h"
+#include "globalsettings.h"
+#include "format.h"
 #include "global.h"
 
 using namespace std;
@@ -132,8 +133,12 @@ namespace DeGenPrime
 	string SequenceList::PrintSequenceNames() const
 	{
 		string ret = "";
+		string line;
 		for(int i = 0;i < _list.size();i++)
 		{
+			line = "";
+			string seq_num = Format(i + 1,4);
+			/*
 			int mod = 4;
 			int temp = i;
 			if(temp == 0)mod--;
@@ -141,8 +146,15 @@ namespace DeGenPrime
 			{
 				temp /= 10;
 				mod--;
-			}
-			ret += "\tSequence(";
+			}*/
+			//ret += "\tSequence(";
+			line += "Sequence(" + seq_num + "):[";
+			line += Format(_list[i].GetName(), 16, Alignment::Right);
+			line += "] Size:[" + to_string(_list[i].size()); // All should be same size
+			line += "]";
+			ret += Format(line, STR_FORMAT, Alignment::Center);
+			ret += "\n";
+			/*
 			for(int j = 0;j < mod;j++)
 			{
 				ret += "0";
@@ -151,7 +163,7 @@ namespace DeGenPrime
 			ret += "):[";
 			ret += _list[i].GetName() + "] Size:[";
 			ret += to_string(_list[i].size());
-			ret += "]\n";
+			ret += "]\n";*/
 		}
 		return ret;
 	}

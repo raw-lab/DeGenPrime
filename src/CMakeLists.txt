@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 3.22)
 project(DeGenPrime)
-add_executable(DeGenPrime DataNode.cpp  DataSequence.cpp  DeGenPrime.cpp  GlobalSettings.cpp  PrimerCalculator.cpp  Primer.cpp  PrimerPair.cpp  PrimerPairList.cpp  Sequence.cpp  SequenceList.cpp  SequenceReader.cpp)
-install(TARGETS DeGenPrime DESTINATION bin)
+add_executable(degenprime datanode.cpp  datasequence.cpp  degenprime.cpp  format.cpp  globalsettings.cpp  primercalculator.cpp  primer.cpp  primerpair.cpp  primerpairlist.cpp  sequence.cpp  sequencelist.cpp  sequencereader.cpp)
+install(TARGETS degenprime DESTINATION bin)

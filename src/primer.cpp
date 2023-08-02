@@ -1,8 +1,8 @@
 // Primer.cpp
 #include <iostream>
 #include <string>
-#include "DataSequence.h"
-#include "Primer.h"
+#include "datasequence.h"
+#include "primer.h"
 
 using namespace std;
 

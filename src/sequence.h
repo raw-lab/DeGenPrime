@@ -16,7 +16,7 @@
 #ifndef SEQUENCE
 #define SEQUENCE
 
-#include "DataSequence.h"
+#include "datasequence.h"
 #include <string>
 #include <vector>
 
