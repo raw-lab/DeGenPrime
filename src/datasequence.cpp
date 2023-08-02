@@ -448,17 +448,6 @@ namespace DeGenPrime
 		return temperature;
 	}
 
-	float DataSequence::AverageRatio() const
-	{
-		float average = 0.0;
-		for(DataNode node : _list)
-		{
-			average += node.Ratio();
-		}
-		average /= _list.size();
-		return average;
-	}
-
 	float DataSequence::Penalty() const
 	{
 		float penalty = 0.0; // The lower this number the higher the quality.

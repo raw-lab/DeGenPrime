@@ -2,8 +2,12 @@
 // Purpose: Class DataNode is a class containing data from
 //		a SequenceList at a particular intersection
 //		across all Sequences in the list.
-// Constructor:	This object can be constructed from the
-//			vector of chars across the intersection.
+// Constructors:	This object can be constructed from the
+//			vector of chars across the intersection.  It can
+//			also be constructed from representative char code and mc
+//			with float ratio.
+// Mutators: InvNode(): switches the code and mc of the node to
+//				its inverse.  A -- T and C -- G are inverses.
 // Acesssors:	char GetCode() - returns _code
 //			char GetMostCommon() - returns _most_common.
 //			float Ratio() - returns _percentage.

@@ -317,17 +317,6 @@ namespace DeGenPrime
 				{
 					_code = _most_common; // Not enough degeneracy
 				}
-				/*
-				if(1.0 - _ratio >= MIN_DEGENERATE_THRESHOLD)
-				{
-					return; // In this case, keep the degenerate code
-				}
-				else
-				{
-					_code = _most_common; // Not enough degeneracy
-				}
-				break;
-				*/
 		}
 		return;
 	}

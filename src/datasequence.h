@@ -1,25 +1,27 @@
 // ****************************** class DataSequence ******************************
-// Purpose:	class DataSequence is a list class containing only a list of DataNodes 
-//		and designed to perform specific opeations on the list.
-// Constructor:	- Default constructor to initialize a blank object
+// Purpose:	class DataSequence is a list class containing only a list of 
+//		DataNodes and designed to perform specific opeations on the list.
+// Constructor:	- Default constructor to initialize a blank object.  Another
+//		constructor to generate DataSequence directly from a string.
 // Mutators: void SetList(vector<DataNode> catalog) standard mutator.
 // Functions: PushBack(DataNode node): Appends node to list.
-//		  		    PopBack(): Removes last node of list.
-//		Print(int id, temp, salt_conc, primer_conc): Print datasequence
-//						   codes to std::cout.
-//	     PrintCodes(): Prints all the Codes in the sequence to cout.
-// SubSeq(start,length): Returns a length list of DataNodes beginning at 
-//				 the start index.  Return is designed to be used
+//		PopBack(): Removes last node of list.
+//		Erase(int i): Removes the node at the argument index.
+//		string Print(): Returns a string of the primer information.
+//	    string Codes(): Prints all the Codes in the sequence to cout.
+// 		SubSeq(start,length): Returns a length list of DataNodes beginning
+//				 of the start index.  Return is designed to be used
 //				 with SetList to make a newDataSequence.
-// 		InvSeq():   Returns a new DataSequence where all of the codes
+// 		InvSeq(): Returns a new DataSequence where all of the codes
 //				have been changed to the inverse of their code.
-//		RevSeq():	Returns a new DataSequence in the reverse order
+//		RevSeq(): Returns a new DataSequence in the reverse order
 //				of the calling DataSequence.
 //		Enthalpy(): Returns the Enthalpy of the DataSequence (float).
 //			Values from https://www.pnas.org/doi/10.1073/pnas.95.4.1460
-//		Entropy():	Returns the Entropy of the DataSequence (float).
+//		Entropy(): Returns the Entropy of the DataSequence (float).
 //			Values from https://www.pnas.org/doi/10.1073/pnas.95.4.1460
-//	     Gibbs(): Returns the Gibbs of the DataSequence at temp (float).
+//		GCRatio(): Returns the float ratio of G and C nucleotides in the sequence.
+//	    Gibbs(): Returns the Gibbs of the DataSequence at temp (float).
 //			Values from https://www.pnas.org/doi/10.1073/pnas.95.4.1460
 //  BasicTemperature(): Returns the basic melting temperature of the DataSequence
 //				(float) using the formula:
@@ -40,6 +42,8 @@
 //				the entropy in the denominator of this equation using
 //				0.368 * N * ln(salt_conc*10^-3) where N is the nucleotide
 //				length.  https://www.pnas.org/doi/10.1073/pnas.95.4.1460
+//	ProductMelt(): Returns the melting point of the product using Santalucia formula.
+//				https://www.pnas.org/doi/10.1073/pnas.95.4.1460. 
 //	BasicAnneal(product, salt_conc, primer_conc): finds the Annealing temp
 //				of the primer.  It uses the formula:
 //				Ta = 0.3 * Tm(primer) + 0.7 * Tm(product) - 14.9.
@@ -99,7 +103,6 @@ namespace DeGenPrime
 		float ProductMelt() const;
 		float NNMeltingTemperature() const;
 		float BasicAnneal(DataSequence product);
-		float AverageRatio() const;
 		float Penalty() const;
 		
 		std::vector<DataNode> GetDataSequence() const;
