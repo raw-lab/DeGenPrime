@@ -1,0 +1,191 @@
+CLUSTAL format alignment by MAFFT L-INS-i (v7.490)
+
+
+WP_012703361.1  atgccgcaccacgagttcgagtgcagcaaggtgatcccggagcgcaagaagcacgccgtg
+WP_011021232.1  atgccgtaccacaccttcgagtgcagcgagtgcatcccggagcgcgccatgcacgccgtg
+WP_011665273.1  atgccgtaccacgagttcgaggtgagcaagtgcatcccggagcgcaagcagcacgccgtg
+YP_426482.1     atgccgcaccacaccttcaagtgcagcgagtgcatcccggagcgcaccaagcacgccgtg
+WP_012500372.1  atgccgtaccacgagttcgagtgcagcaagtgcatcccggagcgcaagatgcacgccgtg
+                ******.*****.  ***.**   ***.**   ************.    **********
+
+WP_012703361.1  atcaagggcaagggcgagaccctggccgacgccctgccgcagggctacctgaacaccatc
+WP_011021232.1  atcaagggcccgggcgaggacctgaccagctgcctgccgctgggctacctgaacaccatc
+WP_011665273.1  gtgaagggcccgggcgaggacctgaccagctgcctgccgaagggctacctgaacaccatc
+YP_426482.1     atcaagggcgccgacgaggacctgaccagctgcctgccgctgggctacctgaacaccatc
+WP_012500372.1  atcaagggcccgggcgaggacctgaccagcgccctgccgctgggctacctgaacaccatc
+                .* ******   *.****. ****.**..*  *******  *******************
+
+WP_012703361.1  ccgggcagcatcagcgagcgcggctgcgcctactgcggcgccaagcacgtgatcggcacc
+WP_011021232.1  ccgggcaccatcagcgagcgcggctgcgcctactgcggcgccaagcacgtgatcggcgcc
+WP_011665273.1  ccgggcaccatcagcgagcgcggctgcgcctactgcggcgccaagcacgtgatcggcacc
+YP_426482.1     ccgggcagcatcagcgagcgcggctgcgcctactgcggcgccaagcacgtgatcggccag
+WP_012500372.1  ccgggcagcatcagcgagcgcggctgcgcctactgcggcgccaagcacgtgatcggcacc
+                ******* *************************************************   
+
+WP_012703361.1  ccgatgaaggacgtgatccacatcagccacggcccggtgggctgcacctacgacacctgg
+WP_011021232.1  ccgatgaaggacgtgatccacgtgagccacggcccggtgggctgcacctacgacacctgg
+WP_011665273.1  ccgatgaaggacgtgatccacctgagccacggcccggtgggctgcacctacgacacctgg
+YP_426482.1     ccgatgaaggacgtgatccacatcagccacggcccgatcggctgcacctacgacacctgg
+WP_012500372.1  ccgatgaaggacgtgatccacatcagccacggcccggtgggctgcacctacgacacctgg
+                ********************* * ************.* *********************
+
+WP_012703361.1  cagaccaagcgctacatcagcgacaacgacaacttccagctgaagtacacctacgccacc
+WP_011021232.1  cacaccaagcgctacatcagcgacaacgacaacttccagctgaagtacaccttcgccacc
+WP_011665273.1  cagaccaagcgctacatcagcgacaacgacgacttccagctgaagtacaccttcgccagc
+YP_426482.1     cagaccaagcgctacatcagcgacaacaacaacttccagctgaagtacacctacgccacc
+WP_012500372.1  cagaccaagcgctacatcagcgacaacgacaacttccagctgaagtacacctacgccacc
+                ** ************************.**.********************* ***** *
+
+WP_012703361.1  gacgtgaaggagaagcacatcgtgttcggcgccgagaagctgctgaagcagaacatcatc
+WP_011021232.1  gacatgaaggagaagcacgtggtgttcggcgccgagaagatgctgaagcagaacatcatc
+WP_011665273.1  gacgtgaaggagaagcacatcgtgttcggcgccgagaagctgctgaagcagaacatcatc
+YP_426482.1     gacgtgcgcgagaagcacatcgtgttcggcgccgagaagctgctgaagcagaacatcctg
+WP_012500372.1  gacgtgaaggagaagcacatcgtgttcggcgccgagaagctgctgaagcagaacatcatc
+                ***.** . *********.* ****************** ***************** * 
+
+WP_012703361.1  gaggccttcaaggccttcccgcagatcaagcgcatgaccatctaccagacctgcgccacc
+WP_011021232.1  gactgcttcaaggccttcccgcacatcaagcgcatgaccatctaccagacctgcgccagc
+WP_011665273.1  gaggccttcaaggccttcccgaacatcaagcgcatgaccatctaccagacctgcgccacc
+YP_426482.1     gaggccttcaaggccttcccggacatcaagcgcatgaccatctaccagacctgcgccacc
+WP_012500372.1  gaggccttccgcgccttcccggacatcaagcgcatgaccatctaccagacctgcgccacc
+                **   **** . ********* * ********************************** *
+
+WP_012703361.1  gccctgatcggcgacgacatcaacgccatcgccgaggaggtgatggaggagatgccggag
+WP_011021232.1  gccctgatcggcgacgacatcgccgccgtggccaagaaggtgatggccgagatgccggac
+WP_011665273.1  gccctgatcggcgacgacgtggacgccatcgccgccgaggtgaaggaggagatgccggac
+YP_426482.1     gccctgatcggcgacgacatcgacgccatcgccagcgaggtgatggacgagctgccggac
+WP_012500372.1  gccctgatcggcgacgacatcgacgccatcgcccaggaggtgatggaggagatgccggac
+                ******************.* . ****.* ***   .****** **  *** ******* 
+
+WP_012703361.1  gtggacatcttcgtgtgcaacagcccgggcttcgccggcccgagccagagcggcggccac
+WP_011021232.1  gtggacatcttcgtgtgcaacgccccgggcttcggcggcccgagccagagcggcggccac
+WP_011665273.1  atcgacatcttcgtgtgcaacagcccgggcttcgccggcccgagccagagcggcggccac
+YP_426482.1     gtggacatcttcgtgtgcaacagcccgggcttcgccggcccgagccagagcggcggccac
+WP_012500372.1  gtggacatcttcgtgtgcaacagcccgggcttcgccggcccgagccagagcggcggccac
+                .* ******************. *********** *************************
+
+WP_012703361.1  cacaagatcaacatcgcctggatcaaccagaaggtgggcaccgtggagccggagatcacc
+WP_011021232.1  cacaagatcaacatcgcctggatcgaccagaaggtgggcacctacgagccggagatcaag
+WP_011665273.1  cacaagatcaacatcgcctggatcaaccagaaggtgggcaccgtggagccgaagatcacc
+YP_426482.1     cacaagatcaacatcgcctgggtgaaccagaaggtgggcaccgtggagccggagatcacc
+WP_012500372.1  cacaagatcaacatcgcctgggtgaaccgcaaggtgggcaccgtggagccggagatcacc
+                *********************.* .***. ************   ******.******  
+
+WP_012703361.1  ggcgaccacgtgatcaactacgtgggcgagtacaacatccagggcgaccaggaggtgatg
+WP_011021232.1  agcaagtacgtgatcaactacgtgggcgactacaacatccagggcgacgccgagatcatg
+WP_011665273.1  ggcgaccacgtgatcaactacgtgggcgagtacaacatccagggcgaccaggaggtgatg
+YP_426482.1     agcgactacgtgatcaactacgtgggcgagtacaacatccagggcgaccaggaggtgatg
+WP_012500372.1  agcgactacgtgatcaactacgtgggcgagtacaacatccagggcgaccaggaggtgatg
+                .**.* .********************** ******************   ***.* ***
+
+WP_012703361.1  gtggactacttcaagcgcatgggcatccaggtgctgagcaccttcaccggcaacggcagc
+WP_011021232.1  gtggactacttccagcgcatgggcatccaggtgctgagcaccttcaccggcaacggcagc
+WP_011665273.1  ctggactacttcaagcgcatgggcatccaggtgctgagcaccttcaccggcaacggcagc
+YP_426482.1     caggactacttcaaccgcatgggcatccagatcctgagcaccttcaccggcaacggcagc
+WP_012500372.1  ctggactacttcaaccgcatgggcatccaggtgctgagcaccttcaccggcaacggcacc
+                  ********** * ***************.* ************************* *
+
+WP_012703361.1  tacgacggcctgcgcgccatgcaccgcgcccacctgaacgtgctggagtgcgcccgcagc
+WP_011021232.1  tacgacgacctgcgcggcatgcacctggcccacctgaacgtgctggagtgcgcccgcagc
+WP_011665273.1  tacgacgacctgcgcgccatgcacggcgcccacctgaacgtgctggagtgcgcccgcagc
+YP_426482.1     tacgacggcctgcgcgccatgcaccgcgcccacctgaacgtgctggagtgcgcccgcagc
+WP_012500372.1  tacgacggcctgcgcagcatgcacaaggcccacctgaacgtgctggagtgcgcccgcagc
+                *******.*******. *******   *********************************
+
+WP_012703361.1  gccgagtacatctgcaacgagctgcgcgtgcgctacggcatcccgcgcctggacatcgac
+WP_011021232.1  gccgagtacatctgcaacgagctgcgcaagcgctacggcaccccgcgcctggacatcgac
+WP_011665273.1  gccgagtacatctgcgacgagctgcgcgtgcgctacggcatcccgcgcctggacatcgac
+YP_426482.1     gccgagtacatctgcaacgagctgcgcgtgcgctacggcatcccgcgcctggacatcgac
+WP_012500372.1  gccgagtacatctgcaacgagctgcgcgtgcgctacggcatcccgcgcctggacatcgac
+                ***************.***********. ***********.*******************
+
+WP_012703361.1  ggcttcggcttcaagccgctggccgacagcctgcgcaagatcggcatgttcttcggcatc
+WP_011021232.1  ggctacggcttcgagccgctgagcgccagcctgatgaaggtggccatgttcttcggcctg
+WP_011665273.1  ggcttcggccacaaggccctgggcgacagcctgcgcaagatcggcctgttcttcggcatc
+YP_426482.1     ggcttcggcttcgagccgctgagcgacagcctgcgcaagatcggcctgttcttcggcatc
+WP_012500372.1  ggcttcggcttcgagccgctgagcgccagcctgctgaaggtgggccgcttcttcggcatc
+                **** ****. *.** * ***. ** *******   ***.* * *   ********* * 
+
+WP_012703361.1  gaggaccgcgccaaggccatcatcgacgaggaggtggcccgctggaagccggagctggac
+WP_011021232.1  gagaaggaggcccaggccatcatcgacgaggagaccgcccgctggcgcccggagctgaac
+WP_011665273.1  gaggagcgcgccgaggccatcatcgccgaggagaccgccaagtggggcccggagctggcc
+YP_426482.1     gaggaccgcgcccaggccatcatcgacgaggagaccgccaagtggaagccgcagctggac
+WP_012500372.1  gaggaccgcgcccaggccatcatcgacgaggagaccgcccgctggaagccggagctggac
+                ***.*  . *** ************ *******.. *** . *** . *** *****. *
+
+WP_012703361.1  tggtacaaggagcgcctgatgggcaagaaggtgtgcctgtggccgggcggcagcaagctg
+WP_011021232.1  tggtacgccaagcgcctgaagggcaagaagatctgcctgtggccgggcggcagcaagctg
+WP_011665273.1  tggtacaaggagcgcctgcagggcaagaaggtgtgcctgtggccgggcggcagcaagctg
+YP_426482.1     tggtacaaggagcgcctgcgcggcaagaaggtgtgcctgtggccgggcggcagcaagctg
+WP_012500372.1  tggtacaaggagcgcctgaacggcaagaaggtgtgcctgtggccgggcggcagcaagctg
+                ******.  .********   *********.* ***************************
+
+WP_012703361.1  tggcactgggcccacgtgatcgaggaggagatgggcctgaaggtggtgagcgtgtacacc
+WP_011021232.1  tggcactgggcccacgtgatcgaggaggagatgggcgtgaaggtggtgagcgtgtacagc
+WP_011665273.1  tggcactgggcccacgccatccaggaggagatgggcgtgaaggtggtgagcgtgtacacc
+YP_426482.1     tggcactgggcccacgtgatccaggaggagatgggcctgaacgtggtgagcctgtacacc
+WP_012500372.1  tggcactgggcccacgtgatccacgacgagatgggcgtggacgtggtgagcgtgtacacc
+                ****************. *** * ** ********* **.* ********* ****** *
+
+WP_012703361.1  aagttcggccaccagggcgacatggagaagggcatcgcccgctgcggcgagggcaccctg
+WP_011021232.1  aagttcggccaccagggcgacttcgagaagggcgtggcccgctgcagcgagggcgccctg
+WP_011665273.1  aagttcggccaccagggcgacatggagaagggcgtgagccgctgcggcgagggcgccctg
+YP_426482.1     aagttcggccaccagggcgacatggagaagggcatcgcccgctgcggcgagggcgccctg
+WP_012500372.1  aagttcggccaccagggcgacatggagaagggcatcgcccgctgcgaggtgggcaccctg
+                ********************* * *********.* . *******.. * ****.*****
+
+WP_012703361.1  gccatcgacgacccgaacgagctggagggcctggaggccctggagatgctgaagccggac
+WP_011021232.1  gccatcgacgacccgaacgagctggagggcctggaggccatggagatgctgcagccggac
+WP_011665273.1  gccatcgacgacccgaacgagctggagaaccaggaggccctgcgcaacctgaagccggac
+YP_426482.1     gccatcgacgacccgaacgagctggagggcctggaggccctggagatgctgaagccggac
+WP_012500372.1  gccatcgacgacccgaacgagctggagggcctggaggccatggagaagctgaagccggac
+                ***************************..** ******* ** . *  *** ********
+
+WP_012703361.1  atcatcctgaccggcaagcgcccgggcgaggtggccaagaaggtgcgcgtgccgtacctg
+WP_011021232.1  tgcgtgctgaccggcgtgcgcccgggcgaggtgagcaagaagatgcgcatcccgtacctg
+WP_011665273.1  gtgatcttcaccggcaagcgcccgggcgaggtggccaagaagatgcgcgtgccgtacctg
+YP_426482.1     atcatcctgaccggcaagcgcccgggcgaggtggccaagaaggtgcgcgtgccgtacctg
+WP_012500372.1  atcatcttcaccggcaagcgcccgggcgaggtggccaagaaggtgcgcgtgccgtacctg
+                   .* .* ******. ****************. *******.*****.* *********
+
+WP_012703361.1  aacgcccacgcctaccacaacggcccgtacaagggcttcgagggctgggtgcgcttcgcc
+WP_011021232.1  aacatccacggctaccacaacggcccgtacaagggctacgagggctgggtgcgcctggcc
+WP_011665273.1  aacgcccacgcctaccacaacggcccgtacaagggcttcgagggctgggtgcgcttcgcc
+YP_426482.1     aacgcccacgcctaccacaacggcccgtacaagggctacgagggctgggtgcgcttcgcc
+WP_012500372.1  aacgcccacgcctaccacaacggcccgtggaagggcttcgagggctgggtgcgcttcgcc
+                ***..***** *****************. ******* ****************.* ***
+
+WP_012703361.1  cgcgacatctacaacgccatctacagcccgatccaccagctgagcggcatcgacatcacc
+WP_011021232.1  cgcgacctgtacaacgccatctacagcccgatccaccagctgagcggcatggacatcagc
+WP_011665273.1  cgcgacatctacaacgccgtgtacagcccgatccaccagctgagcgccatcgacatcagc
+YP_426482.1     cgcgacatctacaacgccatctacagcccgatcttccagctgagcgccctggacatcagc
+WP_012500372.1  cgcgacatctacaacgccatctacagcccgatccaccagctgagcggcctggacatcagc
+                ****** * *********.* ************. *********** * * ******* *
+
+WP_012703361.1  aaggacaacgccccggagtggggcaacggcttccgcacccgccagatgctgagcgacggc
+WP_011021232.1  aaggacgagatcccga---ccgacaagggcttcctgacccgccagatgatcagcgacgtg
+WP_011665273.1  aaggacgactacgcca---ccgacaagggcttcgtgacccgccgcatgctgagcgacgcc
+YP_426482.1     aaggacccgatcccga---ccgaccagggcttcctgaccccgcagatgatcagcgacccg
+WP_012500372.1  aaggacgagatcccga---ccgagcacggcttcgtgacccagcgcatgatcagcgacgcc
+                ******     * * .     *.  * ******   ****  *. *** * ******   
+
+WP_012703361.1  aacctgagcgacgccgtgcgcaacagcgagaccctgcgccagtacaccggcggctacgac
+WP_011021232.1  aacatcgtggacgaccgcaccaccccgagcgaggagcgcccgtacaccggcgactgggac
+WP_011665273.1  aacctgagcgacgaggc---caaggccagcccgatgaccggctacagcggcaagttcgac
+YP_426482.1     gccctgccggccgaggtgcgcagcagcaccgtgctgaccccgtaccgcggcgcctacgac
+WP_012500372.1  accctgagccacgaggtgcgcaccagcgccatggtgcgcgagtacaccggcaagtacgac
+                . * *      **       **     .       *  *   ***  ****.  *  ***
+
+WP_012703361.1  agcgtgagcaagctgcgcgagcgcgagtacccggcct---------------tcgagcgc
+WP_011021232.1  atcgtgacccgcctgcgcggcaagacctacccgaagc---------------tggagagc
+WP_011665273.1  ccgatcgccgccatccgcgccaagaccgacgccgactacccggtgttcccgcgccagagc
+YP_426482.1     accatcagcgccctgcgcgagaagacctacccgcgct---------------tcgacgcc
+WP_012500372.1  ccgatcgccgacctgcgcaagaagacctacccggacc---------------tgaag---
+                   .* . *    * ***.   . .   ** *    .                  *    
+
+WP_012703361.1  aaggtg---------ggc
+WP_011021232.1  cagcagctgggcaccgcc
+WP_011665273.1  gtgccggtggccgccgag
+YP_426482.1     gtgccggtggcc---cag
+WP_012500372.1  ---------------aag
+                                  

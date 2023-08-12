@@ -1,0 +1,141 @@
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+                          % Sequence Information %                          
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+
+                             Sequence Count: 50                             
+
+                Sequence(0001):[WP_012536579.1  ] Size:[1797]               
+                Sequence(0002):[WP_012064610.1  ] Size:[1797]               
+                Sequence(0003):[WP_011320929.1  ] Size:[1797]               
+                Sequence(0004):[WP_012698833.1  ] Size:[1797]               
+                Sequence(0005):[WP_012383486.1  ] Size:[1797]               
+                Sequence(0006):[WP_011917960.1  ] Size:[1797]               
+                Sequence(0007):[WP_012573573.1  ] Size:[1797]               
+                Sequence(0008):[WP_012301309.1  ] Size:[1797]               
+                Sequence(0009):[WP_012617249.1  ] Size:[1797]               
+                Sequence(0010):[NP_662421.1     ] Size:[1797]               
+                Sequence(0011):[WP_012499579.1  ] Size:[1797]               
+                Sequence(0012):[NP_346898.1     ] Size:[1797]               
+                Sequence(0013):[ABR34173.1      ] Size:[1797]               
+                Sequence(0014):[WP_010936846.1  ] Size:[1797]               
+                Sequence(0015):[WP_011461720.1  ] Size:[1797]               
+                Sequence(0016):[WP_011879116.1  ] Size:[1797]               
+                Sequence(0017):[YP_009051.1     ] Size:[1797]               
+                Sequence(0018):[WP_012468730.1  ] Size:[1797]               
+                Sequence(0019):[WP_015837434.1  ] Size:[1797]               
+                Sequence(0020):[WP_012282220.1  ] Size:[1797]               
+                Sequence(0021):[WP_008804133.1  ] Size:[1797]               
+                Sequence(0022):[WP_009784197.1  ] Size:[1797]               
+                Sequence(0023):[ZP_00054385.1   ] Size:[1797]               
+                Sequence(0024):[WP_010877173.1  ] Size:[1797]               
+                Sequence(0025):[WP_011974138.1  ] Size:[1797]               
+                Sequence(0026):[WP_011170801.1  ] Size:[1797]               
+                Sequence(0027):[WP_011971879.1  ] Size:[1797]               
+                Sequence(0028):[WP_011023795.1  ] Size:[1797]               
+                Sequence(0029):[WP_012464209.1  ] Size:[1797]               
+                Sequence(0030):[WP_012592583.1  ] Size:[1797]               
+                Sequence(0031):[WP_010995612.1  ] Size:[1797]               
+                Sequence(0032):[ZP_03723747.1   ] Size:[1797]               
+                Sequence(0033):[WP_011341853.1  ] Size:[1797]               
+                Sequence(0034):[WP_011908286.1  ] Size:[1797]               
+                Sequence(0035):[WP_011439870.1  ] Size:[1797]               
+                Sequence(0036):[WP_012568803.1  ] Size:[1797]               
+                Sequence(0037):[WP_012122494.1  ] Size:[1797]               
+                Sequence(0038):[WP_011955958.1  ] Size:[1797]               
+                Sequence(0039):[YP_001314760.1  ] Size:[1797]               
+                Sequence(0040):[WP_011432083.1  ] Size:[1797]               
+                Sequence(0041):[WP_011697880.1  ] Size:[1797]               
+                Sequence(0042):[YP_002249506.1  ] Size:[1797]               
+                Sequence(0043):[WP_011241558.1  ] Size:[1797]               
+                Sequence(0044):[WP_013099455.1  ] Size:[1797]               
+                Sequence(0045):[WP_013176271.1  ] Size:[1797]               
+                Sequence(0046):[WP_015733163.1  ] Size:[1797]               
+                Sequence(0047):[WP_011032674.1  ] Size:[1797]               
+                Sequence(0048):[WP_012979651.1  ] Size:[1797]               
+                Sequence(0049):[ZP_07330059.1   ] Size:[1797]               
+                Sequence(0050):[ZP_07684111.1   ] Size:[1797]               
+
+                            %%%%%%%%%%%%%%%%%%%%%                           
+                            % Conserved Regions %                           
+                            %%%%%%%%%%%%%%%%%%%%%                           
+
+                       There are 7 conserved regions.                       
+
+       (0307-0329)              (0399-0426)              (0645-0662)       
+
+       (1149-1175)              (1478-1499)              (1554-1571)       
+
+       (1575-1595)       
+
+                    There are 19 candidate pair mappings.                   
+
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+                           % Consensus Sequence %                           
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+
+                       Conserved regions capitalized.                       
+ (00000-00059): at----------------------------------------------------------
+ (00060-00119): ------------------------------------------------------------
+ (00120-00179): ---------------------------------------------vtgnnsgasnnsacc
+ (00180-00239): ---------------------nncnagnagancnnsvvscgcvaggccvtgancatcaac
+ (00240-00299): ccggccaagrcctgccagccgntsggcgccatgtdcgccgccctgggcntcnasvgcdsc
+ (00300-00359): vtgccghTCGTGCACGGCAGCCAGGGCTGCnbcrcctacbhccgcancnnchtgavccgc
+ (00360-00419): cacttcmrsgagccggbcvnsdbcgbsancavcagchtsACCGAGGACGCCGCCGTGTTC
+ (00420-00479): GGCGGCCngavcaacctgvtsgasggcctgvnsaacnbctncvncctstacaasccgvas
+ (00480-00539): atgatcgccgtgndcaccacctgcatgvscgagrysatcggcgacgacvtgvnsgncttc
+ (00540-00599): atcvnsvnsgccndsvasvaggncnncvtsccgnnggvc------------------nts
+ (00600-00659): nngvtgnbsnncgccmacaccccgagctwcgtgggcagccacntsACCGGCTACGACAAC
+ (00660-00719): ATGntgaagggcntcntgvasnacntsnc------cgagvvcnncvnsvn----------
+ (00720-00779): --------------gnnsaacgrcaagvtcaacntcatcccgggctt---cnbsdac---
+ (00780-00839): ccgggcracatscgcgagntcaagcgcatsntgvvcnngatgggcntgvag---------
+ (00840-00899): ---nncancntgntgnccgacancagcgacnngntggacancccgnns------------
+ (00900-00959): nhcggcvagtnccvsatgtaccc---sggcggcaccacsntggaggasntsvnsgacnbc
+ (00960-01019): vbcaacdscaaggncaccntcnbcctgnvsnnstacnncancgnsvnsrccnncvngnnc
+ (01020-01079): ntggagvncanstncarsvtgccgnncnnsnnsntsvncnnsccgatcggcvtgvncdvc
+ (01080-01139): accgacgncttcvtgatgvncvtgnncv---agntsaccggcvaggvsatcccggasgag
+ (01140-01199): ctgvngnnsGAGCGCGGCCGCCTGGTGGACGCCATGvccgac---anccacnnctacntc
+ (01200-01259): cacggcaagaaggtsgccvtstncggcgacccggacntsntgatcggcntgvccvgcttc
+ (01260-01319): ntgntggagvtgggcntsnagccgnnsbacdtsntgdbcvvcancvvsavcaagn-----
+ (01320-01379): ----------------------ncttcgagvagnasatgnaggvsvtgntggacgv----
+ (01380-01439): -----gnncggcnn------------ggacnbcnas------gtgnnsnnsnncnvcgac
+ (01440-01499): ctgtgsvachtgcrcadsnngvtgahgavcgagcc---GGTGGACCTGCTGATCGGCAAC
+ (01500-01559): ---agcnacggcaagtacatcgvccgcgacnn---------------------sGACATC
+ (01560-01619): CCGCTGGTGCGCntsGGCTTCCCGATCTTCGACCGCnnsvdccaccaccgctdcccgatc
+ (01620-01679): ntgggctacvngggcgbcvtgnncntgntggncnngatcntgaacaccntchtggacnns
+ (01680-01739): nnggaccvcnn---cdbcvn---------------sgacnnsancttcgagctgvtsvds
+ (01740-01796): ---------------------------------------------------------
+
+                               %%%%%%%%%%%%%%%                              
+                               % Search Mode %                              
+                               %%%%%%%%%%%%%%%                              
+
+              Forward Primer: 'CTGAAGACCAGCATCAAGAA' not found.             
+'CTGAAGACCAGCATCAAGAA' details:                                             
+                              Basic Information                             
+         Sequence Codes: CTGAAGACCAGCATCAAGAA       Length: 20 bps               
+            Sequence MC: CTGAAGACCAGCATCAAGAA   GC Content: 45.00%          
+                          Thermodynamic Information                         
+  Enthalpy: -152.70 kcal    Entropy: -416.00 cal      Gibbs: -23.51 kcal    
+                             Melting Temperature                            
+      Basic: 49.73 deg C               Nearest Neighbor: 49.61 deg C        
+
+
+Penalty: 05.91
+Filtered by:
+	FilterTemperature
+
+Reverse Primer: 'AACAACAAGGTGAACCTGAT' not found.                           
+'AACAACAAGGTGAACCTGAT' details:                                             
+                              Basic Information                             
+         Sequence Codes: AACAACAAGGTGAACCTGAT       Length: 20 bps               
+            Sequence MC: AACAACAAGGTGAACCTGAT   GC Content: 40.00%          
+                          Thermodynamic Information                         
+  Enthalpy: -149.80 kcal    Entropy: -407.60 cal      Gibbs: -23.22 kcal    
+                             Melting Temperature                            
+      Basic: 47.68 deg C               Nearest Neighbor: 49.21 deg C        
+
+
+Penalty: 10.81
+Filtered by:
+	FilterTemperature
+

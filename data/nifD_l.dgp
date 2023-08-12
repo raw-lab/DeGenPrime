@@ -1,0 +1,306 @@
+                                 %%%%%%%%%%%                                
+                                 % Results %                                
+                                 %%%%%%%%%%%                                
+
+            No primer pairs were found for these specifications.            
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+                          % Sequence Information %                          
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+
+                             Sequence Count: 56                             
+
+                Sequence(0001):[WP_012991467.1  ] Size:[1951]               
+                Sequence(0002):[OYZ27760.1      ] Size:[1951]               
+                Sequence(0003):[GBC87956.1      ] Size:[1951]               
+                Sequence(0004):[WP_013505324.1  ] Size:[1951]               
+                Sequence(0005):[WP_013450809.1  ] Size:[1951]               
+                Sequence(0006):[WP_027390770.1  ] Size:[1951]               
+                Sequence(0007):[WP_012536580.1  ] Size:[1951]               
+                Sequence(0008):[WP_012064611.1  ] Size:[1951]               
+                Sequence(0009):[WP_011320928.1  ] Size:[1951]               
+                Sequence(0010):[WP_012698832.1  ] Size:[1951]               
+                Sequence(0011):[WP_012383485.1  ] Size:[1951]               
+                Sequence(0012):[WP_011917961.1  ] Size:[1951]               
+                Sequence(0013):[WP_012573572.1  ] Size:[1951]               
+                Sequence(0014):[WP_012301308.1  ] Size:[1951]               
+                Sequence(0015):[WP_012617250.1  ] Size:[1951]               
+                Sequence(0016):[NP_662420.1     ] Size:[1951]               
+                Sequence(0017):[WP_012499580.1  ] Size:[1951]               
+                Sequence(0018):[NP_346897.1     ] Size:[1951]               
+                Sequence(0019):[ABR34172.1      ] Size:[1951]               
+                Sequence(0020):[WP_010936847.1  ] Size:[1951]               
+                Sequence(0021):[WP_005813531.1  ] Size:[1951]               
+                Sequence(0022):[WP_011879117.1  ] Size:[1951]               
+                Sequence(0023):[WP_011787309.1  ] Size:[1951]               
+                Sequence(0024):[WP_012468731.1  ] Size:[1951]               
+                Sequence(0025):[WP_015837435.1  ] Size:[1951]               
+                Sequence(0026):[WP_012282219.1  ] Size:[1951]               
+                Sequence(0027):[WP_012541112.1  ] Size:[1951]               
+                Sequence(0028):[ZP_01620767.1   ] Size:[1951]               
+                Sequence(0029):[WP_009869030.1  ] Size:[1951]               
+                Sequence(0030):[WP_010877172.1  ] Size:[1951]               
+                Sequence(0031):[WP_011974139.1  ] Size:[1951]               
+                Sequence(0032):[WP_011170800.1  ] Size:[1951]               
+                Sequence(0033):[WP_011971880.1  ] Size:[1951]               
+                Sequence(0034):[WP_011023794.1  ] Size:[1951]               
+                Sequence(0035):[WP_012464210.1  ] Size:[1951]               
+                Sequence(0036):[WP_012592584.1  ] Size:[1951]               
+                Sequence(0037):[WP_010995613.1  ] Size:[1951]               
+                Sequence(0038):[WP_081721723.1  ] Size:[1951]               
+                Sequence(0039):[WP_011341852.1  ] Size:[1951]               
+                Sequence(0040):[WP_011908285.1  ] Size:[1951]               
+                Sequence(0041):[WP_011439869.1  ] Size:[1951]               
+                Sequence(0042):[WP_012568804.1  ] Size:[1951]               
+                Sequence(0043):[WP_012122495.1  ] Size:[1951]               
+                Sequence(0044):[WP_011955959.1  ] Size:[1951]               
+                Sequence(0045):[YP_001314761.1  ] Size:[1951]               
+                Sequence(0046):[WP_011432082.1  ] Size:[1951]               
+                Sequence(0047):[WP_011697881.1  ] Size:[1951]               
+                Sequence(0048):[YP_002249507.1  ] Size:[1951]               
+                Sequence(0049):[WP_011241557.1  ] Size:[1951]               
+                Sequence(0050):[WP_013099456.1  ] Size:[1951]               
+                Sequence(0051):[WP_013176272.1  ] Size:[1951]               
+                Sequence(0052):[WP_015733162.1  ] Size:[1951]               
+                Sequence(0053):[WP_011032673.1  ] Size:[1951]               
+                Sequence(0054):[WP_012979650.1  ] Size:[1951]               
+                Sequence(0055):[WP_013867270.1  ] Size:[1951]               
+                Sequence(0056):[EFO82064.1      ] Size:[1951]               
+
+                            %%%%%%%%%%%%%%%%%%%%%                           
+                            % Conserved Regions %                           
+                            %%%%%%%%%%%%%%%%%%%%%                           
+
+                       There are 12 conserved regions.                      
+
+    (0294-0314)        (0331-0350)        (0362-0398)        (0509-0529)    
+
+    (0615-0637)        (0700-0731)        (0734-0752)        (0858-0882)    
+
+    (1029-1055)        (1312-1331)        (1631-1652)        (1698-1715)    
+
+                    There are 32 candidate pair mappings.                   
+
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+                           % Consensus Sequence %                           
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+
+                       Conserved regions capitalized.                       
+ (00000-00059): atg---------------------------------------------------------
+ (00060-00119): ------------------------------------------------nnsnnsvnsvns
+ (00120-00179): ntsvtsvagvagntsntgvngnnstacccggasaagnncnncaagvagcgcvnsaagcac
+ (00180-00239): ntsnncntgnncgasnnggn------snn---------------------------svnc
+ (00240-00299): nnsnncnn---cvtgvagdgcaacancaagabcvtsccgggcgtsatgaccvnsCGCGGC
+ (00300-00359): TGCGCCTACGCCGGCdgcaagggcgtggtgnGGGGCCCGATCAAGGACATGvtscacatc
+ (00360-00419): abCCACGGCCCGGTGGGCTGCGGCTACTACAGCTGGGGC---anccgccgcaachhsdnc
+ (00420-00479): vncng------------------cvncnns---------ggcgdsvacancttcvbsanc
+ (00480-00539): hhsnncttcaccascgachtscaggagavCGACATCGTGTTCGGCGGCGAsaagaagctg
+ (00540-00599): nnsaagnbcatcnncgaggycnnsgasvtgttcccgchgrncaasggcatcancatshas
+ (00600-00659): avcrmstgcccgrtsGGCCTGATCGGCGACGACATCGAsgccgtggccvrsvagvngvns
+ (00660-00719): vaggag---ntcggc------aagvcggtgntsncsntsvGCTGCGAGGGCTTCCGCGGC
+ (00720-00779): GTGAGCCAGAGCvhGGGCCACCACATCGCCAACnacvncntchdcgacnngvtgntsgvc
+ (00780-00839): ansnncga------------------------svnsnnsgagvnsanc---ccgtacgac
+ (00840-00899): vtsnncvtsatsggcgasTACAACATCGGCGGCGACGCCTGGGnsabcvdsnncctgctg
+ (00900-00959): gaggagatsggcntgvvcgtgvtsdncvnstdsascggcgacggcancntsgacgagntg
+ (00960-01019): nnsnncnbccnsnnsgccaagctgaacvtgvtgcactgcyaccgcagcatsaactacatc
+ (01020-01079): gccvrcndsATGGAGGAGAAGTACGGCATCCCGTGGntgnagntsaacttcttcggcvcg
+ (01080-01139): avcnagabcnncvagagcctgcgcvasatcgccvnsnncttcgacgacvvsd---tsnag
+ (01140-01199): gagvvcgccgagnaggtgatcgccva---gbasvngvcgnngatsnasvcsgngatcgac
+ (01200-01259): nastaccgcvvgcgcctggagggcaagansgtsntgctgtdcgtgggcggccbgcgcvcs
+ (01260-01319): cgccacnnsvtsvncnbsttcvagga---cctgggcatggagntsgtggbcnCCGGCTAC
+ (01320-01379): GAGTTCGCCCACvvcgacgactacgagvgc------------------------------
+ (01380-01439): ------------------------------------------------------------
+ (01440-01499): ------------------------------------------------------------
+ (01500-01559): ---------------------aycnncvasnacntgva------------ggasggcacc
+ (01560-01619): ctgvtsntcgacgacvygavcgnctacgagntsgagnagntcvtsvagvnsntsaagccg
+ (01620-01679): gacctgdtsnbCAGCGGCATCAAGGAGAAGTACntgdtccagaagatgggcntsccgttc
+ (01680-01739): cdccagatgcacagctrsGACTACAGCGGCCCGTACvhcggctwcgasggcttcghsawc
+ (01740-01799): ttcgcccgcgacatsgacatggccntsaacavcccgdtctggaacntgntsvasgccccg
+ (01800-01859): tggvagvns---------------------------------------------------
+ (01860-01919): ------------------------------------------------------------
+ (01920-01950): -------------------------------
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+                          % Primer Pair Filtering %                         
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+
+                   Dividing pair lists into 81 partitions.                  
+
+                         Checking top 25 partitions.                        
+
+Partition #1 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #2 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #3 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #4 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #5 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #6 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #7 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #8 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #9 Pairs: 1296                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #10 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #11 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #12 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #13 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #14 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #15 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #16 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #17 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #18 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #19 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #20 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #21 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #22 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #23 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #24 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #25 Pairs: 1296                                                   
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1296   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+

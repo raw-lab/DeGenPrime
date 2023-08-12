@@ -1,0 +1,315 @@
+                                 %%%%%%%%%%%                                
+                                 % Results %                                
+                                 %%%%%%%%%%%                                
+
+      Primer Pair #1        Amplicon Size: [843]      Temp Diff: [00.10]    
+                Forward                               Reverse               
+         [GGGTTCAGCCGATGACTG]                  [GCGGTTGATTTCCAGCATG]        
+           Basic Information                     Basic Information          
+            Range: [347-364]                      Range: [764-782]          
+           Length: [18]                          Length: [19]               
+          Penalty: [00.69]                      Penalty: [01.79]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [52.60]                        Basic: [51.09]            
+               NN: [52.15]                           NN: [52.05]            
+
+      Primer Pair #2        Amplicon Size: [845]      Temp Diff: [00.18]    
+                Forward                               Reverse               
+         [GGGGTTCAGCCGATGACTG]                [CGCGGTTGATTTCCAGCATG]        
+           Basic Information                     Basic Information          
+            Range: [346-364]                      Range: [763-782]          
+           Length: [19]                          Length: [20]               
+          Penalty: [01.70]                      Penalty: [01.79]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [55.41]                        Basic: [53.83]            
+               NN: [54.71]                           NN: [54.89]            
+
+      Primer Pair #3        Amplicon Size: [852]      Temp Diff: [00.90]    
+                Forward                               Reverse               
+         [GATATTTGGGGGGTTCAGC]                [CGGTTGATTTCCAGCATGAT]        
+           Basic Information                     Basic Information          
+            Range: [337-355]                      Range: [765-784]          
+           Length: [19]                          Length: [20]               
+          Penalty: [03.76]                      Penalty: [02.07]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [51.09]                        Basic: [49.73]            
+               NN: [49.83]                           NN: [50.72]            
+
+      Primer Pair #4        Amplicon Size: [850]      Temp Diff: [00.76]    
+                Forward                               Reverse               
+         [ATATTTGGGGGGTTCAGC]                  [GGTTGATTTCCAGCATGAT]        
+           Basic Information                     Basic Information          
+            Range: [338-355]                      Range: [766-784]          
+           Length: [18]                          Length: [19]               
+          Penalty: [19.23]                      Penalty: [26.88]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [48.04]                        Basic: [46.77]            
+               NN: [48.28]                           NN: [47.52]            
+
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+                          % Sequence Information %                          
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+
+                             Sequence Count: 140                            
+
+                Sequence(0001):[NC_006884.2:117 ] Size:[1955]               
+                Sequence(0002):[GU071092.1:1212 ] Size:[1955]               
+                Sequence(0003):[HQ634176.1:1456 ] Size:[1955]               
+                Sequence(0004):[NC_005083.2:224 ] Size:[1955]               
+                Sequence(0005):[NC_000866.4:104 ] Size:[1955]               
+                Sequence(0006):[DQ105858.1      ] Size:[1955]               
+                Sequence(0007):[DQ105859.1      ] Size:[1955]               
+                Sequence(0008):[DQ105860.1      ] Size:[1955]               
+                Sequence(0009):[DQ105861.1      ] Size:[1955]               
+                Sequence(0010):[DQ105862.1      ] Size:[1955]               
+                Sequence(0011):[DQ105863.1      ] Size:[1955]               
+                Sequence(0012):[DQ105864.1      ] Size:[1955]               
+                Sequence(0013):[DQ105865.1      ] Size:[1955]               
+                Sequence(0014):[DQ105866.1      ] Size:[1955]               
+                Sequence(0015):[DQ105867.1      ] Size:[1955]               
+                Sequence(0016):[DQ105868.1      ] Size:[1955]               
+                Sequence(0017):[DQ105869.1      ] Size:[1955]               
+                Sequence(0018):[DQ105870.1      ] Size:[1955]               
+                Sequence(0019):[DQ105871.1      ] Size:[1955]               
+                Sequence(0020):[DQ105872.1      ] Size:[1955]               
+                Sequence(0021):[DQ105873.1      ] Size:[1955]               
+                Sequence(0022):[DQ105874.1      ] Size:[1955]               
+                Sequence(0023):[DQ105875.1      ] Size:[1955]               
+                Sequence(0024):[DQ105876.1      ] Size:[1955]               
+                Sequence(0025):[DQ105877.1      ] Size:[1955]               
+                Sequence(0026):[DQ105878.1      ] Size:[1955]               
+                Sequence(0027):[DQ105879.1      ] Size:[1955]               
+                Sequence(0028):[DQ105880.1      ] Size:[1955]               
+                Sequence(0029):[DQ105881.1      ] Size:[1955]               
+                Sequence(0030):[DQ105882.1      ] Size:[1955]               
+                Sequence(0031):[DQ105883.1      ] Size:[1955]               
+                Sequence(0032):[DQ105884.1      ] Size:[1955]               
+                Sequence(0033):[DQ105885.1      ] Size:[1955]               
+                Sequence(0034):[DQ105886.1      ] Size:[1955]               
+                Sequence(0035):[DQ105887.1      ] Size:[1955]               
+                Sequence(0036):[DQ105888.1      ] Size:[1955]               
+                Sequence(0037):[DQ105889.1      ] Size:[1955]               
+                Sequence(0038):[DQ105890.1      ] Size:[1955]               
+                Sequence(0039):[DQ105891.1      ] Size:[1955]               
+                Sequence(0040):[DQ105892.1      ] Size:[1955]               
+                Sequence(0041):[DQ105893.1      ] Size:[1955]               
+                Sequence(0042):[DQ105894.1      ] Size:[1955]               
+                Sequence(0043):[DQ105895.1      ] Size:[1955]               
+                Sequence(0044):[DQ105896.1      ] Size:[1955]               
+                Sequence(0045):[DQ105897.1      ] Size:[1955]               
+                Sequence(0046):[DQ105898.1      ] Size:[1955]               
+                Sequence(0047):[DQ105899.1      ] Size:[1955]               
+                Sequence(0048):[DQ105900.1      ] Size:[1955]               
+                Sequence(0049):[DQ105901.1      ] Size:[1955]               
+                Sequence(0050):[DQ105902.1      ] Size:[1955]               
+                Sequence(0051):[DQ105903.1      ] Size:[1955]               
+                Sequence(0052):[DQ105904.1      ] Size:[1955]               
+                Sequence(0053):[DQ105905.1      ] Size:[1955]               
+                Sequence(0054):[DQ105906.1      ] Size:[1955]               
+                Sequence(0055):[DQ105907.1      ] Size:[1955]               
+                Sequence(0056):[DQ105908.1      ] Size:[1955]               
+                Sequence(0057):[DQ105909.1      ] Size:[1955]               
+                Sequence(0058):[DQ105910.1      ] Size:[1955]               
+                Sequence(0059):[DQ105911.1      ] Size:[1955]               
+                Sequence(0060):[DQ105912.1      ] Size:[1955]               
+                Sequence(0061):[DQ105913.1      ] Size:[1955]               
+                Sequence(0062):[DQ105914.1      ] Size:[1955]               
+                Sequence(0063):[DQ105915.1      ] Size:[1955]               
+                Sequence(0064):[DQ105916.1      ] Size:[1955]               
+                Sequence(0065):[DQ105917.1      ] Size:[1955]               
+                Sequence(0066):[DQ105918.1      ] Size:[1955]               
+                Sequence(0067):[DQ105919.1      ] Size:[1955]               
+                Sequence(0068):[DQ105920.1      ] Size:[1955]               
+                Sequence(0069):[DQ105921.1      ] Size:[1955]               
+                Sequence(0070):[DQ105922.1      ] Size:[1955]               
+                Sequence(0071):[DQ105923.1      ] Size:[1955]               
+                Sequence(0072):[DQ105924.1      ] Size:[1955]               
+                Sequence(0073):[DQ105925.1      ] Size:[1955]               
+                Sequence(0074):[DQ105926.1      ] Size:[1955]               
+                Sequence(0075):[DQ105927.1      ] Size:[1955]               
+                Sequence(0076):[DQ105928.1      ] Size:[1955]               
+                Sequence(0077):[DQ105929.1      ] Size:[1955]               
+                Sequence(0078):[DQ105930.1      ] Size:[1955]               
+                Sequence(0079):[DQ105931.1      ] Size:[1955]               
+                Sequence(0080):[DQ105932.1      ] Size:[1955]               
+                Sequence(0081):[DQ105933.1      ] Size:[1955]               
+                Sequence(0082):[DQ105934.1      ] Size:[1955]               
+                Sequence(0083):[DQ105935.1      ] Size:[1955]               
+                Sequence(0084):[DQ105936.1      ] Size:[1955]               
+                Sequence(0085):[DQ105937.1      ] Size:[1955]               
+                Sequence(0086):[DQ105938.1      ] Size:[1955]               
+                Sequence(0087):[DQ105939.1      ] Size:[1955]               
+                Sequence(0088):[DQ105940.1      ] Size:[1955]               
+                Sequence(0089):[DQ105941.1      ] Size:[1955]               
+                Sequence(0090):[DQ105942.1      ] Size:[1955]               
+                Sequence(0091):[NC_021559.1:179 ] Size:[1955]               
+                Sequence(0092):[HQ337021.1:1796 ] Size:[1955]               
+                Sequence(0093):[NC_015290.1:115 ] Size:[1955]               
+                Sequence(0094):[GU071103.1:1155 ] Size:[1955]               
+                Sequence(0095):[NC_048015.1:119 ] Size:[1955]               
+                Sequence(0096):[NC_015283.1:119 ] Size:[1955]               
+                Sequence(0097):[GU071099.1:1193 ] Size:[1955]               
+                Sequence(0098):[NC_019443.1:112 ] Size:[1955]               
+                Sequence(0099):[JN371769.1:1124 ] Size:[1955]               
+                Sequence(0100):[NC_021071.1:121 ] Size:[1955]               
+                Sequence(0101):[HQ634175.1:1214 ] Size:[1955]               
+                Sequence(0102):[KX349321.1:1118 ] Size:[1955]               
+                Sequence(0103):[KX349325.1:1113 ] Size:[1955]               
+                Sequence(0104):[KX349322.1:1113 ] Size:[1955]               
+                Sequence(0105):[KX349319.1:1108 ] Size:[1955]               
+                Sequence(0106):[KX349312.1:1118 ] Size:[1955]               
+                Sequence(0107):[NC_047715.1:111 ] Size:[1955]               
+                Sequence(0108):[KX349307.1:1109 ] Size:[1955]               
+                Sequence(0109):[NC_047717.1:111 ] Size:[1955]               
+                Sequence(0110):[NC_047716.1:111 ] Size:[1955]               
+                Sequence(0111):[KX349326.1:1123 ] Size:[1955]               
+                Sequence(0112):[KX349327.1:1114 ] Size:[1955]               
+                Sequence(0113):[KX349324.1:1117 ] Size:[1955]               
+                Sequence(0114):[KX349318.1:1119 ] Size:[1955]               
+                Sequence(0115):[KX349311.1:1123 ] Size:[1955]               
+                Sequence(0116):[KX349308.1:1123 ] Size:[1955]               
+                Sequence(0117):[KX349315.1:1118 ] Size:[1955]               
+                Sequence(0118):[KX349320.1:1118 ] Size:[1955]               
+                Sequence(0119):[KX349317.1:1117 ] Size:[1955]               
+                Sequence(0120):[KX349316.1:1118 ] Size:[1955]               
+                Sequence(0121):[KX349314.1:1118 ] Size:[1955]               
+                Sequence(0122):[KX349309.1:1116 ] Size:[1955]               
+                Sequence(0123):[NC_015285.1:111 ] Size:[1955]               
+                Sequence(0124):[GU071108.1:1118 ] Size:[1955]               
+                Sequence(0125):[NC_020875.1:931 ] Size:[1955]               
+                Sequence(0126):[HQ316603.1:1702 ] Size:[1955]               
+                Sequence(0127):[HQ316583.1:9315 ] Size:[1955]               
+                Sequence(0128):[NC_026924.1:110 ] Size:[1955]               
+                Sequence(0129):[KJ019071.1:1102 ] Size:[1955]               
+                Sequence(0130):[NC_020855.1:624 ] Size:[1955]               
+                Sequence(0131):[HQ634193.1:6244 ] Size:[1955]               
+                Sequence(0132):[NC_015284.1:116 ] Size:[1955]               
+                Sequence(0133):[GU075905.1:1161 ] Size:[1955]               
+                Sequence(0134):[NC_015280.1:111 ] Size:[1955]               
+                Sequence(0135):[GU071101.1:1118 ] Size:[1955]               
+                Sequence(0136):[MH319766.1:3316 ] Size:[1955]               
+                Sequence(0137):[MH319721.1:1436 ] Size:[1955]               
+                Sequence(0138):[GQ284070.1:130- ] Size:[1955]               
+                Sequence(0139):[GQ284071.1:130- ] Size:[1955]               
+                Sequence(0140):[GQ284068.1:130- ] Size:[1955]               
+
+                            %%%%%%%%%%%%%%%%%%%%%                           
+                            % Conserved Regions %                           
+                            %%%%%%%%%%%%%%%%%%%%%                           
+
+                       There are 2 conserved regions.                       
+
+              (0337-0365)                           (1168-1191)             
+
+                     There is 1 candidate pair mapping.                     
+
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+                           % Consensus Sequence %                           
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+
+                       Conserved regions capitalized.                       
+ (00000-00059): ------------------------------------------------------------
+ (00060-00119): ------------------------------------------------------------
+ (00120-00179): ------------------------------------------------------------
+ (00180-00239): ------------------------------------------------------------
+ (00240-00299): ------------------------------------------------------------
+ (00300-00359): -------------------------------------GATATTTGGGGGGTTCAGCCGAT
+ (00360-00419): GACTGGnccnacngghctgatcttbgcaa-tgcgn-ncnnnntahnnnacn---------
+ (00420-00479): nannntggnnc------------------------------------------ngaagcn
+ (00480-00539): ttnt------------------tnaacgannchnanncngnn-tt---------ctchgg
+ (00540-00599): tgnnnvngnt-----------------------gntnchnnndcnn--------------
+ (00600-00659): --hnnhnnng---------------------------------------------gnnnn
+ (00660-00719): nnnngnndnhnacn----------------------cnnnnnntctna------------
+ (00720-00779): ------------abgntnnnncnnhh----------------------------------
+ (00780-00839): --------------nntnnnntnnnhnnnnnhgntn--------------nnggnatg--
+ (00840-00899): --------------------------ncnacngchnnngctgaagnhc---------tng
+ (00900-00959): vhgannchdnh-------------------------------------------------
+ (00960-01019): ------nnnavngnnttnnnngaaatggsnttctcnathgagaaagtnactgtnacngcn
+ (01020-01079): aann-chcgngcnctnaaagctgagtacacnatngarntngcncaagacctnaangcnat
+ (01080-01139): tcacggt-htnga-tgct---ganacngaactngchaacatbct-nncnacng-------
+ (01140-01199): ----------------------------AAATCATGCTGGAAATCAACCGCG--------
+ (01200-01259): ------------------------------------------------------------
+ (01260-01319): ------------------------------------------------------------
+ (01320-01379): ------------------------------------------------------------
+ (01380-01439): ------------------------------------------------------------
+ (01440-01499): ------------------------------------------------------------
+ (01500-01559): ------------------------------------------------------------
+ (01560-01619): ------------------------------------------------------------
+ (01620-01679): ------------------------------------------------------------
+ (01680-01739): ------------------------------------------------------------
+ (01740-01799): ------------------------------------------------------------
+ (01800-01859): ------------------------------------------------------------
+ (01860-01919): ------------------------------------------------------------
+ (01920-01954): -----------------------------------
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+                          % Primer Pair Filtering %                         
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+
+                   Dividing pair lists into 9 partitions.                   
+
+Partition #1 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #2 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #3 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #4 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #5 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #6 Pairs: 729                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        162   (22.22%)                  
+     FilterTempDiff                         475   (65.16%)                  
+----------------------------------------------------------------------------
+Remaining                                    92   (12.62%)                  
+
+Partition #7 Pairs: 821                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (88.79%)                  
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                    92   (11.21%)                  
+
+Partition #8 Pairs: 821                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (88.79%)                  
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                    92   (11.21%)                  
+
+Partition #9 Pairs: 821                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                        729   (88.79%)                  
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                    92   (11.21%)                  
+
+
