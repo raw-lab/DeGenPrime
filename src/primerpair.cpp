@@ -62,11 +62,11 @@ namespace DeGenPrime
 		line = "Range: ";
 		ret += Format(line, STR_FORMAT / 4, Alignment::Right);
 		line = "[";
-		digs1 = digits(_rev.Index());
-		digs2 = digits(_rev.Index() + _rev.Length() - 1);
+		digs2 = digits(rev_data.RevIndex(_rev.Index()));
+		digs1 = digits(rev_data.RevIndex(_rev.Index() + _rev.Length()));
 		max_dig = (digs2 > digs1) ? digs2 : digs1;
-		line += Format(_rev.Index(), max_dig) + "-";
-		line += Format(_rev.Index() + _rev.Length() - 1, max_dig) + "]";
+		line += Format(rev_data.RevIndex(_rev.Index()), max_dig) + "-";
+		line += Format(rev_data.RevIndex(_rev.Index() + _rev.Length()), max_dig) + "]";
 		ret += Format(line, STR_FORMAT / 4, Alignment::Left) + "\n";
 		line = "Length: ";
 		ret += Format(line, STR_FORMAT / 4, Alignment::Right);

@@ -50,7 +50,7 @@ namespace DeGenPrime
 		void CreateFromRange(DataSequence fwd_seq, DataSequence rev_seq,
 			std::vector<Primer> fwd_list, std::vector<Primer> rev_list, 
 			int fwd_begin, int fwd_end, int rev_begin, int rev_end);
-		void CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list);
+		std::string CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list);
 		void Erase(int index);
 		void PushBack(PrimerPair pair);
 
@@ -59,6 +59,7 @@ namespace DeGenPrime
 		std::string FilterTemperatureDifference();
 		int FilterAnnealingTemp(DataSequence fwd, DataSequence rev, int ignore);
 		int FilterUnique();
+		int PartitionCount() const;
 		int PartitionCount(int fwd_size, int rev_size) const;
 
 		void Sort();

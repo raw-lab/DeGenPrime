@@ -66,17 +66,84 @@ namespace DeGenPrime
 		_OriginalSize = _pairs.size();
 	}
 
-	void PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
+	string PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
 	{
-		for(int i = 0;i < fwd_list.size();i++)
+		string ret = FilterMessage("start", 0) + "\n";
+		int initial_size = 0;
+		int amp_filter = 0;
+		int temp_filter = 0;
+		int good_count = 0;
+
+		int x = 0;
+		int y = 0;
+		bool move_horiz = false;
+		int size = (fwd_list.size() < rev_list.size()) ? fwd_list.size() : rev_list.size();
+		size *= size;
+		for(int i = 0;i < size;i++)
 		{
-			for(int j = 0;j < rev_list.size();j++)
+			if(good_count == 25)
 			{
-				PrimerPair p(fwd_list[i], rev_list[j], fwd_seq, rev_seq);
+				break;
+			}
+			int j = i + 1;
+			PrimerPair p(fwd_list[x], rev_list[y], fwd_seq, rev_seq);
+
+			bool isSquare = ceil((double)sqrt(j)) == floor((double)sqrt(j));
+			bool isOneLessThanSquare = ceil((double)sqrt(j + 1))
+				== floor((double)sqrt(j + 1));
+
+			string msg;
+
+			// Filter Primer
+			if(p.AmpSize() < GlobalSettings::GetMinimumAmplicon())
+			{
+				amp_filter++;
+			}
+			else if(MAX_TEMP_DIFFERENCE < p.TempDiff())
+			{
+				temp_filter++;
+			}
+			else
+			{
 				_pairs.push_back(p);
+				good_count++;
+			}
+
+			cout << msg;
+
+			if(j == 1 || isOneLessThanSquare)
+			{
+				x++;
+				move_horiz = true;
+			}
+			else if(isSquare)
+			{
+				y = 0;
+				x++;
+				move_horiz = true;
+			}
+			else if(move_horiz)
+			{
+				int temp = x;
+				x = y;
+				y = temp;
+				move_horiz = false;
+			}
+			else
+			{
+				int temp = x;
+				x = y;
+				y = temp + 1;
+				move_horiz = true;
 			}
 		}
+
 		_OriginalSize = _pairs.size();
+		// Filter Messages
+		ret += FilterMessage("FilterAmpLength", amp_filter) + "\n";
+		ret += FilterMessage("FilterTempDiff", temp_filter) + "\n";
+		ret += FilterMessage("final", 0) + "\n";
+		return ret;
 	}
 
 	void PrimerPairList::Erase(int index)
@@ -278,6 +345,27 @@ namespace DeGenPrime
 
 	std::vector<PrimerPair> PrimerPairList::GetPairs() const { return _pairs; }
 
+	int PrimerPairList::PartitionCount() const
+	{
+		int rect = size();
+		const int area = 1600;
+		double ratio = (float)rect/(float)area;
+		int n;
+		if(ratio <= 1.0)
+		{
+			return 1.0;
+		}
+		else
+		{
+			int r = (int)ceil(ratio);
+			n = 2;
+			while(pow(n,2) < r)
+			{
+				n++;
+			}
+		}
+		return pow(n,2);
+	}
 	int PrimerPairList::PartitionCount(int fwd_size, int rev_size) const
 	{
 		int rect = fwd_size * rev_size;

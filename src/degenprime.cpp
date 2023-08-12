@@ -38,10 +38,12 @@ int GlobalSettings::_maxPrimers = DEFAULT_MAX_PRIMERS;
 float GlobalSettings::_thermodynamicTemperature = DEFAULT_THERMODYNAMIC_TEMPERATURE;
 bool GlobalSettings::_nonDegenerate = true;
 bool GlobalSettings::_testRun = DEFAULT_RUN_TEST;
+bool GlobalSettings::_invRevRun = false;
 bool GlobalSettings::_SearchFwd = false;
 bool GlobalSettings::_SearchRev = false;
 bool GlobalSettings::_sortbytemp = true;
 string GlobalSettings::_testStr = "";
+string GlobalSettings::_invRevValue = "";
 string GlobalSettings::_searchFwdArg = "";
 string GlobalSettings::_searchRevArg = "";
 
@@ -50,6 +52,7 @@ void ProcessTags(int argc, char *argv[]);
 void PrintHelp();
 string ConservedRegions(std::vector<Primer> primers);
 string TestValue(DataSequence data, bool details);
+string InvRev(DataSequence data);
 string Banner(string message);
 
 int main(int argc, char *argv[])
@@ -61,7 +64,8 @@ int main(int argc, char *argv[])
 	{
 		PrintHelp();
 	}
-	else if(argc == 2 && strstr(argv[1], "--test:") != NULL)
+	else if(argc == 2 && (strstr(argv[1], "--test:") != NULL ||
+		strstr(argv[1], "--invrev:") != NULL))
 	{
 		argc++;
 	}
@@ -348,8 +352,8 @@ int main(int argc, char *argv[])
 	PrimerCalculator calc, rev_calc;
 	if(GlobalSettings::GetNonDegenerate()) // User wants conserved regions
 	{
-		calc.InitializeFromRegion(conserved_fwd_primers, data);
-		rev_calc.InitializeFromRegion(conserved_rev_primers, rev);
+		calc.InitializeFromRegion(conserved_fwd_primers, data, true);
+		rev_calc.InitializeFromRegion(conserved_rev_primers, rev, false);
 	}
 	else if(GlobalSettings::GetMeasureByAmpliconSize()) // User wants minimum amplicon length
 	{
@@ -388,11 +392,13 @@ int main(int argc, char *argv[])
 	{
 		int index;
 		detail_output += Banner(" Search Mode ");
+		line_output = "";
 		if(GlobalSettings::GetSearchFwd())
 		{
 			if(calc.size() == 0)
 			{
 				index = -1;
+				line_output = "No primers found in the calculator.";
 			}
 			else
 			{
@@ -402,12 +408,12 @@ int main(int argc, char *argv[])
 			if(index != -1)
 			{
 				line_output += "\' found at index: " + to_string(index);
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+				detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
 			}
 			else
 			{
 				line_output += "\' not found.";
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+				detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
 				line_output = "\'" + GlobalSettings::GetSearchFwdArg() + "\' details:";
 				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
 				DataSequence d(GlobalSettings::GetSearchFwdArg());
@@ -440,7 +446,6 @@ int main(int argc, char *argv[])
 				detail_output += TestValue(d, true) + "\n";
 			}
 		}
-
 		ofs << detail_output;
 		ifs.close();
 		ofs.close();
@@ -448,12 +453,13 @@ int main(int argc, char *argv[])
 	}
 
 	// Get Partitions of PrimerPairList
-	PrimerPairList pairlist, top;
+	PrimerPairList maxlist, pairlist, top;
 	if(calc.size() != 0 && rev_calc.size() != 0)
 	{
 		detail_output += Banner(" Primer Pair Filtering ");
-
+		//detail_output += maxlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
 		const int part = pairlist.PartitionCount(calc.size(), rev_calc.size());
+		//const int part = maxlist.PartitionCount();
 		const int len_part = sqrt(part);
 		bool done = false;
 		bool move_horiz = false;
@@ -469,7 +475,7 @@ int main(int argc, char *argv[])
 
 		// Declare Filtering variables
 		const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
-		int limit = pow(desiredpairs, 2);
+		int limit = pow(desiredpairs, 3);
 		if(limit > part)limit = part;
 		if(part != 1)
 		{
@@ -496,6 +502,7 @@ int main(int argc, char *argv[])
 				== floor((double)sqrt(count + 1));
 
 			// Create Primer Pair List
+			//pairlist = maxlist;
 			pairlist.CreateFromRange(data, rev, calc.GetPrimers(),
 				rev_calc.GetPrimers(), x_start, x_end, y_start, y_end);
 			line_output = "Partition #" + to_string(count);
@@ -540,12 +547,14 @@ int main(int argc, char *argv[])
 			x_end = x_start + fwd_len > calc.size() ? calc.size() : x_start + fwd_len;
 			y_end = y_start + rev_len > rev_calc.size() ? rev_calc.size() : y_start + rev_len;
 			count++;
-
+			
+			
 			// Filter PrimerPairList
 			detail_output += pairlist.FilterMessage("start", 0) + "\n";
 			detail_output += pairlist.FilterAmpliconLength() + "\n";
 			detail_output += pairlist.FilterTemperatureDifference() + "\n";
 			detail_output += pairlist.FilterMessage("final", 0) + "\n";
+			
 
 			// Make sure we still have primers to work with
 			if(pairlist.size() == 0)
@@ -719,6 +728,12 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetTestValue(str);
 			GlobalSettings::SetRunTest(true);
 		}
+		else if(strstr(argv[i], "--invrev:") != NULL)
+		{
+			string str = ptr;
+			GlobalSettings::SetInvRevValue(str);
+			GlobalSettings::SetRunInvRev(true);
+		}
 		else
 		{
 			cout << "Warning: Unrecognized tag \'" << argv[i] << "\'" << endl;
@@ -743,11 +758,29 @@ void ProcessTags(int argc, char *argv[])
 		DataSequence data;
 		for(char c : GlobalSettings::GetTestValue())
 		{
-			DataNode node(c,c,1.0);
+			char c2;
+			if(c == 'I' || c == 'i')c2 = 'G';
+			else c2 = c;
+			DataNode node(c2,c2,1.0);
 			data.PushBack(node);
 		}
 		string message = TestValue(data, true);
 		cout << message;
+		exit(PROGRAM_SUCCESS);
+	}
+	else if(GlobalSettings::GetRunInvRev())
+	{
+		DataSequence data;
+		for(char c : GlobalSettings::GetInvRevValue())
+		{
+			char c2;
+			if(c == 'I' || c == 'i')c2 = 'G';
+			else c2 = c;
+			DataNode node(c2, c2, 1.0);
+			data.PushBack(node);
+		}
+		string message = InvRev(data);
+		cout << message << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 
@@ -931,6 +964,14 @@ string TestValue(DataSequence data, bool details)
 		}
 	}
 	return message;
+}
+
+string InvRev(DataSequence data)
+{
+	DataSequence rev = data.RevSeq();
+	DataSequence revinv = rev.InvSeq();
+	string ret = revinv.Codes();
+	return ret;
 }
 
 string Banner(string message)

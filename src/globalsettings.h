@@ -32,10 +32,12 @@ namespace DeGenPrime
 		static void SetBeginFlag(bool begin);
 		static void SetEndFlag(bool ending);
 		static void SetRunTest(bool test);
+		static void SetRunInvRev(bool test);
 		static void SetSearchFwd(bool search);
 		static void SetSearchRev(bool search);
 		static void SetSortByTemp(bool temp);
 		static void SetTestValue(std::string str);
+		static void SetInvRevValue(std::string str);
 		static void SetSearchFwdArg(std::string str);
 		static void SetSearchRevArg(std::string str);
 	
@@ -54,10 +56,12 @@ namespace DeGenPrime
 		static int GetMaximumReturnPrimers();
 		static float GetThermodynamicTemperature();
 		static bool GetRunTest();
+		static bool GetRunInvRev();
 		static bool GetSearchFwd();
 		static bool GetSearchRev();
 		static bool GetSortByTemp();
 		static std::string GetTestValue();
+		static std::string GetInvRevValue();
 		static std::string GetSearchFwdArg();
 		static std::string GetSearchRevArg();
 
@@ -77,10 +81,12 @@ namespace DeGenPrime
 		static int _maxPrimers;
 		static float _thermodynamicTemperature;
 		static bool _testRun;
+		static bool _invRevRun;
 		static bool _SearchFwd;
 		static bool _SearchRev;
 		static bool _sortbytemp;
 		static std::string _testStr;
+		static std::string _invRevValue;
 		static std::string _searchFwdArg;
 		static std::string _searchRevArg;
 	};

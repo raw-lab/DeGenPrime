@@ -88,14 +88,17 @@ namespace DeGenPrime
         // if less than zero, include leading zero
         // precision is number after decimal
         //  '0.blah'
-        string ret = "";
+        bool neg = (f < 0);
+        string ret = neg ? "-" : "";
+        int precision2 = neg ? precision - 1 : precision;
+        float f2 = abs(f);
         int mult = pow(10, precision);
-        int temp = round(f * mult);
+        int temp = round(f2 * mult);
         int before_dec = temp / mult;
         int after_dec = temp % mult;
-        string before = Format(before_dec, precision);
+        string before = Format(before_dec, precision2);
         string after = Format(after_dec, precision);
-        ret = before + "." + after;
+        ret += before + "." + after;
         return ret;
     }
 

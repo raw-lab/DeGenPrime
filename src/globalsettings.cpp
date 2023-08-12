@@ -24,9 +24,11 @@ namespace DeGenPrime
 	void GlobalSettings::SetBeginFlag(bool begin) {_beginflag = begin;}
 	void GlobalSettings::SetEndFlag(bool ending) {_endflag = ending;}
 	void GlobalSettings::SetRunTest(bool test) {_testRun = test;}
+	void GlobalSettings::SetRunInvRev(bool test) {_invRevRun = test;}
 	void GlobalSettings::SetSearchFwd(bool search) {_SearchFwd = search;}
 	void GlobalSettings::SetSearchRev(bool search) {_SearchRev = search;}
-	void GlobalSettings::SetTestValue(string str) {_testStr = str;}
+	void GlobalSettings::SetTestValue(std::string str) {_testStr = str;}
+	void GlobalSettings::SetInvRevValue(std::string str) {_invRevValue = str;}
 	void GlobalSettings::SetSearchFwdArg(std::string str) {_searchFwdArg = str;}
 	void GlobalSettings::SetSearchRevArg(std::string str) {_searchRevArg = str;}
 	void GlobalSettings::SetSortByTemp(bool temp) {_sortbytemp = temp;}
@@ -46,10 +48,12 @@ namespace DeGenPrime
 	int GlobalSettings::GetMaximumReturnPrimers() { return _maxPrimers; }
 	float GlobalSettings::GetThermodynamicTemperature() { return _thermodynamicTemperature; }
 	bool GlobalSettings::GetRunTest() { return _testRun; }
+	bool GlobalSettings::GetRunInvRev() { return _invRevRun; }
 	bool GlobalSettings::GetSearchFwd() { return _SearchFwd; }
 	bool GlobalSettings::GetSearchRev() { return _SearchRev; }
 	bool GlobalSettings::GetSortByTemp() { return _sortbytemp; }
 	string GlobalSettings::GetTestValue() { return _testStr; }
+	string GlobalSettings::GetInvRevValue() { return _invRevValue; }
 	string GlobalSettings::GetSearchFwdArg() { return _searchFwdArg; }
 	string GlobalSettings::GetSearchRevArg() { return _searchRevArg; }
 } // End of DeGenPrime

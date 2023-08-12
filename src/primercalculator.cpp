@@ -77,14 +77,25 @@ namespace DeGenPrime
 		_OriginalSize = size();
 	}
 
-	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region, DataSequence data)
+	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region, DataSequence data, bool fwd)
 	{
 		for(Primer p : region)
 		{
+			/*
+			int boundary = fwd ? GlobalSettings::GetBeginningNucleotide() : 
+				data.RevIndex(GlobalSettings::GetEndingNucleotide());
+			int index = fwd ? p.Index() : data.RevIndex(p.Index());
+			if(index > boundary)
+			{
+				continue;
+			}*/
 			int region_size = p.Length();
+			const int threshold = 5;
 			for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
 			{
-				int endIndex = region_size - i;
+				int endIndex = (region_size - i < threshold) ? region_size - i : threshold;
+				bool search = (GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev());
+				if(search)endIndex = region_size - i;
 				for(int j = 0;j < endIndex;j++)
 				{
 					Primer pr(p.Index() + j, i);
