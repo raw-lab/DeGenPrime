@@ -77,27 +77,43 @@ DeGenPrime will output a few progress messages as the program runs, the recommen
 - Any errors that occur during runtime will also be written on the console.<br />
 
 ### Examples
-You are a federal prosecutor trying to build a case against Dr. Scientist who stands accused of performing illegal genetic engineering experiments on human zygotes.  Your team believes that they made genetic modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the allegedly modified zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.<br /> You would use:<br />
+Your find modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the mutated zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.<br /> You would use:<br />
 
 ```console
 ./DeGenPrime --begin:10000 --end:12000000 --max_primers:10 zygote_21.faa
 ```
 
-You are an immunologist who wants to identify mutations that might have occurred in the genes of a local strain of the influenza A virus so you can produce a new vaccine for the upcoming flu season.  Microbiologists have reported changes to the geometry of the surface proteins of infected cells and this leads you to hypothesize that a mutation has occurred in segment 4 or segment 6 of the virus.  You obtain the genetic data of these segments from last season’s influenza A as well as data from the current strain into two files called influenzaA_4.faa and influenzaA_6.faa.  You know that the surface proteins normally contain 500 +/- 50 amino acids (which implies 1500 +/- 150 bps in the coding sequence) and you want the top 5 primers for a PCR reaction that will cover at least 40% of the coding region.  Your files are not aligned. <br />  
+You are an immunologist who wants to identify mutations that might have occurred in the genes of a local strain of the influenza A virus so you can produce a new vaccine for the upcoming flu season.  Microbiologists have reported changes to the surface proteins of infected cells and this leads you to hypothesize that a mutation has occurred in segment 4 or segment 6 of the virus.  You obtain the genetic data of these segments from last season’s influenza A as well as data from the current strain into two files called influenzaA_4.faa and influenzaA_6.faa.  You know that the surface proteins normally contain 500 +/- 50 amino acids (which implies 1500 +/- 150 bps in the coding sequence) and you want the top 5 primers for a PCR reaction that will cover at least 40% of the coding region.  Your files are not aligned. <br />  
 You would use:<br />
 
 ```console
 ./DeGenPrime --amplicon:660 --local influenzaA_4.faa or influenzaA_6.faa
 ```
 
-You are an evolutionary biologist who is trying to find evidence of an evolutionary link between a newly discovered archaea from the Sea of Salt and primordial bacterium from that region.  The archaea is a halophile and thermophile.  Your theory is that this archaea evolved from the bacterium when it acquired its salt and temperature resistance which enabled it to occupy new niches and evolve through adaptive radiation.  You have aggregated the genetic data from these species into a file called microbe_genes.faa (not aligned) and want to get a PCR reaction with salt and temperature conditions similar to those found in the archaean’s natural habitat.  The Sea of Salt is about 10 times saltier than regular ocean water and has a consistent temperature of 60 +/- 1 degrees Celsius because it is heated from geothermal activity.  You determine the concentration of salt in the Sea of Salt is about 6.3 mM and you want to use a primer concentration of 100 nM to be certain your primer will bond.
+You are an evolutionary biologist who is trying to find evidence of an evolutionary link between a newly discovered archaea from the dead sea region.  The archaea is a halophile and thermophile.  Your theory is that this archaea evolved from the bacterium when it acquired its salt and temperature resistance which enabled it to occupy new niches and evolve through adaptive radiation.  You have aggregated the genetic data from these species into a file called microbe_genes.faa (not aligned) and want to get a PCR reaction with salt and temperature conditions similar to those found in the archaean’s natural habitat.  The Sea of Salt is about 10 times saltier than regular ocean water and has a consistent temperature of 60 +/- 1 degrees Celsius because it is heated from geothermal activity.  You determine the concentration of salt in the Sea of Salt is about 6.3 mM and you want to use a primer concentration of 100 nM to be certain your primer will bond.
 
 ```console
 ./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 microbe_genes.faa
 ```
 
-### Copyright  
+## Copyright  
 University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
 The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
+
+## Citing DeGenPrime
+
+If you are publishing results obtained using DeGenPrime, please cite: <br />
+
+Fulghum BW, Tanker S, White III RA. 2023.  <br />
+DeGenPrime provides robust primer design and optimization unlocking the biosphere. [bioRxiv](https://www.biorxiv.org/content/10.1101/2023.08.11.553048v1) <br />
+
+## CONTACT
+
+The informatics point-of-contact for this project is [Dr. Richard Allen White III](https://github.com/raw-lab).  
+If you have any questions or feedback, please feel free to get in touch by email.  
+[Dr. Richard Allen White III](mailto:rwhit101@uncc.edu)<br /> 
+[Bryan Fulghum](mailto:bfulghu2@charlotte.edu
+) <br />
+Or [open an issue](https://github.com/raw-lab/degenprime/issues).  
 
 [back to top](https://github.com/raw-lab/DeGenPrime/)
