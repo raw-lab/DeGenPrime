@@ -1,7 +1,8 @@
 // DataSequence.cpp
-#include <bits/stdc++.h>
+#include <algorithm>
 #include <cctype>
 #include <cmath>
+#include <initializer_list>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
