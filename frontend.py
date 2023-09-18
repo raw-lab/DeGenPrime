@@ -56,6 +56,7 @@ class App(ctk.CTk):
                     writer.writerow(field)
                     writer.writerow([amplicon_get, temphigh_get, templow_get, pc_get, mc_get])
 
+
             #create the frame for the three side buttons -- browse, run, and save
             self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
             self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
