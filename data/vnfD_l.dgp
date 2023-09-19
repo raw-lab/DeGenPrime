@@ -1,3 +1,63 @@
+                                 %%%%%%%%%%%                                
+                                 % Results %                                
+                                 %%%%%%%%%%%                                
+
+      Primer Pair #1        Amplicon Size: [209]      Temp Diff: [00.88]    
+                Forward                               Reverse               
+         [CGCTGAAGCTGCTGAAGTG]                [GGCCGTGGATCATCTGGATG]        
+           Basic Information                     Basic Information          
+            Range: [04-22]                        Range: [213-193]          
+           Length: [19]                          Length: [20]               
+          Penalty: [00.01]                      Penalty: [00.91]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [53.25]                        Basic: [55.88]            
+               NN: [53.93]                           NN: [54.81]            
+
+      Primer Pair #2        Amplicon Size: [211]      Temp Diff: [00.80]    
+                Forward                               Reverse               
+        [CCGCTGAAGCTGCTGAAGTG]                [GGGCCGTGGATCATCTGGATG]       
+           Basic Information                     Basic Information          
+            Range: [03-22]                        Range: [214-193]          
+           Length: [20]                          Length: [21]               
+          Penalty: [00.01]                      Penalty: [01.88]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [55.88]                        Basic: [58.26]            
+               NN: [56.23]                           NN: [57.04]            
+
+      Primer Pair #3        Amplicon Size: [211]      Temp Diff: [00.46]    
+                Forward                               Reverse               
+        [TGCCGCTGAAGCTGCTGAAG]               [GCCGTGGATCATCTGGATGGTG]       
+           Basic Information                     Basic Information          
+            Range: [01-20]                        Range: [212-190]          
+           Length: [20]                          Length: [22]               
+          Penalty: [00.02]                      Penalty: [01.05]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [55.88]                        Basic: [58.56]            
+               NN: [57.91]                           NN: [57.45]            
+
+      Primer Pair #4        Amplicon Size: [215]      Temp Diff: [00.36]    
+                Forward                               Reverse               
+        [ATGCCGCTGAAGCTGCTGAAG]               [CGGGCCGTGGATCATCTGGAT]       
+           Basic Information                     Basic Information          
+            Range: [00-20]                        Range: [215-194]          
+           Length: [21]                          Length: [21]               
+          Penalty: [00.02]                      Penalty: [03.33]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [56.31]                        Basic: [58.26]            
+               NN: [58.07]                           NN: [58.43]            
+
+      Primer Pair #5        Amplicon Size: [209]      Temp Diff: [00.07]    
+                Forward                               Reverse               
+        [GCCGCTGAAGCTGCTGAAGTG]             [CCGTGGATCATCTGGATGGTGTCC]      
+           Basic Information                     Basic Information          
+            Range: [02-22]                        Range: [211-187]          
+           Length: [21]                          Length: [24]               
+          Penalty: [00.48]                      Penalty: [03.87]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [58.26]                        Basic: [60.80]            
+               NN: [58.95]                           NN: [58.88]            
+
+
                           %%%%%%%%%%%%%%%%%%%%%%%%                          
                           % Sequence Information %                          
                           %%%%%%%%%%%%%%%%%%%%%%%%                          
@@ -62,8 +122,54 @@
  (01680-01739): ------------------------------------------------------------
  (01740-01760): ---------------------
 
-                               %%%%%%%%%%%%%%%                              
-                               % Search Mode %                              
-                               %%%%%%%%%%%%%%%                              
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+                          % Primer Pair Filtering %                         
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
 
-          Forward Primer: 'AACGAGCTGGAGTTCTTC' found at index: 6113         
+                  Dividing pair lists into 196 partitions.                  
+
+                        Checking top 125 partitions.                        
+
+Partition #1 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1521   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #2 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1521   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #3 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1521   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #4 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1521   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #5 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                       1521   (100.00%)                 
+     FilterTempDiff                           0   (00.00%)                  
+----------------------------------------------------------------------------
+Remaining                                     0   (00.00%)                  
+
+Partition #6 Pairs: 1521                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                         39   (02.56%)                  
+     FilterTempDiff                        1263   (83.04%)                  
+----------------------------------------------------------------------------
+Remaining                                   219   (14.40%)                  
+
+

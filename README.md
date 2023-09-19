@@ -42,7 +42,7 @@ DeGenPrime is designed to run as a stand-alone console application on any platfo
 ### Options  
 
 ```console
-./DeGenPrime [--tags] <filename>
+./degenprime [--tags] <filename>
 ```
 The filename must always be the last argument, or this program will throw a segmentation error.
 
