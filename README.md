@@ -22,11 +22,6 @@ DeGenPrime selects the top PCR primer pairs for one or more phylogenetically sim
 DeGenPrime runs off hard filters with no exceptions.
 If no primers are found that can pass all of these filters the program will warn the user that no suitable primers were found.
 
-### Citation
-DeGenPrime is free software to use.
-If you use it however, we ask that you please cite the software in publications with:
-Fulghum B, Tanker S, White RA III. DeGenPrime – Robust Degenerate Primer Design for Unlocking the Diversity of the Biosphere.
-
 ### Installation
 ```console
 git clone https://github.com/raw-lab/DeGenPrime.git

@@ -7,6 +7,7 @@ import os, csv
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("green")
 
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -26,14 +27,14 @@ class App(ctk.CTk):
             #delete old info
             self.btn_greeting.destroy()
             self.lbl_greeting.destroy()
-
+            
             #event handling for finding the input file
             def find_input_file():
                 file = askopenfile(mode ='r', filetypes =[('Acceptable Filetypes', '*.fasta *.fna *.clust *.faa')])
                 if file:
                     inputpath = os.path.abspath(file.name)
                     self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
-                    self.lbl_inputpath.grid(row=1, column=1, padx = 10, pady=10)
+                    self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
                     filecontent = file.read()
 
             def save_settings():
@@ -44,16 +45,17 @@ class App(ctk.CTk):
                 templow_get = self.templow.get()
                 if(int(templow_get) < 50): templow_get = 50
                 pc_get = self.pc.get()
-                if(int(pc_get) < 0): pc_get = 50
+                if(int(pc_get) <= 0): pc_get = 50
                 mc_get = self.mc.get()
-                if(int(mc_get) < 0): mc_get = 50
+                if(int(mc_get) <= 0): mc_get = 50
 
                 with open('SETTINGS.csv', 'w', newline='') as file:
                     writer = csv.writer(file)
-                    field = ["Amplicon_Length", "DNA_Concentration", "Temperature", "Primer_Concentration", "Monovalent_Ion_Concentration"]
+                    field = ["Amplicon_Length", "Temperature_High", "Temperature_Low", "Primer_Concentration", "Monovalent_Ion_Concentration"]
     
                     writer.writerow(field)
                     writer.writerow([amplicon_get, temphigh_get, templow_get, pc_get, mc_get])
+
 
             #create the frame for the three side buttons -- browse, run, and save
             self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
@@ -69,59 +71,64 @@ class App(ctk.CTk):
             self.grid_rowconfigure((0,1), weight=1)
             self.grid_columnconfigure((0, 1, 2), weight=1)
 
-            #create the frame for tabview (settings and advanced settings)
-            self.settings_tabview = ctk.CTkTabview(self, width=250)
-            self.settings_tabview.grid(row=0, column=1, padx=(20, 0), pady=(1, 0), sticky="nsew")
-            self.settings_tabview.add("Settings")
-            self.settings_tabview.add("Advanced Settings")
-
-
-
             ### REGULAR SETTINGS ###
-            #self.radio_button_1 = self.CTkRadioButton(self.settings_tabview.tab("Settings"))
-            #self.radio_button_1.grid(row=1, column=2, pady=10, padx=20, sticky="n")
+            self.settings_scroll = ctk.CTkScrollableFrame(self)
+            self.settings_scroll.grid(row=1, column=2, sticky="nsew")
+            self.settings_scroll.grid_columnconfigure(0, weight=1)
+            
+            #toggle switch from amplicon length and range of base pairs
+            self.ampl_len = ctk.CTkCheckBox(self.settings_scroll, text="Define by Amplicon Length")
+            self.ampl_len.grid(row=0, column=0,padx=10, pady=2.5,  columnspan = 3)
+            self.bp_len = ctk.CTkCheckBox(self.settings_scroll, text="Define by Range of Base Pairs")
+            self.bp_len.grid(row=1, column=0, padx=10, pady=2.5, columnspan = 3)
 
-            self.ampl_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Minimum Amplicon Length")
-            self.ampl_label.grid(row = 0, column = 0,pady=2.5)
-            self.amplicon = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Min. Amplicon Length")
-            self.amplicon.grid(row = 1, column = 0,pady=2.5)
+
+            self.ampl_label = ctk.CTkLabel(self.settings_scroll, text= "Min. Amplicon Length")
+            self.ampl_label.grid(row = 2, column = 0,pady=2.5)
+            self.amplicon = ctk.CTkEntry(self.settings_scroll, placeholder_text="Min. Amplicon Length")
+            self.amplicon.grid(row = 3, column = 0,pady=2.5)
             self.amplicon.insert("0", "0")
-            self.ampl_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Base Pairs")
-            self.ampl_label2.grid(row = 1, column = 1, padx=10,pady=2.5)
+            self.ampl_label2 = ctk.CTkLabel(self.settings_scroll, text= "Base Pairs")
+            self.ampl_label2.grid(row = 3, column = 1, padx=10,pady=2.5)
             
-            self.temphigh_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Temperature (Upper Bound)")
-            self.temphigh_label.grid(row = 2, column = 0, pady=2.5)
-            self.temphigh = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="DNA Temperature (Upper Bound)")
-            self.temphigh.grid(row = 3, column = 0, pady=2.5)
+            #upper bound of temperature
+            self.temphigh_label = ctk.CTkLabel(self.settings_scroll, text= "Temp. (Upper Bound)",justify="center")
+            self.temphigh_label.grid(row = 4, column = 0, pady=2.5)
+            self.temphigh = ctk.CTkEntry(self.settings_scroll, placeholder_text="DNA Temperature (Upper Bound)")
+            self.temphigh.grid(row = 5, column = 0, pady=2.5)
             self.temphigh.insert("0", "65")
-            self.temphigh_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "C°")
-            self.temphigh_label2.grid(row = 3, column = 1,padx=10,pady=2.5)
+            self.temphigh_label2 = ctk.CTkLabel(self.settings_scroll, text= "C°")
+            self.temphigh_label2.grid(row = 5, column = 1,padx=10,pady=2.5)
             
-            self.templow_label = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "Temperature (Lower Bound)")
-            self.templow_label.grid(row = 4, column = 0,pady=2.5)
-            self.templow = ctk.CTkEntry(self.settings_tabview.tab("Settings"), placeholder_text="Temperature (Lower Bound)")
-            self.templow.grid(row = 5, column = 0,pady=2.5)
+            #lower bound of temperature
+            self.templow_label = ctk.CTkLabel(self.settings_scroll, text= "Temp. (Lower Bound)")
+            self.templow_label.grid(row = 6, column = 0,pady=2.5)
+            self.templow = ctk.CTkEntry(self.settings_scroll, placeholder_text="Temperature (Lower Bound)")
+            self.templow.grid(row = 7, column = 0,pady=2.5)
             self.templow.insert("0", "50")
-            self.templow_label2 = ctk.CTkLabel(self.settings_tabview.tab("Settings"), text= "C°")
-            self.templow_label2.grid(row = 5, column = 1,padx=10,pady=2.5)
+            self.templow_label2 = ctk.CTkLabel(self.settings_scroll, text= "C°")
+            self.templow_label2.grid(row = 7, column = 1,padx=10,pady=2.5)
 
             ###ADVANCED SETTINGS###
-            self.pc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Primer Temperature (Upper Bound)")
-            self.pc_label.grid(row = 0, column = 0,pady=2.5)
-            self.pc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Primer Temperature (Upper Bound)")
-            self.pc.grid(row = 1, column = 0,pady=2.5)
+            #primer concentration
+            self.pc_label = ctk.CTkLabel(self.settings_scroll, text= "Primer Conc.")
+            self.pc_label.grid(row = 8, column = 0,pady=2.5)
+            self.pc = ctk.CTkEntry(self.settings_scroll, placeholder_text="Primer Conc.")
+            self.pc.grid(row = 9, column = 0,pady=2.5)
             self.pc.insert("0", "50")
-            self.pc_label2 = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "nMol")
-            self.pc_label2.grid(row = 1, column = 1, padx=10,pady=2.5)
+            self.pc_label2 = ctk.CTkLabel(self.settings_scroll, text= "nMol")
+            self.pc_label2.grid(row = 9, column = 1, padx=10,pady=2.5)
             
-            self.mc_label = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "Monovalent Ion Temperature (Upper Bound)")
-            self.mc_label.grid(row = 2, column = 0, pady=2.5)
-            self.mc = ctk.CTkEntry(self.settings_tabview.tab("Advanced Settings"), placeholder_text="Monovalent Ion Temperature (Upper Bound)")
-            self.mc.grid(row = 3, column = 0, pady=2.5)
+            #monovalent ion/salt concentration
+            self.mc_label = ctk.CTkLabel(self.settings_scroll, text= "Monovalent Ion Conc.")
+            self.mc_label.grid(row = 10, column = 0, pady=2.5)
+            self.mc = ctk.CTkEntry(self.settings_scroll, placeholder_text="Monovalent Ion Conc.")
+            self.mc.grid(row = 11, column = 0, pady=2.5)
             self.mc.insert("0", "50")
-            self.mc_label2 = ctk.CTkLabel(self.settings_tabview.tab("Advanced Settings"), text= "mMol")
-            self.mc_label2.grid(row = 3, column = 1,padx=10,pady=2.5)
+            self.mc_label2 = ctk.CTkLabel(self.settings_scroll, text= "mMol")
+            self.mc_label2.grid(row = 11, column = 1,padx=10,pady=2.5)
 
+        #original welcome message frame
         self.sidebar_frame = ctk.CTkFrame(self, width = 500)
         self.lbl_greeting = ctk.CTkLabel(self,text="Welcome to DeGenPrime. Our goal is to maximize your primer design experience while minimizing your headaches. "
                                          + "Input either an unaligned or a prealigned .fasta or .fna file, and allow DeGenPrime to recommend the best primers for your PCR use."
