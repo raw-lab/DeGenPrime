@@ -1,8 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import askopenfile
-import tkinter as tk
 import customtkinter as ctk
-import os, csv
+import os, subprocess
 
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("green")
@@ -31,6 +30,7 @@ class App(ctk.CTk):
             def find_input_file():
                 file = askopenfile(mode ='r', filetypes =[('Acceptable Filetypes', '*.fasta *.fna *.clust *.faa')])
                 if file:
+                    global inputpath
                     inputpath = os.path.abspath(file.name)
                     self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
                     self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
@@ -51,7 +51,7 @@ class App(ctk.CTk):
                     self.ampl_label.grid(row = 2, column = 0,pady=2.5)
                     self.amplicon = ctk.CTkEntry(self.settings_scroll, placeholder_text="Min. Amplicon Length")
                     self.amplicon.grid(row = 3, column = 0,pady=2.5)
-                    self.amplicon.insert("0", "0")
+                    self.amplicon.insert("0", "1")
                     self.ampl_label2 = ctk.CTkLabel(self.settings_scroll, text= "Base Pairs")
                     self.ampl_label2.grid(row = 3, column = 1, padx=10,pady=2.5)
                     self.bpU_label.destroy()
@@ -83,35 +83,36 @@ class App(ctk.CTk):
             self.length_switcher = ctk.CTkComboBox(self.settings_scroll, values=["Amplicon Length","Base Pairs"], command=toggle_switch)
             self.length_switcher.grid(row=1, column=0,padx=10, pady=2.5)
 
-            def save_settings():
+            #legacy code for saving settings to a .csv - DO NOT USE.
+            #def save_settings():
                 #getting our amplicon length or base pair range based on global choice state
-                choice_state = str(self.length_switcher.get())
-                if(choice_state == "Amplicon Length"):
-                    amplicon_get = self.amplicon.get()
-                    if(int(amplicon_get) < 0): amplicon_get = 0
-                elif(choice_state == "Base Pairs"):
-                    bpU_get = self.upper_limit.get()
-                    bpL_get = self.lower_limit.get()
-                    if(int(bpL_get) < 0): bpL_get = 0
-                temphigh_get = self.temphigh.get()
-                if(int(temphigh_get) < 0): temphigh_get = 50
-                templow_get = self.templow.get()
-                if(int(templow_get) < 50): templow_get = 50
-                pc_get = self.pc.get()
-                if(int(pc_get) <= 0): pc_get = 50
-                mc_get = self.mc.get()
-                if(int(mc_get) <= 0): mc_get = 50
+                #choice_state = str(self.length_switcher.get())
+                #if(choice_state == "Amplicon Length"):
+                #    amplicon_get = self.amplicon.get()
+                #    if(int(amplicon_get) < 0): amplicon_get = 0
+                #elif(choice_state == "Base Pairs"):
+                #    bpU_get = self.upper_limit.get()
+                #    bpL_get = self.lower_limit.get()
+                #    if(int(bpL_get) < 0): bpL_get = 0
+                #temphigh_get = self.temphigh.get()
+                #if(int(temphigh_get) < 0): temphigh_get = 50
+                #templow_get = self.templow.get()
+                #if(int(templow_get) < 50): templow_get = 50
+                #pc_get = self.pc.get()
+                #if(int(pc_get) <= 0): pc_get = 50
+                #mc_get = self.mc.get()
+                #if(int(mc_get) <= 0): mc_get = 50
 
-                with open('SETTINGS.csv', 'w', newline='') as file:
-                    writer = csv.writer(file)
-                    if(choice_state == "Amplicon Length"):
-                        field = ["Amplicon_Length", "Temperature_High", "Temperature_Low", "Primer_Concentration", "Monovalent_Ion_Concentration"]
-                        writer.writerow(field)
-                        writer.writerow([amplicon_get, temphigh_get, templow_get, pc_get, mc_get])
-                    elif(choice_state == "Base Pairs"):
-                        field = ["BasePair_Upper", "BasePair_Lower", "Temperature_High", "Temperature_Low", "Primer_Concentration", "Monovalent_Ion_Concentration"]
-                        writer.writerow(field)
-                        writer.writerow([bpU_get, bpL_get, temphigh_get, templow_get, pc_get, mc_get])
+                #with open('SETTINGS.csv', 'w', newline='') as file:
+                #    writer = csv.writer(file)
+                #    if(choice_state == "Amplicon Length"):
+                #        field = ["Amplicon_Length", "Temperature_High", "Temperature_Low", "Primer_Concentration", "Monovalent_Ion_Concentration"]
+                #        writer.writerow(field)
+                #        writer.writerow([amplicon_get, temphigh_get, templow_get, pc_get, mc_get])
+                #    elif(choice_state == "Base Pairs"):
+                #        field = ["BasePair_Upper", "BasePair_Lower", "Temperature_High", "Temperature_Low", "Primer_Concentration", "Monovalent_Ion_Concentration"]
+                #        writer.writerow(field)
+                #        writer.writerow([bpU_get, bpL_get, temphigh_get, templow_get, pc_get, mc_get])
             
             #create the frame for the three side buttons -- browse, run, and save
             self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
@@ -121,7 +122,7 @@ class App(ctk.CTk):
             self.btn_browse.grid(row=0, column=0, padx=20, pady=(40,30))
             self.btn_run = ctk.CTkButton(self.sidebar_frame, text = "RUN PROGRAM", command = run_program)
             self.btn_run.grid(row=2, column=0, padx=20, pady=30)
-            self.btn_save = ctk.CTkButton(self.sidebar_frame, text = "SAVE SETTINGS", command = save_settings)
+            self.btn_save = ctk.CTkButton(self.sidebar_frame, text = "PLACEHOLDER")
             self.btn_save.grid(row=3, column=0, padx=20, pady=30)
 
 
@@ -162,19 +163,66 @@ class App(ctk.CTk):
             self.mc_label2.grid(row = 13, column = 1,padx=10,pady=2.5)
 
             #preferred amount of primers
-            self.mc_label = ctk.CTkLabel(self.settings_scroll, text= "Preferred # of Primers")
-            self.mc_label.grid(row = 14, column = 0, pady=2.5)
-            self.mc = ctk.CTkEntry(self.settings_scroll, placeholder_text="Number of Primers")
-            self.mc.grid(row = 15, column = 0, pady=2.5)
-            self.mc.insert("0", "0")
-            self.mc_label2 = ctk.CTkLabel(self.settings_scroll, text= "Primers")
-            self.mc_label2.grid(row = 15, column = 1,padx=10,pady=2.5)
+            self.primers_label = ctk.CTkLabel(self.settings_scroll, text= "Preferred # of Primers")
+            self.primers_label.grid(row = 14, column = 0, pady=2.5)
+            self.primers = ctk.CTkEntry(self.settings_scroll, placeholder_text="Number of Primers")
+            self.primers.grid(row = 15, column = 0, pady=2.5)
+            self.primers.insert("0", "5")
+            self.primers_label2 = ctk.CTkLabel(self.settings_scroll, text= "Primers")
+            self.primers_label2.grid(row = 15, column = 1,padx=10,pady=2.5)
 
 
 
         def run_program():
+            #pulling settings from the boxes
+            temphigh_get = self.temphigh.get()
+            if(int(temphigh_get) < 0): temphigh_get = 50
+            templow_get = self.templow.get()
+            if(int(templow_get) < 50): templow_get = 50
+            pc_get = self.pc.get()
+            if(int(pc_get) <= 0): pc_get = 50
+            mc_get = self.mc.get()
+            if(int(mc_get) <= 0): mc_get = 50
             choice_state = str(self.length_switcher.get())
-            
+            primers_get = self.primers.get()
+            if(int(primers_get) > 10 or int(primers_get) <= 0): primers_get = 10
+            if(choice_state == "Amplicon Length"):
+                    amplicon_get = self.amplicon.get()
+                    if(int(amplicon_get) < 0): amplicon_get = 0
+                    command = [
+                         "./degenprime",
+                         f"--amplicon:{amplicon_get}",
+                         f"--min_temp:{templow_get}",
+                         f"--max_temp:{temphigh_get}",
+                         f"--primer_conc:{pc_get}",
+                         f"--salt_conc:{mc_get}",
+                         f"--max_primers:{primers_get}",
+                         str(inputpath)
+                        ]
+                    #run command, save primer to .txt file
+                    output = subprocess.check_output(command, text=True)
+                    output_file_address = "primer.txt"
+                    with open(output_file_address, 'w') as file:
+                        file.write(output)
+            elif(choice_state == "Base Pairs"):
+                    bpU_get = self.upper_limit.get()
+                    bpL_get = self.lower_limit.get()
+                    if(int(bpL_get) < 0): bpL_get = 0
+                    command = [
+                         "./degenprime",
+                         f"--begin:{bpL_get}",
+                         f"--end:{bpU_get}",
+                         f"--min_temp:{templow_get}",
+                         f"--max_temp:{temphigh_get}",
+                         f"--primer_conc:{pc_get}",
+                         f"--salt_conc:{mc_get}",
+                         f"--max_primers:{primers_get}",
+                         inputpath
+                        ]
+                    output = subprocess.check_output(command, text=True)
+                    output_file_address = "primer.txt"
+                    with open(output_file_address, 'w') as file:
+                        file.write(output)
         
 
         #original welcome message frame
