@@ -89,8 +89,14 @@ int main(int argc, char *argv[])
 	ifs.open(filepath + "/" + filename);
 	if(ifs.fail())
 	{
-		cout << "Failure to open file.\n";
-		exit(BAD_INPUT_FILE);
+		// Maybe the argument was an absolute filepath
+		ifs.close();
+		ifs.open(filename);
+		if(ifs.fail())
+		{
+			cout << "Failure to open file.\n";
+			exit(BAD_INPUT_FILE);
+		}
 	}
 
 	// Read Sequences
