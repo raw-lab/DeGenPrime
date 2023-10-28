@@ -23,12 +23,30 @@ DeGenPrime runs off hard filters with no exceptions.
 If no primers are found that can pass all of these filters the program will warn the user that no suitable primers were found.
 
 ### Installation
+
+#### Global install
 ```console
 git clone https://github.com/raw-lab/DeGenPrime.git
+cd DeGenPrime/
 mkdir build
 cd build
 cmake ../src
 make -j4
+sudo make install
+```
+#### Local install
+```console
+git clone https://github.com/raw-lab/DeGenPrime.git
+cd DeGenPrime/
+mkdir -p ~/bin
+cd bin
+cmake ../src
+make -j4
+make install DESTDIR=~/bin
+```
+Note: You can also change the permissions:
+```console
+sudo chmod a+w /usr/local/bin
 make install
 ```
 
