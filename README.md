@@ -49,6 +49,11 @@ Note: You can also change the permissions:
 sudo chmod a+w /usr/local/bin
 make install
 ```
+Note: Do not forget to export your path:
+```console
+export PATH=$PATH:/home/DeGenPrime/build/degenprime #for example home directory
+```
+
 
 DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
 
