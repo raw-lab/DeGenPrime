@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
 	if(ifs.fail())
 	{
 		// Maybe the argument was an absolute filepath
+		// Close the ifs and try to reopen with the precise argument.
 		ifs.close();
 		ifs.open(filename);
 		if(ifs.fail())
