@@ -69,6 +69,7 @@ Valid tags include:
 ```console
 --amplicon:           <int>, Set the minimum amplicon length. 
 --begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
+--degenerate          this tag directs the program to use hard filters and some limited degeneracy instead of basing primer design off the consensus sequence and minimizing penalty.  This method runs significantly slower than the default approach.
 --end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
 --global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
 --help or --h,         prints this help menu.
@@ -78,7 +79,10 @@ Valid tags include:
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
 --protein,             Tells the program that the input sequence is a protein sequence, and the program should unwrap the protein sequence into its base nucleotides instead of trying to find a PCR. This will produce degenerate nucleotide codes whenever there is any ambiguity.
 --salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
+--search_fwd:         <string>, The string represents a forward primer.  Searches the collected list of forward primers to see if the argument primer is within them.  If this primer is included, it gives its relative position on the ordered list by penalty.  This tag is not compatible with --test.
+--search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with --test.
 --max_primers:        <int>, Sets the maximum number of output primers. This has a maximum value of 10 and this program will reduce any value larger to this value.
+--test:               <string>, The string represents a single primer.  Runs the primer through all filters.  Returns the thermodynamic values of this primer as well as any filters this primer would not pass and its calculated penalty.  This tag is incompatible with --search tags.  Any primer smaller or larger than the size limits will show primer outside size range.
 ```
 
 ### Input
@@ -91,7 +95,7 @@ Input files to DeGenPrime can use a variety of formats including single sequence
 DeGenPrime will output a few progress messages as the program runs, the recommended primers and their details, and the program runtime at the end to the console.  DeGenPrime also records the operation details and the primers to an output file.  The output filename is selected based on the specified input file.<br />  
 
 #### Standard outputs
-- primers_filename.txt (a list of primers) <br />
+- filename.dgp (a text file containing the list of primers, consensus sequence, and details) <br />
 - Any errors that occur during runtime will also be written on the console.<br />
 
 ### Examples
