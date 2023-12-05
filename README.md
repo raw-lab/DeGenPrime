@@ -74,6 +74,8 @@ Valid tags include:
 --global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
 --help or --h,         prints this help menu.
 --local or --l,        for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for local alignment.
+--max_primer_length:  <int>, Sets the maximum length of the desired primer.  This has a default value of 22 and cannot be larger than 25.
+--min_primer_length:  <int>, Sets the minimum length of the desired primer.  This has a default value of 20 and cannot be less than 18.
 --min_temp:           <int>, Sets the minimum primer melting temperature. This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.
 --max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.

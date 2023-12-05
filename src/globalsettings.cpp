@@ -17,6 +17,8 @@ namespace DeGenPrime
 	void GlobalSettings::SetProteinSequence(bool seq) {_proteinSequence = seq; }
 	void GlobalSettings::SetMinimumTemperature(float temp) {_minTemp = (MIN_PRIMER_TEMP < temp) ? temp : MIN_PRIMER_TEMP;}
 	void GlobalSettings::SetMaximumTemperature(float temp) {_maxTemp = (MAX_PRIMER_TEMP > temp) ? temp : MAX_PRIMER_TEMP;}
+	void GlobalSettings::SetMaximumPrimerLength(int len) {_maxLen = (MAX_PRIMER_LENGTH > len) ? len : MAX_PRIMER_LENGTH;}
+	void GlobalSettings::SetMinimumPrimerLength(int len) {_minLen = (MIN_PRIMER_LENGTH < len) ? len : MIN_PRIMER_LENGTH;}
 	void GlobalSettings::SetPrimerConcentration(float primer_conc) {_primerConcentration = (MIN_PRIMER_CONC < primer_conc) ? primer_conc : MIN_PRIMER_CONC;}
 	void GlobalSettings::SetMonoIonConcentration(float salt_conc) {_monovalentIonConcentration = (MIN_SALT_CONC < salt_conc) ? salt_conc : MIN_SALT_CONC; }
 	void GlobalSettings::SetMaximumReturnPrimers(int max) {_maxPrimers = (MAX_PRIMER_RETURNS > max) ? max : MAX_PRIMER_RETURNS;}
@@ -43,6 +45,8 @@ namespace DeGenPrime
 	bool GlobalSettings::GetEndFlag() { return _endflag; }
 	float GlobalSettings::GetMinimumTemperature() { return _minTemp; }
 	float GlobalSettings::GetMaximumTemperature() { return _maxTemp; }
+	int GlobalSettings::GetMaximumPrimerLength() { return _maxLen; }
+	int GlobalSettings::GetMinimumPrimerLength() { return _minLen; }
 	float GlobalSettings::GetPrimerConcentration() { return _primerConcentration; }
 	float GlobalSettings::GetMonoIonConcentration() { return _monovalentIonConcentration; }
 	int GlobalSettings::GetMaximumReturnPrimers() { return _maxPrimers; }

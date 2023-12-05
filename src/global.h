@@ -1,5 +1,5 @@
 // ********************** GLOBAL VARIABLES ************************ //
-// MAX_PRIMER_LENGTH (Default 24)	The largest number of 		    //
+// MAX_PRIMER_LENGTH (Default 25)	The largest number of 		    //
 //	nucleotides the program allows a primer to have.	        	//
 // MIN_PRIMER_LENGTH (Default 18)	The smallest number of 	    	//
 //	nucleotides the program allows a primer to have.	        	//
@@ -53,6 +53,10 @@
 //	length (true) or range (false).					                //
 // DEFAULT_PROTEIN_SEQUENCE (Default false) Method by which		    //
 //	program decides if an input file is a protein sequence.     	//
+// DEFAULT_MIN_PRIMER_LENGTH (Default 20) Default minimum size of   //
+//  primer.  User can lower this to at least 18.                    //
+// DEFAULT_MAX_PRIMER_LENGTH (Default 22) Default maximum size of   //
+//  primer.  User can raise this to at max 25.                      //
 // DEFAULT_MIN_TEMP (Default 50.0) Default minimum melting		    //
 //	temperature to find primers.						            //
 // DEFAULT_MAX_TEMP (Default 60.0) Default maximum melting	    	//
@@ -100,6 +104,8 @@
 #define DEFAULT_END_NUCLEOTIDE 2147483647
 #define DEFAULT_MEASURE_BY_AMPLICON true
 #define DEFAULT_PROTEIN_SEQUENCE false
+#define DEFAULT_MAX_PRIMER_LENGTH 22
+#define DEFAULT_MIN_PRIMER_LENGTH 20
 #define DEFAULT_MIN_TEMP 50.0
 #define DEFAULT_MAX_TEMP 60.0
 #define DEFAULT_PRIMER_CONC 50.0

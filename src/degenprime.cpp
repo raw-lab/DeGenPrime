@@ -32,6 +32,8 @@ bool GlobalSettings::_beginflag = DEFAULT_BEGIN_FLAG;
 bool GlobalSettings::_endflag = DEFAULT_END_FLAG;
 float GlobalSettings::_minTemp = DEFAULT_MIN_TEMP;
 float GlobalSettings::_maxTemp = DEFAULT_MAX_TEMP;
+int GlobalSettings::_maxLen = DEFAULT_MAX_PRIMER_LENGTH;
+int GlobalSettings::_minLen = DEFAULT_MIN_PRIMER_LENGTH;
 float GlobalSettings::_primerConcentration = DEFAULT_PRIMER_CONC;
 float GlobalSettings::_monovalentIonConcentration = DEFAULT_SALT_CONC;
 int GlobalSettings::_maxPrimers = DEFAULT_MAX_PRIMERS;
@@ -697,6 +699,14 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetEndingNucleotide(value);
 			containsEnd = true;
 		}
+		else if(strstr(argv[i], "--max_primer_len:") != NULL)
+		{
+			GlobalSettings::SetMaximumPrimerLength(value);
+		}
+		else if(strstr(argv[i], "--min_primer_len:") != NULL)
+		{
+			GlobalSettings::SetMinimumPrimerLength(value);
+		}
 		else if(strstr(argv[i], "--min_temp:") != NULL)
 		{
 			GlobalSettings::SetMinimumTemperature(value);
@@ -757,6 +767,14 @@ void ProcessTags(int argc, char *argv[])
 	{
 		cout << "ERROR: '--search' tags are incompatiable with ";
 		cout << "the '--test' tag." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	// Make sure the user hasn't specified a min primer size > max primer size
+	if(GlobalSettings::GetMaximumPrimerLength() < GlobalSettings::GetMinimumPrimerLength())
+	{
+		cout << "Error: cannot set maximum primer length < ";
+		cout << "minimum primer length." << endl;
 		exit(SETTINGS_FILE_NOT_FOUND);
 	}
 

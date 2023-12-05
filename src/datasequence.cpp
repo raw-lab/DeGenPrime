@@ -405,7 +405,9 @@ namespace DeGenPrime
 	{
 		float penalty = 0.0; // The lower this number the higher the quality.
 		// Primers outside of size range should not be considered
-		if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
+		//if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
+		if(size() < GlobalSettings::GetMinimumPrimerLength() ||
+			size() > GlobalSettings::GetMaximumPrimerLength())
 		{
 			return 1000.0;
 		}
