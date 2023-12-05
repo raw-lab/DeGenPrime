@@ -635,7 +635,7 @@ int main(int argc, char *argv[])
 	ofs.close();
 	
 	// Show closing messages then close the program.
-	cout << "Output details saved to primers_" << filename.substr(0, found) << ".dgp" << endl;
+	cout << "Output details saved to " << filename.substr(0, found) << ".dgp" << endl;
 	cout << "Program complete." << endl;
 	exit(PROGRAM_SUCCESS);
 }
