@@ -773,8 +773,22 @@ void ProcessTags(int argc, char *argv[])
 	// Make sure the user hasn't specified a min primer size > max primer size
 	if(GlobalSettings::GetMaximumPrimerLength() < GlobalSettings::GetMinimumPrimerLength())
 	{
-		cout << "Error: cannot set maximum primer length < ";
+		cout << "ERROR: cannot set maximum primer length < ";
 		cout << "minimum primer length." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	if(GlobalSettings::GetMaximumPrimerLength() < MIN_PRIMER_LENGTH)
+	{
+		cout << "ERROR: cannot set a maximum primer length ";
+		cout << "less than " << MIN_PRIMER_LENGTH << "." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	if(GlobalSettings::GetMinimumPrimerLength() < MAX_PRIMER_LENGTH)
+	{
+		cout << "ERROR: cannot set a minimum primer length ";
+		cout << "greater than " << MAX_PRIMER_LENGTH << "." << endl;
 		exit(SETTINGS_FILE_NOT_FOUND);
 	}
 
