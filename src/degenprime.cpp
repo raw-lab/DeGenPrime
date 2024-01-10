@@ -4,7 +4,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <filesystem>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -80,7 +79,6 @@ int main(int argc, char *argv[])
 
 	// Create Filename/path/output strings
 	std::string filename = argv[argc - 1];
-	std::string filepath = std::filesystem::current_path();
 	std::size_t found = filename.find_last_of(".");
 	std::string primer_output = "";
 	std::string detail_output = "";
@@ -88,18 +86,11 @@ int main(int argc, char *argv[])
 
 	// Open Input File
 	ifstream ifs;
-	ifs.open(filepath + "/" + filename);
+	ifs.open(filename);
 	if(ifs.fail())
 	{
-		// Maybe the argument was an absolute filepath
-		// Close the ifs and try to reopen with the precise argument.
-		ifs.close();
-		ifs.open(filename);
-		if(ifs.fail())
-		{
-			cout << "Failure to open file.\n";
-			exit(BAD_INPUT_FILE);
-		}
+		cout << "Failure to open file.\n";
+		exit(BAD_INPUT_FILE);
 	}
 
 	// Read Sequences
@@ -117,11 +108,11 @@ int main(int argc, char *argv[])
 		/* FUTURE IMPLEMENTATION
 		ofstream os;
 		std::size_t found = filename.find_last_of(".");
-		os.open(filepath + "/" + filename.substr(0, found) + "_protein.fasta");
+		os.open(filename.substr(0, found) + "_protein.fasta");
 		cout << "Decoded proteins: " << list.DecodeProteins() << endl;
 		os << "" << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
-		cout << filepath + "/" + filename.substr(0, found) + "_protein.fasta" << endl;
+		cout << filename.substr(0, found) + "_protein.fasta" << endl;
 		*/
 		cout << "Protein feature not yet implemented." << endl;
 		exit(PROGRAM_SUCCESS);
@@ -178,7 +169,7 @@ int main(int argc, char *argv[])
 	
 	// Open Output File Stream
 	ofstream ofs;
-	ofs.open(filepath + "/" + filename.substr(0, found) + ".dgp");
+	ofs.open(filename.substr(0, found) + ".dgp");
 	
 	// Sequence Information Before Filtering
 	detail_output += Banner(" Sequence Information ");
