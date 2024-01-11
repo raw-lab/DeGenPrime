@@ -784,7 +784,7 @@ void ProcessTags(int argc, char *argv[])
 		exit(SETTINGS_FILE_NOT_FOUND);
 	}
 
-	if(GlobalSettings::GetMinimumPrimerLength() < MAX_PRIMER_LENGTH)
+	if(GlobalSettings::GetMinimumPrimerLength() > MAX_PRIMER_LENGTH)
 	{
 		cout << "ERROR: cannot set a minimum primer length ";
 		cout << "greater than " << MAX_PRIMER_LENGTH << "." << endl;
@@ -792,7 +792,7 @@ void ProcessTags(int argc, char *argv[])
 	}
 
 	if(GlobalSettings::GetRunTest())
-	{
+	{S
 		DataSequence data;
 		for(char c : GlobalSettings::GetTestValue())
 		{
