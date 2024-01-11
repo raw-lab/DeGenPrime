@@ -22,7 +22,6 @@ namespace DeGenPrime
 	void PrimerCalculator::InitializeTestPrimer(DataSequence data)
 	{
 		Primer test(0, data.size());
-		// Primer test(0,data.size(), data);
 		test.SetPenalty(data.Penalty());
 		PushBack(test);
 		_OriginalSize = size();
@@ -96,8 +95,16 @@ namespace DeGenPrime
 				{
 					Primer pr(p.Index() + j, i);
 					DataSequence sub = data.SubSeq(pr.Index(), pr.Length());
-					pr.SetPenalty(sub.Penalty());
-					PushBack(pr);
+					float penalty = sub.Penalty();
+					if(penalty > MAX_PENALTY)
+					{
+						continue;
+					}
+					else
+					{
+						pr.SetPenalty(penalty);
+						PushBack(pr);
+					}
 				}
 			}
 		}

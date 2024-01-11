@@ -405,7 +405,7 @@ namespace DeGenPrime
 	{
 		float penalty = 0.0; // The lower this number the higher the quality.
 		// Primers outside of size range should not be considered
-		//if(size() < MIN_PRIMER_LENGTH || size() > MAX_PRIMER_LENGTH)
+		int penalty_mod = 1;
 		if(size() < GlobalSettings::GetMinimumPrimerLength() ||
 			size() > GlobalSettings::GetMaximumPrimerLength())
 		{
@@ -580,11 +580,21 @@ namespace DeGenPrime
 		// Temperature
 		if(NNMeltingTemperature() < MIN_PRIMER_TEMP)
 		{
-			penalty += 10.0 * (MIN_PRIMER_TEMP - NNMeltingTemperature());
+			if(MIN_PRIMER_TEMP != DEFAULT_MIN_TEMP)
+			{
+				penalty_mod = 100;
+			}
+			penalty += 10.0 * penalty_mod * (MIN_PRIMER_TEMP - NNMeltingTemperature());
+			penalty_mod = 1;
 		}
 		else if(NNMeltingTemperature() > MAX_PRIMER_TEMP)
 		{
-			penalty += 10.0 * (NNMeltingTemperature() - MAX_PRIMER_TEMP);
+			if(MAX_PRIMER_TEMP != DEFAULT_MAX_TEMP)
+			{
+				penalty_mod = 100;
+			}
+			penalty += 10.0 * penalty_mod * (NNMeltingTemperature() - MAX_PRIMER_TEMP);
+			penalty_mod = 1;
 		}
 
 		// Degeneracy and Deletions

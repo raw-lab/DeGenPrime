@@ -12,6 +12,8 @@
 // MAX_DASH_VERTICAL_TOLERANCE (Default 0.3) The maximum allowed	//
 //	ratio os '-'s in a datanode.  Any more '-'s and the node	    //
 //	is defaulted to being a '-' node.				            	//
+// MAX_PENALTY (Default 100.0) The maximum allowed penalty score    //
+//  for primers.                                                    //
 // MAX_GC_EXTREMA_RATIO (Default 0.6) The maximum ratio of G or C	//
 //	allowed in the last five nucleotides.			               	//
 // MIN_GC_TOTAL_RATIO (Default 0.4) The minimum ratio of G or C	    //
@@ -84,6 +86,7 @@
 #define MAX_N_TOLERANCE 0.0
 #define MAX_DASH_HORIZONTAL_TOLERANCE 0.5
 #define MAX_DASH_VERTICAL_TOLERANCE 0.3
+#define MAX_PENALTY 100.0
 #define MIN_PRIMER_TEMP 50.0
 #define MAX_PRIMER_TEMP 65.0
 #define MAX_TEMP_DIFFERENCE 1.0

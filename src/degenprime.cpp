@@ -379,6 +379,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// Abort program if either calculator has no primers
+	if(calc.size() == 0 || rev_calc.size() == 0)
+	{
+		line_output = "There were insufficient primers found for this data.";
+		detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+		cout << detail_output;
+		exit(NO_PRIMERS_FOUND);
+	}
+
 	// Display number of possible primers, run filters and output filter percentages.
 	if(GlobalSettings::GetNonDegenerate() == false)
 	{
@@ -502,7 +511,6 @@ int main(int argc, char *argv[])
 				== floor((double)sqrt(count + 1));
 
 			// Create Primer Pair List
-			//pairlist = maxlist;
 			pairlist.CreateFromRange(data, rev, calc.GetPrimers(),
 				rev_calc.GetPrimers(), x_start, x_end, y_start, y_end);
 			line_output = "Partition #" + to_string(count);
