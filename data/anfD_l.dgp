@@ -1,3 +1,4 @@
+<<<<<<< HEAD
                                  %%%%%%%%%%%                                
                                  % Results %                                
                                  %%%%%%%%%%%                                
@@ -129,3 +130,136 @@ Partition #1 Pairs: 841
 Remaining                                   109   (12.96%)                  
 
 
+=======
+                                 %%%%%%%%%%%                                
+                                 % Results %                                
+                                 %%%%%%%%%%%                                
+
+      Primer Pair #1        Amplicon Size: [376]      Temp Diff: [00.96]    
+                Forward                               Reverse               
+       [ATGCCGTACCACGAGTTCGAGT]             [AAGGCCTTGAAGGCCTCGATGATG]      
+           Basic Information                     Basic Information          
+            Range: [00-21]                        Range: [376-352]          
+           Length: [22]                          Length: [24]               
+          Penalty: [02.04]                      Penalty: [00.00]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [56.70]                        Basic: [59.09]            
+               NN: [58.09]                           NN: [59.05]            
+
+      Primer Pair #2        Amplicon Size: [376]      Temp Diff: [00.29]    
+                Forward                               Reverse               
+        [TGCCGTACCACGAGTTCGAGT]              [GAAGGCCTTGAAGGCCTCGATG]       
+           Basic Information                     Basic Information          
+            Range: [01-21]                        Range: [377-355]          
+           Length: [21]                          Length: [22]               
+          Penalty: [02.04]                      Penalty: [00.59]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [56.31]                        Basic: [58.56]            
+               NN: [57.94]                           NN: [57.64]            
+
+      Primer Pair #3        Amplicon Size: [375]      Temp Diff: [00.63]    
+                Forward                               Reverse               
+       [CCGTACCACGAGTTCGAGTGCA]              [GGAAGGCCTTGAAGGCCTCGATG]      
+           Basic Information                     Basic Information          
+            Range: [03-24]                        Range: [378-355]          
+           Length: [22]                          Length: [23]               
+          Penalty: [02.40]                      Penalty: [01.30]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [58.56]                        Basic: [60.62]            
+               NN: [58.93]                           NN: [59.57]            
+
+      Primer Pair #4        Amplicon Size: [377]      Temp Diff: [00.05]    
+                Forward                               Reverse               
+       [GCCGTACCACGAGTTCGAGTGCA]            [GGGAAGGCCTTGAAGGCCTCGATG]      
+           Basic Information                     Basic Information          
+            Range: [02-24]                        Range: [379-355]          
+           Length: [23]                          Length: [24]               
+          Penalty: [02.61]                      Penalty: [02.21]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [60.62]                        Basic: [62.51]            
+               NN: [61.30]                           NN: [61.35]            
+
+      Primer Pair #5        Amplicon Size: [376]      Temp Diff: [00.52]    
+                Forward                               Reverse               
+        [CGTACCACGAGTTCGAGTGCA]                [CGGGAAGGCCTTGAAGGCC]        
+           Basic Information                     Basic Information          
+            Range: [04-24]                        Range: [380-361]          
+           Length: [21]                          Length: [19]               
+          Penalty: [02.40]                      Penalty: [07.15]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [56.31]                        Basic: [57.56]            
+               NN: [56.94]                           NN: [57.46]            
+
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+                          % Sequence Information %                          
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+
+                              Sequence Count: 5                             
+
+                Sequence(0001):[WP_012703361.1  ] Size:[1578]               
+                Sequence(0002):[WP_011021232.1  ] Size:[1578]               
+                Sequence(0003):[WP_011665273.1  ] Size:[1578]               
+                Sequence(0004):[YP_426482.1     ] Size:[1578]               
+                Sequence(0005):[WP_012500372.1  ] Size:[1578]               
+
+                            %%%%%%%%%%%%%%%%%%%%%                           
+                            % Conserved Regions %                           
+                            %%%%%%%%%%%%%%%%%%%%%                           
+
+                       There are 6 conserved regions.                       
+
+       (0000-0380)              (0382-0452)              (0454-1395)       
+
+       (1399-1461)              (1481-1509)              (1511-1536)       
+
+                    There are 22 candidate pair mappings.                   
+
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+                           % Consensus Sequence %                           
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+
+                       Conserved regions capitalized.                       
+ (00000-00059): ATGCCGTACCACGAGTTCGAGTGCAGCAAGTGCATCCCGGAGCGCAAGAAGCACGCCGTG
+ (00060-00119): ATCAAGGGCCCGGGCGAGGACCTGACCAGCTGCCTGCCGCTGGGCTACCTGAACACCATC
+ (00120-00179): CCGGGCAGCATCAGCGAGCGCGGCTGCGCCTACTGCGGCGCCAAGCACGTGATCGGCACC
+ (00180-00239): CCGATGAAGGACGTGATCCACATCAGCCACGGCCCGGTGGGCTGCACCTACGACACCTGG
+ (00240-00299): CAGACCAAGCGCTACATCAGCGACAACGACAACTTCCAGCTGAAGTACACCTACGCCACC
+ (00300-00359): GACGTGAAGGAGAAGCACATCGTGTTCGGCGCCGAGAAGCTGCTGAAGCAGAACATCATC
+ (00360-00419): GAGGCCTTCAAGGCCTTCCCGvACATCAAGCGCATGACCATCTACCAGACCTGCGCCACC
+ (00420-00479): GCCCTGATCGGCGACGACATCGACGCCATCGCCvAGGAGGTGATGGAGGAGATGCCGGAC
+ (00480-00539): GTGGACATCTTCGTGTGCAACAGCCCGGGCTTCGCCGGCCCGAGCCAGAGCGGCGGCCAC
+ (00540-00599): CACAAGATCAACATCGCCTGGATCAACCAGAAGGTGGGCACCGTGGAGCCGGAGATCACC
+ (00600-00659): AGCGACTACGTGATCAACTACGTGGGCGAGTACAACATCCAGGGCGACCAGGAGGTGATG
+ (00660-00719): CTGGACTACTTCAAGCGCATGGGCATCCAGGTGCTGAGCACCTTCACCGGCAACGGCAGC
+ (00720-00779): TACGACGGCCTGCGCGCCATGCACCGCGCCCACCTGAACGTGCTGGAGTGCGCCCGCAGC
+ (00780-00839): GCCGAGTACATCTGCAACGAGCTGCGCGTGCGCTACGGCATCCCGCGCCTGGACATCGAC
+ (00840-00899): GGCTTCGGCTTCGAGCCGCTGAGCGACAGCCTGCGCAAGATCGGCCTGTTCTTCGGCATC
+ (00900-00959): GAGGACCGCGCCCAGGCCATCATCGACGAGGAGACCGCCCGCTGGAAGCCGGAGCTGGAC
+ (00960-01019): TGGTACAAGGAGCGCCTGAAGGGCAAGAAGGTGTGCCTGTGGCCGGGCGGCAGCAAGCTG
+ (01020-01079): TGGCACTGGGCCCACGTGATCCAGGAGGAGATGGGCGTGAAGGTGGTGAGCGTGTACACC
+ (01080-01139): AAGTTCGGCCACCAGGGCGACATGGAGAAGGGCATCGCCCGCTGCGGCGAGGGCGCCCTG
+ (01140-01199): GCCATCGACGACCCGAACGAGCTGGAGGGCCTGGAGGCCCTGGAGATGCTGAAGCCGGAC
+ (01200-01259): ATCATCCTGACCGGCAAGCGCCCGGGCGAGGTGGCCAAGAAGGTGCGCGTGCCGTACCTG
+ (01260-01319): AACGCCCACGCCTACCACAACGGCCCGTACAAGGGCTTCGAGGGCTGGGTGCGCTTCGCC
+ (01320-01379): CGCGACATCTACAACGCCATCTACAGCCCGATCCACCAGCTGAGCGGCATGGACATCAGC
+ (01380-01439): AAGGACGAGATCCCGA---CCGACAAGGGCTTCCTGACCCGCCAGATGATCAGCGACGCC
+ (01440-01499): AACCTGAGCGACGAGGTGCGCAvcagcavcvhgvtgcgccvGTACACCGGCGACTACGAC
+ (01500-01559): ACCATCACCGvCCTGCGCGAGAAGACCTACCCGGACT---------------tcgagvgc
+ (01560-01577): vwgchg-tgg-c---gag
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+                          % Primer Pair Filtering %                         
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+
+                   Dividing pair lists into 36 partitions.                  
+
+Partition #1 Pairs: 1444                                                    
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                          0   (00.00%)                  
+     FilterTempDiff                        1193   (82.62%)                  
+----------------------------------------------------------------------------
+Remaining                                   251   (17.38%)                  
+
+
+>>>>>>> a6d7fa8d38b62b8f77eaaf11f48c524dd35a84ec
