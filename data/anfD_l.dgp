@@ -2,51 +2,7 @@
                                  % Results %                                
                                  %%%%%%%%%%%                                
 
-      Primer Pair #1       Amplicon Size: [1010]      Temp Diff: [00.70]    
-                Forward                               Reverse               
-       [CATCAAGCGCATGACCATCTAC]               [GGGATCTCGTCCTTGCTGATG]       
-           Basic Information                     Basic Information          
-            Range: [383-404]                      Range: [1393-1372]        
-           Length: [22]                          Length: [21]               
-          Penalty: [00.00]                      Penalty: [00.00]            
-          Melting Temperature                   Melting Temperature         
-            Basic: [54.84]                        Basic: [56.31]            
-               NN: [54.04]                           NN: [54.74]            
-
-      Primer Pair #2       Amplicon Size: [1390]      Temp Diff: [00.28]    
-                Forward                               Reverse               
-        [CGTACCACGAGTTCGAGTGCA]              [CGGGATCTCGTCCTTGCTGATG]       
-           Basic Information                     Basic Information          
-            Range: [04-24]                        Range: [1394-1372]        
-           Length: [21]                          Length: [22]               
-          Penalty: [02.40]                      Penalty: [00.00]            
-          Melting Temperature                   Melting Temperature         
-            Basic: [56.31]                        Basic: [58.56]            
-               NN: [56.94]                           NN: [57.23]            
-
-      Primer Pair #3       Amplicon Size: [1007]      Temp Diff: [00.08]    
-                Forward                               Reverse               
-        [ATCAAGCGCATGACCATCTAC]               [GATCTCGTCCTTGCTGATGTC]       
-           Basic Information                     Basic Information          
-            Range: [384-404]                      Range: [1391-1370]        
-           Length: [21]                          Length: [21]               
-          Penalty: [00.00]                      Penalty: [00.06]            
-          Melting Temperature                   Melting Temperature         
-            Basic: [52.40]                        Basic: [54.36]            
-               NN: [52.74]                           NN: [52.82]            
-
-      Primer Pair #4       Amplicon Size: [1007]      Temp Diff: [00.64]    
-                Forward                               Reverse               
-        [TCAAGCGCATGACCATCTACC]               [GGATCTCGTCCTTGCTGATGT]       
-           Basic Information                     Basic Information          
-            Range: [385-405]                      Range: [1392-1371]        
-           Length: [21]                          Length: [21]               
-          Penalty: [00.00]                      Penalty: [01.07]            
-          Melting Temperature                   Melting Temperature         
-            Basic: [54.36]                        Basic: [54.36]            
-               NN: [54.66]                           NN: [54.02]            
-
-      Primer Pair #5        Amplicon Size: [376]      Temp Diff: [00.10]    
+      Primer Pair #1        Amplicon Size: [376]      Temp Diff: [00.10]    
                 Forward                               Reverse               
         [ATGCCGTACCACGAGTTCGAG]               [AAGGCCTTGAAGGCCTCGATG]       
            Basic Information                     Basic Information          
@@ -56,6 +12,50 @@
           Melting Temperature                   Melting Temperature         
             Basic: [56.31]                        Basic: [56.31]            
                NN: [56.72]                           NN: [56.81]            
+
+      Primer Pair #2        Amplicon Size: [373]      Temp Diff: [00.70]    
+                Forward                               Reverse               
+        [CGTACCACGAGTTCGAGTGCA]              [GAAGGCCTTGAAGGCCTCGATG]       
+           Basic Information                     Basic Information          
+            Range: [04-24]                        Range: [377-355]          
+           Length: [21]                          Length: [22]               
+          Penalty: [02.40]                      Penalty: [00.59]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [56.31]                        Basic: [58.56]            
+               NN: [56.94]                           NN: [57.64]            
+
+      Primer Pair #3        Amplicon Size: [375]      Temp Diff: [00.63]    
+                Forward                               Reverse               
+       [CCGTACCACGAGTTCGAGTGCA]              [GGAAGGCCTTGAAGGCCTCGATG]      
+           Basic Information                     Basic Information          
+            Range: [03-24]                        Range: [378-355]          
+           Length: [22]                          Length: [23]               
+          Penalty: [02.40]                      Penalty: [01.30]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [58.56]                        Basic: [60.62]            
+               NN: [58.93]                           NN: [59.57]            
+
+      Primer Pair #4        Amplicon Size: [377]      Temp Diff: [00.76]    
+                Forward                               Reverse               
+       [GCCGTACCACGAGTTCGAGTGCA]             [GGGAAGGCCTTGAAGGCCTCGAT]      
+           Basic Information                     Basic Information          
+            Range: [02-24]                        Range: [379-356]          
+           Length: [23]                          Length: [23]               
+          Penalty: [02.61]                      Penalty: [03.25]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [60.62]                        Basic: [60.62]            
+               NN: [61.30]                           NN: [60.55]            
+
+      Primer Pair #5        Amplicon Size: [450]      Temp Diff: [00.44]    
+                Forward                               Reverse               
+       [TGCCGTACCACGAGTTCGAGTGC]              [GCGATGGCGTCGATGTCGTCG]       
+           Basic Information                     Basic Information          
+            Range: [01-23]                        Range: [451-430]          
+           Length: [23]                          Length: [21]               
+          Penalty: [03.42]                      Penalty: [05.56]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [60.62]                        Basic: [60.21]            
+               NN: [61.30]                           NN: [60.87]            
 
 
                           %%%%%%%%%%%%%%%%%%%%%%%%                          
@@ -119,13 +119,13 @@
                           % Primer Pair Filtering %                         
                           %%%%%%%%%%%%%%%%%%%%%%%%%                         
 
-                   Dividing pair lists into 4 partitions.                   
+                   Dividing pair lists into 9 partitions.                   
 
 Partition #1 Pairs: 841                                                     
        Filter Name                      Filtered  Percent                   
-     FilterAmpLength                        380   (45.18%)                  
-     FilterTempDiff                         349   (41.50%)                  
+     FilterAmpLength                        406   (48.28%)                  
+     FilterTempDiff                         334   (39.71%)                  
 ----------------------------------------------------------------------------
-Remaining                                   112   (13.32%)                  
+Remaining                                   101   (12.01%)                  
 
 
