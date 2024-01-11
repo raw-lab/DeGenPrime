@@ -1,25 +1,42 @@
-%%%%%%%%%%%%%%%%%%%%%%%%
-% Sequence Information %
-%%%%%%%%%%%%%%%%%%%%%%%%
+                                 %%%%%%%%%%%                                
+                                 % Results %                                
+                                 %%%%%%%%%%%                                
 
-Before Sequence Filters, the number of Sequences are: 1
-	Sequence(0000):[NC_005217.1 Sin Nombre virus map viral genome L segment] Size:[6562]
+      Primer Pair #1       Amplicon Size: [6512]      Temp Diff: [00.33]    
+                Forward                               Reverse               
+       [GGAGATTCATCAAAGAGTCAAGG]             [TAGTAGTATGCTCCGAGAACAG]       
+           Basic Information                     Basic Information          
+            Range: [49-71]                        Range: [6561-6539]        
+           Length: [23]                          Length: [22]               
+          Penalty: [00.52]                      Penalty: [00.68]            
+          Melting Temperature                   Melting Temperature         
+            Basic: [53.49]                        Basic: [52.97]            
+               NN: [51.09]                           NN: [50.76]            
 
-%%%%%%%%%%%%%%%%%%%%%
-% Conserved Regions %
-%%%%%%%%%%%%%%%%%%%%%
 
-There were 1 conserved regions found.
-[index=0][length=6544]
-There were 66 candidate primer regions.
-%%%%%%%%%%%%%%%%%%%%%%
-% Consensus Sequence %
-%%%%%%%%%%%%%%%%%%%%%%
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
+                          % Sequence Information %                          
+                          %%%%%%%%%%%%%%%%%%%%%%%%                          
 
-----------------------------------------------------------------------------
-	Size of dashes: 76
-----------------------------------------------------------------------------
-	(conserved regions capitalized.)
+                              Sequence Count: 1                             
+
+                Sequence(0001):[NC_005217.1 Sin ] Size:[6562]               
+
+                            %%%%%%%%%%%%%%%%%%%%%                           
+                            % Conserved Regions %                           
+                            %%%%%%%%%%%%%%%%%%%%%                           
+
+                        There is 1 conserved region.                        
+
+                                 (0000-6543)                                
+
+                    There are 2 candidate pair mappings.                    
+
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+                           % Consensus Sequence %                           
+                           %%%%%%%%%%%%%%%%%%%%%%                           
+
+                       Conserved regions capitalized.                       
  (00000-00059): TAGTAGTAGACTCCGAGATAGAGAAATTCAGGAAAATGGAAAAATATAGGGAGATTCATC
  (00060-00119): AAAGAGTCAAGGAGATTCCTCCTGGGGGGGCTTCTGCATTAGAATGTTTAGATTTGCTTG
  (00120-00179): ACCGTCTTTATGCAGTCAGACATGATGTAGTTGATCAGATGATCAAGCATGATTGGTCTG
@@ -131,9 +148,49 @@ There were 66 candidate primer regions.
  (06480-06539): TGTCTTCATTCTATTAACAATTTTCTTTATTCCAAACCATGACTTGTTCTCTCTACTGCT
  (06540-06561): CTGTtctcggagcatactacta
 
-%%%%%%%%%%%%%%%%%%%
-% Forward Primers %
-%%%%%%%%%%%%%%%%%%%
+                             %%%%%%%%%%%%%%%%%%%                            
+                             % Forward Primers %                            
+                             %%%%%%%%%%%%%%%%%%%                            
 
-Before Filters, number of forward primers: [51704]
+Before filters [408] total primers.
+
+       Filter Name                      Filtered     Percent                
+     FilterDegeneracy                         0   (00.00% of total.)        
+     FilterDeletions                          0   (00.00% of total.)        
+     FilterGCContent                        301   (73.77% of total.)        
+     FilterRepeats                            0   (00.00% of total.)        
+     FilterCompEnds                           1   (00.25% of total.)        
+     FilterTemp                              72   (17.65% of total.)        
+After all filters                           374   (91.67% of total.)        
+----------------------------------------------------------------------------
+Remaining                                    34   (08.33% of total.)        
+
+                             %%%%%%%%%%%%%%%%%%%                            
+                             % Reverse Primers %                            
+                             %%%%%%%%%%%%%%%%%%%                            
+
+Before filters [8] total primers.
+
+       Filter Name                      Filtered     Percent                
+     FilterDegeneracy                         0   (00.00% of total.)        
+     FilterDeletions                          0   (00.00% of total.)        
+     FilterGCContent                          0   (00.00% of total.)        
+     FilterRepeats                            0   (00.00% of total.)        
+     FilterCompEnds                           0   (00.00% of total.)        
+     FilterTemp                               4   (50.00% of total.)        
+After all filters                             4   (50.00% of total.)        
+----------------------------------------------------------------------------
+Remaining                                     4   (50.00% of total.)        
+
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+                          % Primer Pair Filtering %                         
+                          %%%%%%%%%%%%%%%%%%%%%%%%%                         
+
+Partition #1 Pairs: 136                                                     
+       Filter Name                      Filtered  Percent                   
+     FilterAmpLength                          8   (05.88%)                  
+     FilterTempDiff                          82   (60.29%)                  
+----------------------------------------------------------------------------
+Remaining                                    46   (33.82%)                  
+
 
