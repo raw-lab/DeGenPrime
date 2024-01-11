@@ -792,7 +792,7 @@ void ProcessTags(int argc, char *argv[])
 	}
 
 	if(GlobalSettings::GetRunTest())
-	{S
+	{
 		DataSequence data;
 		for(char c : GlobalSettings::GetTestValue())
 		{
