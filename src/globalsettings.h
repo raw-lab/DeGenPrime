@@ -25,6 +25,8 @@ namespace DeGenPrime
 		static void SetProteinSequence(bool seq);
 		static void SetMinimumTemperature(float temp);
 		static void SetMaximumTemperature(float temp);
+		static void SetMaximumPrimerLength(int len);
+		static void SetMinimumPrimerLength(int len);
 		static void SetPrimerConcentration(float primer_conc);
 		static void SetMonoIonConcentration(float salt_conc);
 		static void SetMaximumReturnPrimers(int max);
@@ -51,6 +53,8 @@ namespace DeGenPrime
 		static bool GetEndFlag();
 		static float GetMinimumTemperature();
 		static float GetMaximumTemperature();
+		static int GetMaximumPrimerLength();
+		static int GetMinimumPrimerLength();
 		static float GetPrimerConcentration();
 		static float GetMonoIonConcentration();
 		static int GetMaximumReturnPrimers();
@@ -76,6 +80,8 @@ namespace DeGenPrime
 		static bool _nonDegenerate;
 		static float _minTemp;
 		static float _maxTemp;
+		static int _maxLen;
+		static int _minLen;
 		static float _primerConcentration;
 		static float _monovalentIonConcentration;
 		static int _maxPrimers;

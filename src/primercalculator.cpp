@@ -22,7 +22,6 @@ namespace DeGenPrime
 	void PrimerCalculator::InitializeTestPrimer(DataSequence data)
 	{
 		Primer test(0, data.size());
-		// Primer test(0,data.size(), data);
 		test.SetPenalty(data.Penalty());
 		PushBack(test);
 		_OriginalSize = size();
@@ -39,7 +38,7 @@ namespace DeGenPrime
 			GlobalSettings::SetMinimumAmplicon(data.size());
 		}
 
-		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++) // length
+		for(int i = GlobalSettings::GetMinimumPrimerLength();i <= GlobalSettings::GetMaximumPrimerLength();i++)
 		{
 			for(int j = 0;j <= endIndex;j++)
 			{
@@ -58,13 +57,15 @@ namespace DeGenPrime
 
 		// Check the loopBound is appropriate
 		loopBound = loopBound > 0 ? loopBound : 0;
-		if(loopBound + MAX_PRIMER_LENGTH > data.size())
+		int min = GlobalSettings::GetMinimumPrimerLength();
+		int max = GlobalSettings::GetMaximumPrimerLength();
+		if(loopBound + max > data.size())
 		{
-			loopBound = data.size() - MAX_PRIMER_LENGTH;
+			loopBound = data.size() - max;
 		}
 		
 		// Needs to loop through all primers in the forward direction
-		for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
+		for(int i = min;i <= max;i++)
 		{
 			for(int j = 0;j <= loopBound;j++)
 			{
@@ -81,17 +82,11 @@ namespace DeGenPrime
 	{
 		for(Primer p : region)
 		{
-			/*
-			int boundary = fwd ? GlobalSettings::GetBeginningNucleotide() : 
-				data.RevIndex(GlobalSettings::GetEndingNucleotide());
-			int index = fwd ? p.Index() : data.RevIndex(p.Index());
-			if(index > boundary)
-			{
-				continue;
-			}*/
 			int region_size = p.Length();
 			const int threshold = 5;
-			for(int i = MIN_PRIMER_LENGTH;i <= MAX_PRIMER_LENGTH;i++)
+			int min = GlobalSettings::GetMinimumPrimerLength();
+			int max = GlobalSettings::GetMaximumPrimerLength();
+			for(int i = min;i <= max;i++)
 			{
 				int endIndex = (region_size - i < threshold) ? region_size - i : threshold;
 				bool search = (GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev());
@@ -100,8 +95,16 @@ namespace DeGenPrime
 				{
 					Primer pr(p.Index() + j, i);
 					DataSequence sub = data.SubSeq(pr.Index(), pr.Length());
-					pr.SetPenalty(sub.Penalty());
-					PushBack(pr);
+					float penalty = sub.Penalty();
+					if(penalty > MAX_PENALTY)
+					{
+						continue;
+					}
+					else
+					{
+						pr.SetPenalty(penalty);
+						PushBack(pr);
+					}
 				}
 			}
 		}

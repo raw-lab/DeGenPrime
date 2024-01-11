@@ -4,7 +4,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <filesystem>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -32,6 +31,8 @@ bool GlobalSettings::_beginflag = DEFAULT_BEGIN_FLAG;
 bool GlobalSettings::_endflag = DEFAULT_END_FLAG;
 float GlobalSettings::_minTemp = DEFAULT_MIN_TEMP;
 float GlobalSettings::_maxTemp = DEFAULT_MAX_TEMP;
+int GlobalSettings::_maxLen = DEFAULT_MAX_PRIMER_LENGTH;
+int GlobalSettings::_minLen = DEFAULT_MIN_PRIMER_LENGTH;
 float GlobalSettings::_primerConcentration = DEFAULT_PRIMER_CONC;
 float GlobalSettings::_monovalentIonConcentration = DEFAULT_SALT_CONC;
 int GlobalSettings::_maxPrimers = DEFAULT_MAX_PRIMERS;
@@ -78,7 +79,6 @@ int main(int argc, char *argv[])
 
 	// Create Filename/path/output strings
 	std::string filename = argv[argc - 1];
-	std::string filepath = std::filesystem::current_path();
 	std::size_t found = filename.find_last_of(".");
 	std::string primer_output = "";
 	std::string detail_output = "";
@@ -86,18 +86,11 @@ int main(int argc, char *argv[])
 
 	// Open Input File
 	ifstream ifs;
-	ifs.open(filepath + "/" + filename);
+	ifs.open(filename);
 	if(ifs.fail())
 	{
-		// Maybe the argument was an absolute filepath
-		// Close the ifs and try to reopen with the precise argument.
-		ifs.close();
-		ifs.open(filename);
-		if(ifs.fail())
-		{
-			cout << "Failure to open file.\n";
-			exit(BAD_INPUT_FILE);
-		}
+		cout << "Failure to open file.\n";
+		exit(BAD_INPUT_FILE);
 	}
 
 	// Read Sequences
@@ -115,11 +108,11 @@ int main(int argc, char *argv[])
 		/* FUTURE IMPLEMENTATION
 		ofstream os;
 		std::size_t found = filename.find_last_of(".");
-		os.open(filepath + "/" + filename.substr(0, found) + "_protein.fasta");
+		os.open(filename.substr(0, found) + "_protein.fasta");
 		cout << "Decoded proteins: " << list.DecodeProteins() << endl;
 		os << "" << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
-		cout << filepath + "/" + filename.substr(0, found) + "_protein.fasta" << endl;
+		cout << filename.substr(0, found) + "_protein.fasta" << endl;
 		*/
 		cout << "Protein feature not yet implemented." << endl;
 		exit(PROGRAM_SUCCESS);
@@ -176,7 +169,7 @@ int main(int argc, char *argv[])
 	
 	// Open Output File Stream
 	ofstream ofs;
-	ofs.open(filepath + "/" + filename.substr(0, found) + ".dgp");
+	ofs.open(filename.substr(0, found) + ".dgp");
 	
 	// Sequence Information Before Filtering
 	detail_output += Banner(" Sequence Information ");
@@ -386,6 +379,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// Abort program if either calculator has no primers
+	if(calc.size() == 0 || rev_calc.size() == 0)
+	{
+		line_output = "There were insufficient primers found for this data.";
+		detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+		cout << detail_output;
+		exit(NO_PRIMERS_FOUND);
+	}
+
 	// Display number of possible primers, run filters and output filter percentages.
 	if(GlobalSettings::GetNonDegenerate() == false)
 	{
@@ -509,7 +511,6 @@ int main(int argc, char *argv[])
 				== floor((double)sqrt(count + 1));
 
 			// Create Primer Pair List
-			//pairlist = maxlist;
 			pairlist.CreateFromRange(data, rev, calc.GetPrimers(),
 				rev_calc.GetPrimers(), x_start, x_end, y_start, y_end);
 			line_output = "Partition #" + to_string(count);
@@ -635,7 +636,7 @@ int main(int argc, char *argv[])
 	ofs.close();
 	
 	// Show closing messages then close the program.
-	cout << "Output details saved to primers_" << filename.substr(0, found) << ".dgp" << endl;
+	cout << "Output details saved to " << filename.substr(0, found) << ".dgp" << endl;
 	cout << "Program complete." << endl;
 	exit(PROGRAM_SUCCESS);
 }
@@ -697,6 +698,14 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetEndingNucleotide(value);
 			containsEnd = true;
 		}
+		else if(strstr(argv[i], "--max_primer_len:") != NULL)
+		{
+			GlobalSettings::SetMaximumPrimerLength(value);
+		}
+		else if(strstr(argv[i], "--min_primer_len:") != NULL)
+		{
+			GlobalSettings::SetMinimumPrimerLength(value);
+		}
 		else if(strstr(argv[i], "--min_temp:") != NULL)
 		{
 			GlobalSettings::SetMinimumTemperature(value);
@@ -757,6 +766,28 @@ void ProcessTags(int argc, char *argv[])
 	{
 		cout << "ERROR: '--search' tags are incompatiable with ";
 		cout << "the '--test' tag." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	// Make sure the user hasn't specified a min primer size > max primer size
+	if(GlobalSettings::GetMaximumPrimerLength() < GlobalSettings::GetMinimumPrimerLength())
+	{
+		cout << "ERROR: cannot set maximum primer length < ";
+		cout << "minimum primer length." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	if(GlobalSettings::GetMaximumPrimerLength() < MIN_PRIMER_LENGTH)
+	{
+		cout << "ERROR: cannot set a maximum primer length ";
+		cout << "less than " << MIN_PRIMER_LENGTH << "." << endl;
+		exit(SETTINGS_FILE_NOT_FOUND);
+	}
+
+	if(GlobalSettings::GetMinimumPrimerLength() < MAX_PRIMER_LENGTH)
+	{
+		cout << "ERROR: cannot set a minimum primer length ";
+		cout << "greater than " << MAX_PRIMER_LENGTH << "." << endl;
 		exit(SETTINGS_FILE_NOT_FOUND);
 	}
 
