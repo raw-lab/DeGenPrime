@@ -698,13 +698,13 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetEndingNucleotide(value);
 			containsEnd = true;
 		}
-		else if((strstr(argv[i], "--max_primer_len:") != NULL) ||
-			(strstr(argv[i]), "--max_primer_length:") != NULL)
+		else if(strstr(argv[i], "--max_primer_len:") != NULL ||
+			strstr(argv[i], "--max_primer_length:") != NULL)
 		{
 			GlobalSettings::SetMaximumPrimerLength(value);
 		}
-		else if((strstr(argv[i], "--min_primer_len:") != NULL) ||
-			(strstr(argv[i]), "--min_primer_length:") != NULL)
+		else if(strstr(argv[i], "--min_primer_len:") != NULL ||
+			strstr(argv[i], "--min_primer_length:") != NULL)
 		{
 			GlobalSettings::SetMinimumPrimerLength(value);
 		}
