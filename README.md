@@ -74,7 +74,6 @@ Valid tags include:
 --min_temp:           <int>, Sets the minimum primer melting temperature. This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.
 --max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
---protein,             Tells the program that the input sequence is a protein sequence, and the program should unwrap the protein sequence into its base nucleotides instead of trying to find a PCR. This will produce degenerate nucleotide codes whenever there is any ambiguity.
 --salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
 --search_fwd:         <string>, The string represents a forward primer.  Searches the collected list of forward primers to see if the argument primer is within them.  If this primer is included, it gives its relative position on the ordered list by penalty.  This tag is not compatible with --test.
 --search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with --test.
@@ -84,9 +83,8 @@ Valid tags include:
 
 ### Input
 Input files to DeGenPrime can use a variety of formats including single sequences to alignment files.<br /> 
-- Nucleotide fasta formats (.fasta, .fna, .ffn)<br />
-- Protein fasta formats (.faa)<br />
-- Protein or nucleotide alignments (.clust)<br />
+- Nucleotide fasta formats (.faa, .fasta, .ffn, .fna)<br />
+- Nucleotide alignments (.clust)<br />
 
 ### Output
 DeGenPrime will output a few progress messages as the program runs, the recommended primers and their details, and the program runtime at the end to the console.  DeGenPrime also records the operation details and the primers to an output file.  The output filename is selected based on the specified input file.<br />  
