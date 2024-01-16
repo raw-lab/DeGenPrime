@@ -412,6 +412,7 @@ namespace DeGenPrime
 							break;
 						}
 						DataSequence second = p.SubSeq(k,k_mer);
+						second = second.InvSeq().RevSeq();
 						int matches = first.CountMatches(second);
 						if(k_mer == 4 || k_mer == 5 && k_mer == matches)
 						{
