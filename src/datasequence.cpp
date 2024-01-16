@@ -578,23 +578,28 @@ namespace DeGenPrime
 		}
 
 		// Temperature
-		if(NNMeltingTemperature() < MIN_PRIMER_TEMP)
+		float temp = NNMeltingTemperature();
+		if(temp < GlobalSettings::GetMinimumTemperature())
 		{
-			if(MIN_PRIMER_TEMP != DEFAULT_MIN_TEMP)
+			if(GlobalSettings::GetUserTemp())
 			{
-				penalty_mod = 100;
+				penalty += 1000;
 			}
-			penalty += 10.0 * penalty_mod * (MIN_PRIMER_TEMP - NNMeltingTemperature());
-			penalty_mod = 1;
+			else
+			{
+				penalty += 10.0 * (GlobalSettings::GetMinimumTemperature() - temp);
+			}
 		}
-		else if(NNMeltingTemperature() > MAX_PRIMER_TEMP)
+		else if(temp > GlobalSettings::GetMaximumTemperature())
 		{
-			if(MAX_PRIMER_TEMP != DEFAULT_MAX_TEMP)
+			if(GlobalSettings::GetUserTemp())
 			{
-				penalty_mod = 100;
+				penalty += 1000;
 			}
-			penalty += 10.0 * penalty_mod * (NNMeltingTemperature() - MAX_PRIMER_TEMP);
-			penalty_mod = 1;
+			else
+			{
+				penalty += 10.0 * (temp - GlobalSettings::GetMaximumTemperature());
+			}
 		}
 
 		// Degeneracy and Deletions

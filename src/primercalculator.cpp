@@ -44,8 +44,16 @@ namespace DeGenPrime
 			{
 				Primer id(j, i);
 				DataSequence sub = data.SubSeq(j,i);
-				id.SetPenalty(sub.Penalty());
-				PushBack(id);
+				float penalty = sub.Penalty();
+				if(penalty > MAX_PENALTY)
+				{
+					continue;
+				}
+				else
+				{
+					id.SetPenalty(penalty);
+					PushBack(id);
+				}
 			}
 		}
 		_OriginalSize = size();
@@ -71,27 +79,36 @@ namespace DeGenPrime
 			{
 				Primer id(j, i);
 				DataSequence sub = data.SubSeq(j,i);
-				id.SetPenalty(sub.Penalty());
-				PushBack(id);
+				float penalty = sub.Penalty();
+				if(penalty > MAX_PENALTY)
+				{
+					continue;
+				}
+				else
+				{
+					id.SetPenalty(penalty);
+					PushBack(id);
+				}
 			}
 		}
 		_OriginalSize = size();
 	}
 
-	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region, DataSequence data, bool fwd)
+	void PrimerCalculator::InitializeFromRegion(std::vector<Primer> region, DataSequence data)
 	{
+		int min = GlobalSettings::GetMinimumPrimerLength();
+		int max = GlobalSettings::GetMaximumPrimerLength();
+		const int threshold = max - min;
 		for(Primer p : region)
 		{
 			int region_size = p.Length();
-			const int threshold = 5;
-			int min = GlobalSettings::GetMinimumPrimerLength();
-			int max = GlobalSettings::GetMaximumPrimerLength();
 			for(int i = min;i <= max;i++)
 			{
 				int endIndex = (region_size - i < threshold) ? region_size - i : threshold;
+				/*
 				bool search = (GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev());
-				if(search)endIndex = region_size - i;
-				for(int j = 0;j < endIndex;j++)
+				if(search)endIndex = region_size - i;*/
+				for(int j = 0;j <= endIndex;j++)
 				{
 					Primer pr(p.Index() + j, i);
 					DataSequence sub = data.SubSeq(pr.Index(), pr.Length());
@@ -210,11 +227,11 @@ namespace DeGenPrime
 						flag = true;
 					}
 				}
-				if(total_deletions_count > 6)
+				if(total_deletions_count > 3)
 				{
 					flag = true;
 				}
-				if((p.size() - total_deletions_count) < MIN_PRIMER_LENGTH)
+				if((p.size() - total_deletions_count) < GlobalSettings::GetMinimumPrimerLength())
 				{
 					flag = true;
 				}
@@ -283,7 +300,7 @@ namespace DeGenPrime
 			//	- raise flag if four matches are found to any pair, more than one codon, or any higher
 			//	- break loop if flag or length * (match count) < remaining checks * match count
 			//	- there is no need to check subsequences longer than sqrt the total length.
-			for(int j = 0;j < p.size() - 5;j++)
+			for(int j = 0;j < p.size() - 6;j++)
 			{
 				if(flag)
 				{
@@ -303,26 +320,21 @@ namespace DeGenPrime
 				int k = j + 1;
 				while(k < p.size() - 5)
 				{
-					if(two.GetDataSequence()[0].GetMostCommon() == 
+					if(flag)
+					{
+						break;
+					}
+					if(two.GetDataSequence()[j].GetMostCommon() == 
 						p.GetDataSequence()[k].GetMostCommon())
 					{
 						double_match_count += two.checkMatch(p.SubSeq(k,2)) ? 1 : 0;
 						triple_match_count += three.checkMatch(p.SubSeq(k,3)) ? 1 : 0;
 						quadra_match_count += four.checkMatch(p.SubSeq(k,4)) ? 1 : 0;
-					}
-					flag = double_match_count > TooManyRepeats(2) ||
-						 triple_match_count > TooManyRepeats(3) ||
-						 quadra_match_count > TooManyRepeats(4);
-					if(flag)
-					{
-						break;
+						flag = double_match_count > TooManyRepeats(2) ||
+							triple_match_count > TooManyRepeats(3) ||
+							quadra_match_count > TooManyRepeats(4);
 					}
 					k++;
-					while(two.GetDataSequence()[0].GetMostCommon() !=
-						p.GetDataSequence()[k].GetMostCommon() && k < p.size() - 1)
-					{
-						k++;
-					}
 				}
 			}
 			if(flag)
@@ -374,6 +386,55 @@ namespace DeGenPrime
 			// -	for tetraloops, compare the nucleotide six nucleotides away for complement
 			//	if match filter
 
+			int k_mer = 4;
+			while(k_mer < ((p.size() - 3.0)/2.0))
+			{
+				if(flag)
+				{
+					break;
+				}
+				for(int j = 0;j + 3 < p.size() - k_mer;j++)
+				{
+					if(flag)
+					{
+						break;
+					}
+					
+					DataSequence first = p.SubSeq(j,k_mer);
+					if(k_mer == 4 && first.GCRatio() < 1.0)
+					{
+						continue;
+					}
+					for(int k = j + k_mer + 3;k < p.size();k++)
+					{
+						if(flag)
+						{
+							break;
+						}
+						DataSequence second = p.SubSeq(k,k_mer);
+						int matches = first.CountMatches(second);
+						if(k_mer == 4 || k_mer == 5 && k_mer == matches)
+						{
+							flag = true;
+						}
+						else if(k_mer == 6 || k_mer == 7 && matches >= 5)
+						{
+							flag = true;
+						}
+						else if(k_mer == 8 || k_mer == 9 && matches >= 6)
+						{
+							flag = true;
+						}
+						else if(matches >= 7)
+						{
+							flag = true;
+						}
+					}
+				}
+				k_mer++;
+			}
+
+			/*
 			for(int j = 0;j + 4 < p.size();j++)
 			{
 				if(flag)
@@ -419,7 +480,7 @@ namespace DeGenPrime
 				{
 					flag = true;
 				}
-			}
+			}*/
 			if(flag)
 			{
 				Erase(i);
@@ -429,8 +490,6 @@ namespace DeGenPrime
 		ret = FilterMessage("FilterHairpins", filtercount);
 		return ret;
 	}
-	/*
-	*/
 
 	string PrimerCalculator::FilterDimers(DataSequence data)
 	{

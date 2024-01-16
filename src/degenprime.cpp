@@ -43,6 +43,7 @@ bool GlobalSettings::_invRevRun = false;
 bool GlobalSettings::_SearchFwd = false;
 bool GlobalSettings::_SearchRev = false;
 bool GlobalSettings::_sortbytemp = true;
+bool GlobalSettings::_userTemp = true;
 string GlobalSettings::_testStr = "";
 string GlobalSettings::_invRevValue = "";
 string GlobalSettings::_searchFwdArg = "";
@@ -193,7 +194,7 @@ int main(int argc, char *argv[])
 	bool conserved_start = false;
 	bool conserved_region = false;
 	std::vector<Primer> conserved_fwd_primers;
-	for(int i = 0;i < data.size() - MIN_PRIMER_LENGTH;i++)
+	for(int i = 0;i < data.size() - GlobalSettings::GetMinimumPrimerLength();i++)
 	{
 		char c = data.GetDataSequence()[i].GetCode();
 		bool isConserved = (c == 'C' || c == 'G' || c == 'A' || c == 'T');
@@ -205,7 +206,7 @@ int main(int argc, char *argv[])
 				conserved_start = true;
 				begin_index = i;
 			}
-			if(conserved_count >= MIN_PRIMER_LENGTH)
+			if(conserved_count >= GlobalSettings::GetMinimumPrimerLength())
 			{
 				conserved_region = true;
 			}
@@ -259,9 +260,11 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			int last = (data.size() < GlobalSettings::GetEndingNucleotide()) ?
+			int first = (0 >= GlobalSettings::GetBeginningNucleotide()) ?
+				0 : GlobalSettings::GetBeginningNucleotide();
+			int last = (data.size() <= GlobalSettings::GetEndingNucleotide()) ?
 				data.size() - 1 : GlobalSettings::GetEndingNucleotide();
-			amp = last - GlobalSettings::GetBeginningNucleotide();
+			amp = last - first;
 		}
 		if(conserved_fwd_primers.size() == 1)
 		{
@@ -272,8 +275,8 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				cout << "The conserved region(s) are not within minimum amplicon bounds." << endl;
-				ofs << "The conserved region(s) are not within minimum amplicon bounds." << endl;
+				cout << "The conserved region is smaller than minimum amplicon or size bounds." << endl;
+				ofs << "The conserved region is smaller than minimum amplicon or size bounds." << endl;
 				std::vector<int> empty_int;
 				cout << data.Consensus(empty_int, empty_int, false) << endl;
 				ofs << data.Consensus(empty_int, empty_int, false) << endl;
@@ -283,6 +286,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
+			/*
 			// Is conserved region big enough to make multiple primer regions
 			for(int i = 0;i < conserved_fwd_primers.size();i++)
 			{
@@ -291,7 +295,7 @@ int main(int argc, char *argv[])
 					int region_len = ceil(((float)conserved_fwd_primers[0].Length())/((float)amp));
 					cand_pair_regions += region_len;
 				}
-			}
+			}*/
 
 			// Is there enough space between the conserved regions to make primers.
 			for(int i = 0;i < conserved_fwd_primers.size() - 1;i++)
@@ -304,10 +308,6 @@ int main(int argc, char *argv[])
 					if(primer_amp >= amp)
 					{
 						cand_pair_regions++;
-					}
-					else
-					{
-						break;
 					}
 				}
 			}
@@ -352,8 +352,8 @@ int main(int argc, char *argv[])
 	PrimerCalculator calc, rev_calc;
 	if(GlobalSettings::GetNonDegenerate()) // User wants conserved regions
 	{
-		calc.InitializeFromRegion(conserved_fwd_primers, data, true);
-		rev_calc.InitializeFromRegion(conserved_rev_primers, rev, false);
+		calc.InitializeFromRegion(conserved_fwd_primers, data);
+		rev_calc.InitializeFromRegion(conserved_rev_primers, rev);
 	}
 	else if(GlobalSettings::GetMeasureByAmpliconSize()) // User wants minimum amplicon length
 	{
@@ -711,10 +711,12 @@ void ProcessTags(int argc, char *argv[])
 		else if(strstr(argv[i], "--min_temp:") != NULL)
 		{
 			GlobalSettings::SetMinimumTemperature(value);
+			GlobalSettings::SetUserTemp(true);
 		}
 		else if(strstr(argv[i], "--max_temp:") != NULL)
 		{
 			GlobalSettings::SetMaximumTemperature(value);
+			GlobalSettings::SetUserTemp(true);
 		}
 		else if(strstr(argv[i], "--primer_conc:") != NULL)
 		{

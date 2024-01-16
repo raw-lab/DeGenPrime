@@ -38,6 +38,7 @@ namespace DeGenPrime
 		static void SetSearchFwd(bool search);
 		static void SetSearchRev(bool search);
 		static void SetSortByTemp(bool temp);
+		static void SetUserTemp(bool temp);
 		static void SetTestValue(std::string str);
 		static void SetInvRevValue(std::string str);
 		static void SetSearchFwdArg(std::string str);
@@ -64,6 +65,7 @@ namespace DeGenPrime
 		static bool GetSearchFwd();
 		static bool GetSearchRev();
 		static bool GetSortByTemp();
+		static bool GetUserTemp();
 		static std::string GetTestValue();
 		static std::string GetInvRevValue();
 		static std::string GetSearchFwdArg();
@@ -91,6 +93,7 @@ namespace DeGenPrime
 		static bool _SearchFwd;
 		static bool _SearchRev;
 		static bool _sortbytemp;
+		static bool _userTemp;
 		static std::string _testStr;
 		static std::string _invRevValue;
 		static std::string _searchFwdArg;

@@ -34,6 +34,7 @@ namespace DeGenPrime
 	void GlobalSettings::SetSearchFwdArg(std::string str) {_searchFwdArg = str;}
 	void GlobalSettings::SetSearchRevArg(std::string str) {_searchRevArg = str;}
 	void GlobalSettings::SetSortByTemp(bool temp) {_sortbytemp = temp;}
+	void GlobalSettings::SetUserTemp(bool temp) {_userTemp = temp;}
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
@@ -56,6 +57,7 @@ namespace DeGenPrime
 	bool GlobalSettings::GetSearchFwd() { return _SearchFwd; }
 	bool GlobalSettings::GetSearchRev() { return _SearchRev; }
 	bool GlobalSettings::GetSortByTemp() { return _sortbytemp; }
+	bool GlobalSettings::GetUserTemp() { return _userTemp; }
 	string GlobalSettings::GetTestValue() { return _testStr; }
 	string GlobalSettings::GetInvRevValue() { return _invRevValue; }
 	string GlobalSettings::GetSearchFwdArg() { return _searchFwdArg; }
