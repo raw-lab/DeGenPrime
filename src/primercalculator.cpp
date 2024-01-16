@@ -405,7 +405,7 @@ namespace DeGenPrime
 					{
 						continue;
 					}
-					for(int k = j + k_mer + 3;k < p.size();k++)
+					for(int k = j + k_mer + 3;k < p.size() - k_mer;k++)
 					{
 						if(flag)
 						{
