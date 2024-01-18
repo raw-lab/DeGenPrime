@@ -385,6 +385,8 @@ int main(int argc, char *argv[])
 		line_output = "There were insufficient primers found for this data.";
 		detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
 		cout << detail_output;
+		ofs << detail_output;
+		ofs << line_output;
 		exit(NO_PRIMERS_FOUND);
 	}
 
