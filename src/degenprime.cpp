@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include "degenprime.h"
+#include "config.h"
 #include "datanode.h"
 #include "datasequence.h"
 #include "format.h"
