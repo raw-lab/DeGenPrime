@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include "config.h"
 #include "datanode.h"
 #include "datasequence.h"
 #include "format.h"
@@ -865,6 +866,7 @@ void ProcessTags(int argc, char *argv[])
 
 void PrintHelp()
 {
+	cout << "degenprime version " << DeGenPrime_VERSION << "\n";
 	cout << "Syntax: ./degenprime [--tags] <filename>\n";
 	cout << "Valid tags include:\n";
 	cout << "\t--amplicon:int, Set the minimum amplicon length.  This will not work with";
