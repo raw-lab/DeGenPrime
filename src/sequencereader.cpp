@@ -36,6 +36,7 @@ namespace DeGenPrime
 		Sequence seq;
 		FileType type = IdentifyFileType(ifs);
 		string line;
+		int counter = 1;
 		char next;
 		switch(type)
 		{
@@ -57,6 +58,7 @@ namespace DeGenPrime
 			case fasta:
 				while(getline(ifs,line))
 				{
+					counter++;
 					if(line[0] == '>') // New Sequence
 					{
 						list.PushBack(seq); // The first sequence will be empty

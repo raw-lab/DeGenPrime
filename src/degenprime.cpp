@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 {
 	
 	// Check if user wants help or wants to test a k-mer
+	bool arg_flag = false;
 	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || 
 		strcmp("--help", argv[1]) == 0) ) )
 	{
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
 	else if(argc == 2 && (strstr(argv[1], "--test:") != NULL ||
 		strstr(argv[1], "--invrev:") != NULL))
 	{
+		arg_flag = true;
 		argc++;
 	}
 
@@ -82,9 +84,25 @@ int main(int argc, char *argv[])
 	// Create Filename/path/output strings
 	std::string filename = argv[argc - 1];
 	std::size_t found = filename.find_last_of(".");
+	std::string version_output = "";
 	std::string primer_output = "";
 	std::string detail_output = "";
 	std::string line_output = "";
+
+	// Enter Version Information
+	/*
+	const std::string VERSION = "1.0.0.1";
+	line_output = "DeGenPrime Version " + VERSION;
+	version_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+	int arg_limit = arg_flag ? argc - 1 : argc;
+	line_output = "tags: ";
+	for(int i = 1;i < arg_limit;i++)
+	{
+		std::string str = argv[i];
+		line_output += str + " ";
+	}
+	version_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n\n";
+	*/
 
 	// Open Input File
 	ifstream ifs;
@@ -172,6 +190,9 @@ int main(int argc, char *argv[])
 	// Open Output File Stream
 	ofstream ofs;
 	ofs.open(filename.substr(0, found) + ".dgp");
+
+	// Print Version/Command Details
+	// ofs << version_output << endl;
 	
 	// Sequence Information Before Filtering
 	detail_output += Banner(" Sequence Information ");
@@ -227,19 +248,23 @@ int main(int argc, char *argv[])
 			conserved_region = false;
 		}
 		// Check the last region
-		if(conserved_region && i == (data.size() - MIN_PRIMER_LENGTH - 1))
+		if(conserved_region && i == (data.size() - GlobalSettings::GetMinimumPrimerLength() - 1))
 		{
 			Primer p(begin_index, conserved_count);
 			conserved_fwd_primers.push_back(p);
 		}
 	}
+	/*
+	cout << "Seg Fault after this point" << endl;
+	cout << "Conserved_fwd_primers size = " << conserved_fwd_primers.size() << endl;
 	line_output = "There ";
 	line_output += (conserved_fwd_primers.size() == 1) ? "is " : "are ";
 	line_output += to_string(conserved_fwd_primers.size());
 	line_output += " conserved ";
 	line_output += (conserved_fwd_primers.size() == 1) ? "region." : "regions.";
 	detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n\n";
-	if(conserved_fwd_primers.size() == 0)
+	*/
+	if(conserved_fwd_primers.size() == 0 && GlobalSettings::GetNonDegenerate())
 	{
 		line_output = "Insufficient conserved regions in sequences to find primers.";
 		detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
@@ -250,7 +275,7 @@ int main(int argc, char *argv[])
 		ofs.close();
 		exit(PROGRAM_SUCCESS);
 	}
-	else
+	else if(GlobalSettings::GetNonDegenerate())
 	{
 		detail_output += ConservedRegions(conserved_fwd_primers) + "\n";
 		int cand_pair_regions = 0;

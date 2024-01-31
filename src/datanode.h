@@ -61,7 +61,7 @@ namespace DeGenPrime
 		char GetMostCommon() const;
 		float Ratio() const;
 	private:
-		void ChooseCode(int Count[5], int Size);
+		void ChooseCode(int Count[6], int Size);
 		void EvaluateCode();
 		int MostCommonIndex(int Count[5]);
 

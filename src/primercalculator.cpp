@@ -414,15 +414,15 @@ namespace DeGenPrime
 						DataSequence second = p.SubSeq(k,k_mer);
 						second = second.InvSeq().RevSeq();
 						int matches = first.CountMatches(second);
-						if(k_mer == 4 || k_mer == 5 && k_mer == matches)
+						if((k_mer == 4 || k_mer == 5) && k_mer == matches)
 						{
 							flag = true;
 						}
-						else if(k_mer == 6 || k_mer == 7 && matches >= 5)
+						else if((k_mer == 6 || k_mer == 7) && matches >= 5)
 						{
 							flag = true;
 						}
-						else if(k_mer == 8 || k_mer == 9 && matches >= 6)
+						else if((k_mer == 8 || k_mer == 9) && matches >= 6)
 						{
 							flag = true;
 						}
