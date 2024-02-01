@@ -910,6 +910,9 @@ void PrintHelp()
 	cout << "\t--min_temp:int, Sets the minimum primer melting temperature.  This has";
 	cout << " a minimum value of " << MIN_PRIMER_TEMP << " (degrees Celsius) and must be ";
 	cout << "smaller than --max_temp.\n";
+	cout << "\t--max_primers:int, Sets the maximum number of output primers.  This has ";
+	cout << "a maximum value of " << MAX_PRIMER_RETURNS << " and this program will reduce ";
+	cout << "any value larger to this value.\n";
 	cout << "\t--max_temp:int, Sets the maximum primer melting temperature.  This has";
 	cout << " a maximum value of " << MAX_PRIMER_TEMP << " (degrees Celsius) and must be ";
 	cout << "larger than --min_temp.\n";
@@ -922,9 +925,12 @@ void PrintHelp()
 	cout << "\t--salt_conc:int, Sets the concentration of monovalent ions in mM.  This has ";
 	cout << "a minimum value of " << MIN_SALT_CONC << " and this program will raise ";
 	cout << "any value smaller to this value.\n";
-	cout << "\t--max_primers:int, Sets the maximum number of output primers.  This has ";
-	cout << "a maximum value of " << MAX_PRIMER_RETURNS << " and this program will reduce ";
-	cout << "any value larger to this value.\n";
+	cout << "\t--test:string, The string represents a single primer.  Runs the primer through all filters.";
+	cout <<  "Returns the thermodynamic values of this primer as well as any filters this primer would not pass and";
+	cout << "its calculated penalty.  This tag is incompatible with --search tags.";
+	cout << "Any primer smaller or larger than the size limits will show primer outside size range.";
+
+
 	exit(PROGRAM_SUCCESS);
 }
 
