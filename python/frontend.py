@@ -2,9 +2,11 @@ from tkinter import *
 from tkinter.filedialog import askopenfile
 import customtkinter as ctk
 import os, subprocess
+from CTkMessagebox import CTkMessagebox
+import webbrowser
+
 
 ctk.set_appearance_mode("System")
-#ctk.set_default_color_theme("dark-blue")
 ctk.set_default_color_theme("green")
 
 class App(ctk.CTk):
@@ -15,6 +17,22 @@ class App(ctk.CTk):
         self.geometry("500x300")
         frame = Frame(self)
         frame.grid()
+
+        #these functions are compatible with either measurement tool
+        def handle_exit_code(exit_code):
+            if exit_code == 0:
+                print("Success")
+            elif exit_code == 1:
+                CTkMessagebox(title="ERROR", message="ERROR - DeGenPrime has determined your input file is misaligned. Please try a different file.", icon="cancel")
+            elif exit_code == 2:
+                CTkMessagebox(title="ERROR", message="ERROR - Settings file not found. Please consider uninstalling and reinstalling DeGenPrime.", icon="cancel")
+            elif exit_code == 3:
+                CTkMessagebox(title="ERROR", message="ERROR - Insufficient primers found. Please consider changing settings and re-running.", icon="cancel")
+            elif exit_code == 4:
+                CTkMessagebox(title="ERROR", message="ERROR - Invalid input file format. Please try a different file.", icon="cancel")
+            elif exit_code == 5:
+                CTkMessagebox(title="ERROR", message="ERROR - Invalid input file. Please try a different file.", icon="cancel")
+        
 
         #event handling for when the button is pressed.
         def amp_click():
@@ -28,8 +46,7 @@ class App(ctk.CTk):
             self.amp_btn.destroy()
             self.lbl_greeting.destroy()
             self.select_greeting.destroy()
-            
-            #event handling for finding the input file
+
             def find_input_file():
                 file = askopenfile(mode ='r', filetypes =[('Acceptable Filetypes', '*.fasta *.fna *.clust *.faa')])
                 if file:
@@ -37,7 +54,9 @@ class App(ctk.CTk):
                     inputpath = os.path.abspath(file.name)
                     self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
                     self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
-                    filecontent = file.read()
+            def open_browser():
+                url = 'https://github.com/raw-lab/DeGenPrime'
+                webbrowser.open_new(url)
 
             self.grid_rowconfigure((0,1), weight=1)
             self.grid_columnconfigure((0, 1, 2), weight=1)
@@ -63,9 +82,8 @@ class App(ctk.CTk):
             self.btn_browse.grid(row=0, column=0, padx=20, pady=(40,30))
             self.btn_run = ctk.CTkButton(self.sidebar_frame, text = "RUN PROGRAM", command = run_amp)
             self.btn_run.grid(row=2, column=0, padx=20, pady=30)
-            self.btn_save = ctk.CTkButton(self.sidebar_frame, text = "PLACEHOLDER")
-            self.btn_save.grid(row=3, column=0, padx=20, pady=30)
-
+            self.btn_github = ctk.CTkButton(self.sidebar_frame, text = "GITHUB", command = open_browser)
+            self.btn_github.grid(row=3, column=0, padx=20, pady=30)
 
             #upper bound of temperature
             self.temphigh_label = ctk.CTkLabel(self.settings_scroll, text= "Temp. (Upper Bound)",justify="center")
@@ -128,9 +146,6 @@ class App(ctk.CTk):
             self.priMax.insert("0", "25")
             self.priMax_label2 = ctk.CTkLabel(self.settings_scroll, text= "Primers")
             self.priMax_label2.grid(row = 19, column = 1,padx=10,pady=2.5)
-            
-
-
 
         def run_amp():
             #pulling settings from the boxes
@@ -162,11 +177,12 @@ class App(ctk.CTk):
                     f"--max_primer_len:{priMax_get}",
                     inputpath
                 ]
-                    #run command, save primer to .txt file
-            output = subprocess.check_call(command, text=True)
-            output_file_address = "primer.txt"
-            with open(output_file_address, 'w') as file:
-                file.write(output)
+            try:
+                result = subprocess.run(command, check=True)
+                handle_exit_code(result.returncode)
+            except subprocess.CalledProcessError as e:
+                handle_exit_code(e.returncode)
+
         
         def bp_click():
             
@@ -188,7 +204,9 @@ class App(ctk.CTk):
                     inputpath = os.path.abspath(file.name)
                     self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
                     self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
-                    filecontent = file.read()
+            def open_browser():
+                url = 'https://github.com/raw-lab/DeGenPrime'
+                webbrowser.open_new(url)
 
             self.grid_rowconfigure((0,1), weight=1)
             self.grid_columnconfigure((0, 1, 2), weight=1)
@@ -219,9 +237,8 @@ class App(ctk.CTk):
             self.btn_browse.grid(row=0, column=0, padx=20, pady=(40,30))
             self.btn_run = ctk.CTkButton(self.sidebar_frame, text = "RUN PROGRAM", command = run_basepair)
             self.btn_run.grid(row=2, column=0, padx=20, pady=30)
-            self.btn_save = ctk.CTkButton(self.sidebar_frame, text = "PLACEHOLDER")
-            self.btn_save.grid(row=3, column=0, padx=20, pady=30)
-
+            self.btn_github = ctk.CTkButton(self.sidebar_frame, text = "GITHUB", command = open_browser)
+            self.btn_github.grid(row=3, column=0, padx=20, pady=30)
 
             #upper bound of temperature
             self.temphigh_label = ctk.CTkLabel(self.settings_scroll, text= "Temp. (Upper Bound)",justify="center")
@@ -285,7 +302,6 @@ class App(ctk.CTk):
             self.priMax_label2 = ctk.CTkLabel(self.settings_scroll, text= "Primers")
             self.priMax_label2.grid(row = 19, column = 1,padx=10,pady=2.5)
 
-
         def run_basepair():
             #pulling settings from the boxes
             temphigh_get = self.temphigh.get()
@@ -318,10 +334,11 @@ class App(ctk.CTk):
                     f"--max_primer_len:{priMax_get}",
                     inputpath
                 ]
-            output = subprocess.check_output(command, text=True)
-            output_file_address = "primer.txt"
-            with open(output_file_address, 'w') as file:
-                file.write(output)
+            try:
+                result = subprocess.run(command, check=True)
+                handle_exit_code(result.returncode)
+            except subprocess.CalledProcessError as e:
+                handle_exit_code(e.returncode)
 
 
         #original welcome message frame
