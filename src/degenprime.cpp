@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 	std::size_t found = filename.find_last_of(".");
 	std::string version_output = "";
 	std::string primer_output = "";
+	std::string csv_output = "";
 	std::string detail_output = "";
 	std::string line_output = "";
 
@@ -125,16 +126,12 @@ int main(int argc, char *argv[])
 	}
 	else if(GlobalSettings::GetProteinSequence())
 	{
-		/* FUTURE IMPLEMENTATION
 		ofstream os;
 		std::size_t found = filename.find_last_of(".");
 		os.open(filename.substr(0, found) + "_protein.fasta");
-		cout << "Decoded proteins: " << list.DecodeProteins() << endl;
-		os << "" << list.DecodeProteins() << endl;
+		os << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
 		cout << filename.substr(0, found) + "_protein.fasta" << endl;
-		*/
-		cout << "Protein feature not yet implemented." << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
@@ -188,7 +185,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// Open Output File Stream
-	ofstream ofs;
+	ofstream ofs, ofs_csv;
 	ofs.open(filename.substr(0, found) + ".dgp");
 
 	// Print Version/Command Details
@@ -655,6 +652,9 @@ int main(int argc, char *argv[])
 	{
 		line_output = top.PrintAll(data, rev);
 		primer_output += line_output;
+		ofs_csv.open(filename.substr(0, found) + ".csv");
+		ofs_csv << top.CreateCSV(data, rev);
+		ofs_csv.close();
 	}
 	ofs << primer_output << endl;
 	ofs << detail_output << endl;

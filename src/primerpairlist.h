@@ -66,6 +66,7 @@ namespace DeGenPrime
 
 		std::string PrintAll(DataSequence fwd, DataSequence rev);
 		std::string PrintAllShort(DataSequence fwd, DataSequence rev);
+		std::string CreateCSV(DataSequence fwd, DataSequence rev);
 
 		std::vector<PrimerPair> GetPairs() const;
 

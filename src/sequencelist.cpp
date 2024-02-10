@@ -2,6 +2,7 @@
 #include <cctype>
 #include <iostream>
 #include <string>
+#include <map>
 #include <vector>
 #include "datanode.h"
 #include "datasequence.h"
@@ -175,6 +176,7 @@ namespace DeGenPrime
 					count = 0;
 				}
 			}
+			ret += "\n";
 		}
 		return ret;
 	}
@@ -254,7 +256,18 @@ namespace DeGenPrime
 
 	std::string SequenceList::Codon(char c) const
 	{
-		string ret = "";
+		std::map<char, std::string> str = 
+		{
+			{'A', "GCT"}, {'R', "CGT"}, {'N', "AAT"}, {'D', "GAT"},
+    		{'C', "TGT"}, {'Q', "CAA"}, {'E', "GAA"}, {'G', "GGT"},
+    		{'H', "CAT"}, {'I', "ATT"}, {'L', "CTT"}, {'K', "AAA"},
+    		{'M', "ATG"}, {'F', "TTT"}, {'P', "CCT"}, {'S', "TCT"},
+    		{'T', "ACT"}, {'W', "TGG"}, {'Y', "TAT"}, {'V', "GTT"},
+    		{'*', "TAA"} // Stop codon
+		};
+
+		return str[c];
+		/*
 		switch(toupper(c))
 		{
 			case 'A': // Alanine
@@ -323,6 +336,6 @@ namespace DeGenPrime
 			default:
 				break;
 		}
-		return ret;
+		*/
 	}
 } // End of DeGenPrime

@@ -332,6 +332,24 @@ namespace DeGenPrime
 		return ret;
 	}
 
+	string PrimerPairList::CreateCSV(DataSequence fwd, DataSequence rev)
+	{
+		string ret = "Pair #,Forward,Reverse,Amplicon,Temp. Diff\n";
+		for(int i = 0;i < _pairs.size();i++)
+		{
+			DataSequence fwdSub = fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].GetForward().Length());
+			DataSequence revSub = rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].GetReverse().Length());
+
+			ret += to_string(i + 1) + ",";
+			ret += fwdSub.Codes() + ",";
+			ret += revSub.Codes() + ",";
+			ret += to_string(_pairs[i].AmpSize()) + ",";
+			ret += to_string(_pairs[i].TempDiff()) + "\n";
+		}
+
+		return ret;
+	}
+
 	string PrimerPairList::PrintAllShort(DataSequence fwd, DataSequence rev)
 	{
 		string ret = "";

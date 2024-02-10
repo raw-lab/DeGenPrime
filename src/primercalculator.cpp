@@ -434,54 +434,6 @@ namespace DeGenPrime
 				}
 				k_mer++;
 			}
-
-			/*
-			for(int j = 0;j + 4 < p.size();j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				char first = p.GetDataSequence()[j].GetMostCommon();
-				char second = (p.GetDataSequence()[j+4].InvNode()).GetMostCommon();
-				if(first != second)
-				{
-					continue;
-				}
-				first = p.GetDataSequence()[j+1].GetMostCommon();
-				if(first != 'G')
-				{
-					continue;
-				}
-				second = p.GetDataSequence()[j+3].GetMostCommon();
-				if(second == 'A')
-				{
-					flag = true;
-				}
-			}
-			for(int j = 0;j + 5 < p.size();j++)
-			{
-				if(flag)
-				{
-					break;
-				}
-				char first = p.GetDataSequence()[j].GetMostCommon();
-				char second = (p.GetDataSequence()[j+5].InvNode()).GetMostCommon();
-				if(first != second)
-				{
-					continue;
-				}
-				first = p.GetDataSequence()[j+1].GetMostCommon();
-				if(first != 'G')
-				{
-					continue;
-				}
-				second = p.GetDataSequence()[j+4].GetMostCommon();
-				if(second == 'A')
-				{
-					flag = true;
-				}
-			}*/
 			if(flag)
 			{
 				Erase(i);
