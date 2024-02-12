@@ -20,7 +20,7 @@
 //	allowed in any primer.						                	//
 // MAX_GC_TOTAL_RATIO (Default 0.6) The maximum ratio of G or C	    //
 //	allowed in any primer.						                	//
-// MIN_DEGENERATE_THRESHOLD (Default 0.3) The minimum amount of 	//
+// MIN_DEGENERATE_THRESHOLD (Default 60.0) The minimum amount of 	//
 //	degeneracy within a node to determine degeneracy.		        //
 // MIN_PRIMER_TEMP (Default 50.0) The minimum allowed temperature	//
 //	of any primer in degrees celsius.			            		//

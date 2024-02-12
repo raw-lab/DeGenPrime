@@ -35,13 +35,31 @@ namespace DeGenPrime
 	{
 		DataSequence data_seq;
 
-		// Loop through the length of entire sequence of chars
 		int SizeOfChars = _list[0].GetCodes().size();
-		for(int i = 0;i < SizeOfChars;i++)
+		// If there is only one sequence on the list, use constructors
+		if(size() == 1)
 		{
-			std::vector<char> char_list = CharsAt(i);
-			DataNode node(char_list);
-			data_seq.PushBack(node);
+			std::vector<char> char_list = _list[0].GetCodes();
+			for(int i = 0; i < SizeOfChars;i++)
+			{
+				char c = char_list[i];
+				if(c == '\n' || c == ' '  || c == '\r')
+				{
+					continue;
+				}
+				DataNode node(char_list[i], char_list[i], 1.0);
+				data_seq.PushBack(node);
+			}
+		}
+		else
+		{
+			// Loop through the length of entire sequence of chars
+			for(int i = 0;i < SizeOfChars;i++)
+			{
+				std::vector<char> char_list = CharsAt(i);
+				DataNode node(char_list);
+				data_seq.PushBack(node);
+			}
 		}
 		return data_seq;
 	}

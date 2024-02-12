@@ -42,29 +42,38 @@ namespace DeGenPrime
 			}
 		}
 		ChooseCode(Count, char_list.size());
-		int Index = MostCommonIndex(Count);
-		switch(Index) // Set Most Common
+		int Index;
+		if(char_list.size() == 1)
 		{
-			case 0:
-				_most_common = 'A';
-				break;
-			case 1:
-				_most_common = 'C';
-				break;
-			case 2:
-				_most_common = 'G';
-				break;
-			case 3:
-				_most_common = 'T';
-				break;
-			case 4:
-				_most_common = '-';
-				break;
-			default:
-				_most_common = 'N';
-				break;
+			_most_common = _code;
+			_ratio = 1.0;
 		}
-		_ratio = ((float)Count[Index]) / (float)char_list.size(); // Set ratio
+		else
+		{
+			Index = MostCommonIndex(Count);
+			switch(Index) // Set Most Common
+			{
+				case 0:
+					_most_common = 'A';
+					break;
+				case 1:
+					_most_common = 'C';
+					break;
+				case 2:
+					_most_common = 'G';
+					break;
+				case 3:
+					_most_common = 'T';
+					break;
+				case 4:
+					_most_common = '-';
+					break;
+				default:
+					_most_common = 'N';
+					break;
+			}
+			_ratio = ((float)Count[Index]) / (float)char_list.size(); // Set ratio
+		}
 		EvaluateCode(); // Double check code
 	}
 
@@ -169,6 +178,43 @@ namespace DeGenPrime
 		// {A,C,G,T,-,N}
 
 		// Get the Value of 'N'
+		/*
+		if(Size == 1)
+		{
+			int index = 0;
+			while(index < 6)
+			{
+				if(Count[index] != 0)
+				{
+					break;
+				}
+				index++;
+			}
+			switch(index)
+			{
+				case 0:
+					_code = 'A';
+					break;
+				case 1:
+					_code = 'C';
+					break;
+				case 2:
+					_code = 'G';
+					break;
+				case 3:
+					_code = 'T';
+					break;
+				case 4:
+					_code = '-';
+					break;
+				case 5:
+				default:
+					_code = 'N';
+					break;
+			}
+			return;
+		}*/
+
 		int N = Count[5];
 		float ratio = static_cast<float>(N) / static_cast<float>(Size);
 		if(ratio > MAX_N_TOLERANCE)
