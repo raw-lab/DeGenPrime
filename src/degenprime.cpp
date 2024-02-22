@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 		os.open(filename.substr(0, found) + "_protein.fasta");
 		os << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
-		cout << filename.substr(0, found) + "_protein.fasta" << endl;
+		cout << filename.substr(0, found) + "_protein.faa" << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
