@@ -19,6 +19,7 @@ namespace DeGenPrime
 
 		static void SetMinimumAmplicon(int amplicon);
 		static void SetBeginningNucleotide(int begin);
+		static void SetDeltaG(float g);
 		static void SetEndingNucleotide(int ending);
 		static void SetNonDegenerate(bool non);
 		static void SetMeasureByAmpliconSize(bool size);
@@ -46,6 +47,7 @@ namespace DeGenPrime
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
+		static float GetDeltaG();
 		static int GetEndingNucleotide();
 		static bool GetNonDegenerate();
 		static bool GetMeasureByAmpliconSize();
@@ -74,6 +76,7 @@ namespace DeGenPrime
 	private:
 		static int _ampLength;
 		static int _beginningNucleotide;
+		static float _deltag;
 		static int _endingNucleotide;
 		static bool _measureByAmpliconSize;
 		static bool _proteinSequence;

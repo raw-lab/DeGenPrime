@@ -25,6 +25,7 @@ using namespace DeGenPrime;
 
 int GlobalSettings::_ampLength = DEFAULT_AMPLICON_LENGTH;
 int GlobalSettings::_beginningNucleotide = DEFAULT_BEGIN_NUCLEOTIDE;
+float GlobalSettings::_deltag = DEFAULT_DELTA_G;
 int GlobalSettings::_endingNucleotide = DEFAULT_END_NUCLEOTIDE;
 bool GlobalSettings::_measureByAmpliconSize = DEFAULT_MEASURE_BY_AMPLICON;
 bool GlobalSettings::_proteinSequence = DEFAULT_PROTEIN_SEQUENCE;
@@ -483,7 +484,7 @@ int main(int argc, char *argv[])
 		ofs << detail_output;
 		ifs.close();
 		ofs.close();
-		exit(PROGRAM_SUCCESS);
+		exit(TEST_MODE);
 	}
 
 	// Get Partitions of PrimerPairList
@@ -721,6 +722,10 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetBeginningNucleotide(value);
 			containsBegin = true;
 		}
+		else if(strstr(argv[i], "--delta_g:") != NULL)
+		{
+			GlobalSettings::SetDeltaG(value);
+		}
 		else if(strstr(argv[i], "--end:") != NULL)
 		{
 			GlobalSettings::SetEndingNucleotide(value);
@@ -836,7 +841,7 @@ void ProcessTags(int argc, char *argv[])
 		}
 		string message = TestValue(data, true);
 		cout << message;
-		exit(PROGRAM_SUCCESS);
+		exit(TEST_MODE);
 	}
 	else if(GlobalSettings::GetRunInvRev())
 	{
