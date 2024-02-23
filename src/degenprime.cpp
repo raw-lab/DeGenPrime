@@ -952,6 +952,24 @@ string TestValue(DataSequence data, bool details)
 	{
 		message += "Primer is located in a non conserved region.\n";
 	}
+	string valid_chars = "AaCcGgTtWwSsRrYyKkMmBbDdHhVvNn-";
+	for(int i = 0;i < data.size();i++)
+	{
+		if(flag)
+		{
+			break;
+		}
+		char c = data.GetDataSequence()[i].GetCode();
+		if(valid_chars.find(c) == string::npos)
+		{
+			flag = true;
+		}
+	}
+	if(flag)
+	{
+		message = "Error. Primer contained one or more invalid characters.\n";
+		return message;
+	}
 	else if(data.size() < MIN_PRIMER_LENGTH || data.size() > MAX_PRIMER_LENGTH)
 	{
 		message += "Primer not within allowed size for filtering.\n";
