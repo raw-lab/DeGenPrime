@@ -468,7 +468,7 @@ namespace DeGenPrime
 			}
 			DataSequence ending = (p.size() > 5) ? p.SubSeq(p.size() - 6, 5) : p;
 			value = ending.isEmpty() ? 0 : ending.Gibbs();
-			if(value < -3.0)
+			if(value < GlobalSettings::GetDeltaG())
 			{
 				Erase(i);
 				filtercount++;

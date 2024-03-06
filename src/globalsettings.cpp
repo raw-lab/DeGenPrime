@@ -11,6 +11,7 @@ namespace DeGenPrime
 
 	void GlobalSettings::SetMinimumAmplicon(int amplicon) { _ampLength = (0 < amplicon) ? amplicon : 0; }
 	void GlobalSettings::SetBeginningNucleotide(int begin){ _beginningNucleotide = (0 < begin) ? begin : 0; }
+	void GlobalSettings::SetDeltaG(float g) {_deltag = g;}
 	void GlobalSettings::SetEndingNucleotide(int ending) {_endingNucleotide = ending; }
 	void GlobalSettings::SetNonDegenerate(bool non) {_nonDegenerate = non; }
 	void GlobalSettings::SetMeasureByAmpliconSize(bool size) {_measureByAmpliconSize = size; }
@@ -38,6 +39,7 @@ namespace DeGenPrime
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
+	float GlobalSettings::GetDeltaG() { return _deltag; }
 	int GlobalSettings::GetEndingNucleotide() { return _endingNucleotide; }
 	bool GlobalSettings::GetNonDegenerate() { return _nonDegenerate; }
 	bool GlobalSettings::GetMeasureByAmpliconSize() { return _measureByAmpliconSize; }

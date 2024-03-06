@@ -25,6 +25,7 @@ using namespace DeGenPrime;
 
 int GlobalSettings::_ampLength = DEFAULT_AMPLICON_LENGTH;
 int GlobalSettings::_beginningNucleotide = DEFAULT_BEGIN_NUCLEOTIDE;
+float GlobalSettings::_deltag = DEFAULT_DELTA_G;
 int GlobalSettings::_endingNucleotide = DEFAULT_END_NUCLEOTIDE;
 bool GlobalSettings::_measureByAmpliconSize = DEFAULT_MEASURE_BY_AMPLICON;
 bool GlobalSettings::_proteinSequence = DEFAULT_PROTEIN_SEQUENCE;
@@ -131,7 +132,7 @@ int main(int argc, char *argv[])
 		os.open(filename.substr(0, found) + "_protein.fasta");
 		os << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
-		cout << filename.substr(0, found) + "_protein.fasta" << endl;
+		cout << filename.substr(0, found) + "_protein.faa" << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
@@ -483,7 +484,7 @@ int main(int argc, char *argv[])
 		ofs << detail_output;
 		ifs.close();
 		ofs.close();
-		exit(PROGRAM_SUCCESS);
+		exit(TEST_MODE);
 	}
 
 	// Get Partitions of PrimerPairList
@@ -721,6 +722,10 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetBeginningNucleotide(value);
 			containsBegin = true;
 		}
+		else if(strstr(argv[i], "--delta_g:") != NULL)
+		{
+			GlobalSettings::SetDeltaG(value);
+		}
 		else if(strstr(argv[i], "--end:") != NULL)
 		{
 			GlobalSettings::SetEndingNucleotide(value);
@@ -836,7 +841,7 @@ void ProcessTags(int argc, char *argv[])
 		}
 		string message = TestValue(data, true);
 		cout << message;
-		exit(PROGRAM_SUCCESS);
+		exit(TEST_MODE);
 	}
 	else if(GlobalSettings::GetRunInvRev())
 	{
@@ -946,6 +951,24 @@ string TestValue(DataSequence data, bool details)
 	if(data.isEmpty())
 	{
 		message += "Primer is located in a non conserved region.\n";
+	}
+	string valid_chars = "AaCcGgTtWwSsRrYyKkMmBbDdHhVvNn-";
+	for(int i = 0;i < data.size();i++)
+	{
+		if(flag)
+		{
+			break;
+		}
+		char c = data.GetDataSequence()[i].GetCode();
+		if(valid_chars.find(c) == string::npos)
+		{
+			flag = true;
+		}
+	}
+	if(flag)
+	{
+		message = "Error. Primer contained one or more invalid characters.\n";
+		return message;
 	}
 	else if(data.size() < MIN_PRIMER_LENGTH || data.size() > MAX_PRIMER_LENGTH)
 	{

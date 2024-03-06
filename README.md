@@ -65,6 +65,7 @@ Valid tags include:
 --amplicon:           <int>, Set the minimum amplicon length. 
 --begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
 --degenerate          this tag directs the program to use hard filters and some limited degeneracy instead of basing primer design off the consensus sequence and minimizing penalty.  This method runs significantly slower than the default approach.
+--delta_g:            <int>, Sets the minimum allowed gibbs free energy for the repetition filter.  Default value is -4.0 kcal/mol.
 --end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
 --global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
 --help or --h,         prints this help menu.
@@ -74,6 +75,7 @@ Valid tags include:
 --min_temp:           <int>, Sets the minimum primer melting temperature. This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.
 --max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
+--protein            This tag will cause the program to interpret the input file as a sequence of amino acids and translate the amino acids into nucleotides then save the output file as <filename>_protein.faa.
 --salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
 --search_fwd:         <string>, The string represents a forward primer.  Searches the collected list of forward primers to see if the argument primer is within them.  If this primer is included, it gives its relative position on the ordered list by penalty.  This tag is not compatible with --test.
 --search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with --test.
