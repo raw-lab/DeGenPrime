@@ -7,6 +7,7 @@
 #include "sequence.h"
 #include "sequencelist.h"
 #include "global.h"
+#include "globalsettings.h"
 
 using namespace std;
 
@@ -49,6 +50,11 @@ namespace DeGenPrime
 						seq = CreateSequence(line);
 						list.PushBack(seq);
 					}
+				}
+				if(list.size() == 0)
+				{
+					cout << "Error.  " << GlobalSettings::GetInputFile() << " contained no sequences." << endl;
+					exit(BAD_INPUT_FILE);
 				}
 				if(list.size() > 1)
 				{
@@ -115,6 +121,10 @@ namespace DeGenPrime
 	{
 		int _count = 0;
 		char next;
+		if(ifs.peek() == std::ifstream::traits_type::eof())
+		{
+			return;
+		}
 		ifs.get(next);
 		while(next != '\n' && next != '\r')
 		{

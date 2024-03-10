@@ -106,7 +106,6 @@ int main(int argc, char *argv[])
 	// Read Sequences
 	SequenceReader read;
 	SequenceList list = read.CreateList(ifs);
-
 	// Test Sequences
 	if(list.size() == 0)
 	{
@@ -1141,7 +1140,7 @@ string ConservedRegions(std::vector<Primer> primers)
 	}
 	int regs_per_line = (pow(root, 2) > square_threshold) ? max_regs_per_line : root;
 	int form_size = STR_FORMAT / regs_per_line;
-	int reg_count = 0;
+	//int reg_count = 0;
 	string region = "";
 	for(int i = 0;i < primers.size();i++)
 	{
