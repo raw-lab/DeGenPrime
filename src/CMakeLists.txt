@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.11)
 
 # This is the version ID of degenprime.
-project(DeGenPrime VERSION 0.1.1 LANGUAGES CXX)
+project(DeGenPrime VERSION 0.1.2 LANGUAGES CXX)
 
 configure_file(config.h.in config.h)
 
