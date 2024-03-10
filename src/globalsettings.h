@@ -44,6 +44,8 @@ namespace DeGenPrime
 		static void SetInvRevValue(std::string str);
 		static void SetSearchFwdArg(std::string str);
 		static void SetSearchRevArg(std::string str);
+		static void SetInputFile(std::string str);
+		static void SetOutputFile(std::string str);
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
@@ -72,6 +74,8 @@ namespace DeGenPrime
 		static std::string GetInvRevValue();
 		static std::string GetSearchFwdArg();
 		static std::string GetSearchRevArg();
+		static std::string GetInputFile();
+		static std::string GetOutputFile();
 
 	private:
 		static int _ampLength;
@@ -101,6 +105,8 @@ namespace DeGenPrime
 		static std::string _invRevValue;
 		static std::string _searchFwdArg;
 		static std::string _searchRevArg;
+		static std::string _inputfile;
+		static std::string _outputfile;
 	};
 } // end of DeGenPrime
 #endif // GLOBAL_SETTINGS

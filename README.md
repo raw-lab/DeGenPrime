@@ -69,6 +69,7 @@ Valid tags include:
 --end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
 --global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
 --help or --h,         prints this help menu.
+--input_file:<file>   this tag species the input file for the program.  It must be an aligned file in fasta or clustal form.  This tag is required for program operation.
 --local or --l,        for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for local alignment.
 --max_primer_len:  <int>, Sets the maximum length of the desired primer.  This has a default value of 22 and cannot be larger than 25.
 --min_primer_len:  <int>, Sets the minimum length of the desired primer.  This has a default value of 20 and cannot be less than 18.
@@ -76,6 +77,7 @@ Valid tags include:
 --max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
 --protein            This tag will cause the program to interpret the input file as a sequence of amino acids and translate the amino acids into nucleotides then save the output file as <filename>_protein.faa.
+--output_file:<file> This tag specifies the output csv file where the program data will be saved.  If this tag is not included, the filename will write output to the same filename as the input filename but will replace the file extension with '.csv'
 --salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
 --search_fwd:         <string>, The string represents a forward primer.  Searches the collected list of forward primers to see if the argument primer is within them.  If this primer is included, it gives its relative position on the ordered list by penalty.  This tag is not compatible with --test.
 --search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with --test.

@@ -50,6 +50,8 @@ string GlobalSettings::_testStr = "";
 string GlobalSettings::_invRevValue = "";
 string GlobalSettings::_searchFwdArg = "";
 string GlobalSettings::_searchRevArg = "";
+string GlobalSettings::_inputfile = "";
+string GlobalSettings::_outputfile = "";
 
 
 void ProcessTags(int argc, char *argv[]);
@@ -63,48 +65,34 @@ int main(int argc, char *argv[])
 {
 	
 	// Check if user wants help or wants to test a k-mer
-	bool arg_flag = false;
 	if(argc == 1 || (argc == 2 && (strcmp("--h", argv[1]) == 0 || 
 		strcmp("--help", argv[1]) == 0) ) )
 	{
 		PrintHelp();
 	}
+	/*
 	else if(argc == 2 && (strstr(argv[1], "--test:") != NULL ||
 		strstr(argv[1], "--invrev:") != NULL))
 	{
-		arg_flag = true;
 		argc++;
-	}
+	}*/
 
 	// Process Tags
+	ProcessTags(argc, argv);
+	/*
 	if(argc != 2)
 	{
 		ProcessTags(argc, argv);
-	}
+	}*/
 
 	// Create Filename/path/output strings
-	std::string filename = argv[argc - 1];
+	//std::string filename = argv[argc - 1];
+	std::string filename = GlobalSettings::GetInputFile();
 	std::size_t found = filename.find_last_of(".");
-	std::string version_output = "";
 	std::string primer_output = "";
-	std::string csv_output = "";
+	//std::string csv_output = "";
 	std::string detail_output = "";
 	std::string line_output = "";
-
-	// Enter Version Information
-	/*
-	const std::string VERSION = "1.0.0.1";
-	line_output = "DeGenPrime Version " + VERSION;
-	version_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
-	int arg_limit = arg_flag ? argc - 1 : argc;
-	line_output = "tags: ";
-	for(int i = 1;i < arg_limit;i++)
-	{
-		std::string str = argv[i];
-		line_output += str + " ";
-	}
-	version_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n\n";
-	*/
 
 	// Open Input File
 	ifstream ifs;
@@ -128,15 +116,23 @@ int main(int argc, char *argv[])
 	else if(GlobalSettings::GetProteinSequence())
 	{
 		ofstream os;
-		std::size_t found = filename.find_last_of(".");
-		os.open(filename.substr(0, found) + "_protein.fasta");
+		//os.open(filename.substr(0, found) + "_protein.fasta");
+		os.open(GlobalSettings::GetOutputFile());
 		os << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
-		cout << filename.substr(0, found) + "_protein.faa" << endl;
+		//cout << filename.substr(0, found) + "_protein.faa" << endl;
+		cout << GlobalSettings::GetOutputFile() << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)
 	{
+		cout << "Error. DeGenPrime cannot run on an unaligned list" << endl;
+		cout << "Try: mafft --localpair --maxiterate 1000 --clustalout --quiet ";
+		cout << GlobalSettings::GetInputFile() << " > ";
+		string str = GlobalSettings::GetInputFile().substr(0, found);
+		cout << str << ".clust" << endl;
+		exit(PROGRAM_SUCCESS);
+		/*
 		cout << "File not aligned.  Running MAFFT, then re-running this program.\n";
 		bool local = true;
 		if(argc > 2)
@@ -179,6 +175,7 @@ int main(int argc, char *argv[])
 		}
 		system(c2);
 		exit(PROGRAM_SUCCESS);
+		*/
 	}
 	else if(list.size() == 1)
 	{
@@ -186,11 +183,19 @@ int main(int argc, char *argv[])
 	}
 	
 	// Open Output File Stream
-	ofstream ofs, ofs_csv;
-	ofs.open(filename.substr(0, found) + ".dgp");
-
-	// Print Version/Command Details
-	// ofs << version_output << endl;
+	ofstream ofs;
+	//ofs.open(filename.substr(0, found) + ".dgp");
+	if(GlobalSettings::GetOutputFile() == "")
+	{
+		string out = GlobalSettings::GetInputFile().substr(0, found) + ".csv";
+		GlobalSettings::SetOutputFile(out);
+	}
+	ofs.open(GlobalSettings::GetOutputFile());
+	if(ofs.fail())
+	{
+		cout << "Error opening output file.";
+		exit(BAD_INPUT_FILE);
+	}
 	
 	// Sequence Information Before Filtering
 	detail_output += Banner(" Sequence Information ");
@@ -208,7 +213,7 @@ int main(int argc, char *argv[])
 	DataSequence rev = reverse_list.ProcessList();
 
 	// Check DataSequence for conserved regions
-	detail_output += Banner(" Conserved Regions ");
+	//detail_output += Banner(" Conserved Regions ");
 	int conserved_count = 0;
 	int begin_index = 0;
 	bool conserved_start = false;
@@ -264,18 +269,19 @@ int main(int argc, char *argv[])
 	*/
 	if(conserved_fwd_primers.size() == 0 && GlobalSettings::GetNonDegenerate())
 	{
-		line_output = "Insufficient conserved regions in sequences to find primers.";
-		detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
+		//line_output = "Insufficient conserved regions in sequences to find primers.";
+		//detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
 		std::vector<int> empty_int;
-		detail_output += data.Consensus(empty_int, empty_int, false);
-		cout << detail_output << endl;
-		ofs << detail_output << endl;
+		//detail_output += data.Consensus(empty_int, empty_int, false);
+		//cout << detail_output << endl;
+		//ofs << detail_output << endl;
 		ofs.close();
+		cout << "Insufficient conserved regions for primers." << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(GlobalSettings::GetNonDegenerate())
 	{
-		detail_output += ConservedRegions(conserved_fwd_primers) + "\n";
+		//detail_output += ConservedRegions(conserved_fwd_primers) + "\n";
 		int cand_pair_regions = 0;
 		int amp;
 		if(GlobalSettings::GetMeasureByAmpliconSize())
@@ -286,9 +292,9 @@ int main(int argc, char *argv[])
 		{
 			int first = (0 >= GlobalSettings::GetBeginningNucleotide()) ?
 				0 : GlobalSettings::GetBeginningNucleotide();
-			int last = (data.size() <= GlobalSettings::GetEndingNucleotide()) ?
+			int last2 = (data.size() <= GlobalSettings::GetEndingNucleotide()) ?
 				data.size() - 1 : GlobalSettings::GetEndingNucleotide();
-			amp = last - first;
+			amp = last2 - first;
 		}
 		if(conserved_fwd_primers.size() == 1)
 		{
@@ -301,9 +307,9 @@ int main(int argc, char *argv[])
 			{
 				cout << "The conserved region is smaller than minimum amplicon or size bounds." << endl;
 				ofs << "The conserved region is smaller than minimum amplicon or size bounds." << endl;
-				std::vector<int> empty_int;
-				cout << data.Consensus(empty_int, empty_int, false) << endl;
-				ofs << data.Consensus(empty_int, empty_int, false) << endl;
+				//std::vector<int> empty_int;
+				//cout << data.Consensus(empty_int, empty_int, false) << endl;
+				//ofs << data.Consensus(empty_int, empty_int, false) << endl;
 				ofs.close();
 				exit(PROGRAM_SUCCESS);
 			}
@@ -338,15 +344,16 @@ int main(int argc, char *argv[])
 		}
 		if(cand_pair_regions == 0)
 		{
-			line_output = "Insufficient conservation to find primers within bounds.";
-			detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
-			std::vector<int> empty_int;
-			detail_output += data.Consensus(empty_int, empty_int, false);
-			cout << detail_output;
-			ofs << detail_output;
+			//line_output = "Insufficient conservation to find primers within bounds.";
+			//detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+			//std::vector<int> empty_int;
+			//detail_output += data.Consensus(empty_int, empty_int, false);
+			//cout << detail_output;
+			//ofs << detail_output;
 			ofs.close();
 			exit(PROGRAM_SUCCESS);
 		}
+		/*
 		else
 		{
 			line_output = "There ";
@@ -355,7 +362,7 @@ int main(int argc, char *argv[])
 			line_output += " candidate pair ";
 			line_output += (cand_pair_regions == 1) ? "mapping." : "mappings.";
 			detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n\n";
-		}
+		}*/
 	}
 
 	// Consensus Sequence Information
@@ -369,8 +376,8 @@ int main(int argc, char *argv[])
 			conserved_fwd_primers[i].Length() - 1), conserved_fwd_primers[i].Length());
 		conserved_rev_primers.push_back(r);
 	}
-	detail_output += Banner(" Consensus Sequence ");
-	detail_output += data.Consensus(Indeces, Ranges, true) + "\n";
+	//detail_output += Banner(" Consensus Sequence ");
+	//detail_output += data.Consensus(Indeces, Ranges, true) + "\n";
 	
 	// Create Primer Calculators
 	PrimerCalculator calc, rev_calc;
@@ -406,53 +413,57 @@ int main(int argc, char *argv[])
 	// Abort program if either calculator has no primers
 	if(calc.size() == 0 || rev_calc.size() == 0)
 	{
-		line_output = "There were insufficient primers found for this data.";
-		detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
-		cout << detail_output;
-		ofs << detail_output;
-		ofs << line_output;
+		//line_output = "There were insufficient primers found for this data.";
+		//detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+		//cout << detail_output;
+		//ofs << detail_output;
+		//ofs << line_output;
+		ofs.close();
+		cout << "Insufficient primers found for this data." << endl;
 		exit(NO_PRIMERS_FOUND);
 	}
 
 	// Display number of possible primers, run filters and output filter percentages.
+	/*
 	if(GlobalSettings::GetNonDegenerate() == false)
 	{
 		detail_output += Banner(" Forward Primers ");
 		detail_output += calc.FilterAll(data) + "\n";
 		detail_output += Banner(" Reverse Primers ");
 		detail_output += rev_calc.FilterAll(rev) + "\n";
-	}
+	}*/
 
 	if(GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev())
 	{
 		int index;
-		detail_output += Banner(" Search Mode ");
-		line_output = "";
+		string d_output = "";
+		string l_output = "";
+		d_output += Banner(" Search Mode ");
 		if(GlobalSettings::GetSearchFwd())
 		{
 			if(calc.size() == 0)
 			{
 				index = -1;
-				line_output = "No primers found in the calculator.";
+				l_output = "No primers found in the calculator.";
 			}
 			else
 			{
 				index = calc.IndexOf(data, GlobalSettings::GetSearchFwdArg());
-				line_output = "Forward Primer: \'" + GlobalSettings::GetSearchFwdArg();
+				l_output = "Forward Primer: \'" + GlobalSettings::GetSearchFwdArg();
 			}
 			if(index != -1)
 			{
-				line_output += "\' found at index: " + to_string(index);
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
+				l_output += "\' found at index: " + to_string(index);
+				d_output += Format(l_output, STR_FORMAT, Alignment::Center) + "\n";
 			}
 			else
 			{
-				line_output += "\' not found.";
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
-				line_output = "\'" + GlobalSettings::GetSearchFwdArg() + "\' details:";
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+				l_output += "\' not found.";
+				d_output += Format(l_output, STR_FORMAT, Alignment::Center) + "\n";
+				l_output = "\'" + GlobalSettings::GetSearchFwdArg() + "\' details:";
+				d_output += Format(l_output, STR_FORMAT, Alignment::Left) + "\n";
 				DataSequence d(GlobalSettings::GetSearchFwdArg());
-				detail_output += TestValue(d, true) + "\n";
+				d_output += TestValue(d, true) + "\n";
 			}
 		}
 		if(GlobalSettings::GetSearchRev())
@@ -464,26 +475,27 @@ int main(int argc, char *argv[])
 			else
 			{
 				index = rev_calc.IndexOf(rev, GlobalSettings::GetSearchRevArg());
-				line_output = "Reverse Primer: \'" + GlobalSettings::GetSearchRevArg();
+				l_output = "Reverse Primer: \'" + GlobalSettings::GetSearchRevArg();
 			}
 			if(index != -1)
 			{
-				line_output += "\' found at index: " + to_string(index);
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+				l_output += "\' found at index: " + to_string(index);
+				d_output += Format(l_output, STR_FORMAT, Alignment::Left) + "\n";
 			}
 			else
 			{
-				line_output += "\' not found.";
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
-				line_output = "\'" + GlobalSettings::GetSearchRevArg() + "\' details:";
-				detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+				l_output += "\' not found.";
+				d_output += Format(l_output, STR_FORMAT, Alignment::Left) + "\n";
+				l_output = "\'" + GlobalSettings::GetSearchRevArg() + "\' details:";
+				d_output += Format(l_output, STR_FORMAT, Alignment::Left) + "\n";
 				DataSequence d(GlobalSettings::GetSearchRevArg());
-				detail_output += TestValue(d, true) + "\n";
+				d_output += TestValue(d, true) + "\n";
 			}
 		}
-		ofs << detail_output;
+		//ofs << detail_output;
 		ifs.close();
 		ofs.close();
+		cout << d_output << endl;
 		exit(TEST_MODE);
 	}
 
@@ -491,7 +503,7 @@ int main(int argc, char *argv[])
 	PrimerPairList maxlist, pairlist, top;
 	if(calc.size() != 0 && rev_calc.size() != 0)
 	{
-		detail_output += Banner(" Primer Pair Filtering ");
+		//detail_output += Banner(" Primer Pair Filtering ");
 		//detail_output += maxlist.CreateList(data, rev, calc.GetPrimers(), rev_calc.GetPrimers());
 		const int part = pairlist.PartitionCount(calc.size(), rev_calc.size());
 		//const int part = maxlist.PartitionCount();
@@ -512,7 +524,7 @@ int main(int argc, char *argv[])
 		const int desiredpairs = GlobalSettings::GetMaximumReturnPrimers();
 		int limit = pow(desiredpairs, 3);
 		if(limit > part)limit = part;
-		if(part != 1)
+		/*if(part != 1)
 		{
 			line_output = "Dividing pair lists into " + to_string(part) + " partitions.";
 			detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n\n";
@@ -521,7 +533,7 @@ int main(int argc, char *argv[])
 				line_output = "Checking top " + to_string(limit) + " partitions.";
 				detail_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n\n";
 			}
-		}
+		}*/
 		int nextIndex, filtercount, remaining, nextlength;
 		int goodprimers = 0;
 
@@ -539,9 +551,9 @@ int main(int argc, char *argv[])
 			// Create Primer Pair List
 			pairlist.CreateFromRange(data, rev, calc.GetPrimers(),
 				rev_calc.GetPrimers(), x_start, x_end, y_start, y_end);
-			line_output = "Partition #" + to_string(count);
-			line_output += " Pairs: " + to_string(pairlist.size());
-			detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+			//line_output = "Partition #" + to_string(count);
+			//line_output += " Pairs: " + to_string(pairlist.size());
+			//detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
 
 			// Set next data block partition
 			if(count == 1)
@@ -584,11 +596,12 @@ int main(int argc, char *argv[])
 			
 			
 			// Filter PrimerPairList
+			/*
 			detail_output += pairlist.FilterMessage("start", 0) + "\n";
 			detail_output += pairlist.FilterAmpliconLength() + "\n";
 			detail_output += pairlist.FilterTemperatureDifference() + "\n";
 			detail_output += pairlist.FilterMessage("final", 0) + "\n";
-			
+			*/
 
 			// Make sure we still have primers to work with
 			if(pairlist.size() == 0)
@@ -635,37 +648,41 @@ int main(int argc, char *argv[])
 	}
 	else // At least one of the fwd or rev lists was empty
 	{
-		line_output = "At least one of the forward or reverse primer lists was empty.";
-		detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
-		ofs << detail_output;
+		//line_output = "At least one of the forward or reverse primer lists was empty.";
+		//detail_output += Format(line_output, STR_FORMAT, Alignment::Left) + "\n";
+		//ofs << detail_output;
 		ofs.close();
+		cout << "At least one of the forward or reverse primer lists was empty." << endl;
 		exit(PROGRAM_SUCCESS);
 	}
 
 	// Print output
-	primer_output += Banner(" Results ");
+	//primer_output += Banner(" Results ");
 	if(top.size() == 0)
 	{
-		line_output = "No primer pairs were found for these specifications.";
-		primer_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
+		//line_output = "No primer pairs were found for these specifications.";
+		//primer_output += Format(line_output, STR_FORMAT, Alignment::Center) + "\n";
+		cout << "No primer pairs were found for these specifications." << endl;
 	}
 	else
 	{
-		line_output = top.PrintAll(data, rev);
-		primer_output += line_output;
-		ofs_csv.open(filename.substr(0, found) + ".csv");
-		ofs_csv << top.CreateCSV(data, rev);
-		ofs_csv.close();
+		//line_output = top.PrintAll(data, rev);
+		//primer_output += line_output;
+		//ofs_csv.open(filename.substr(0, found) + ".csv");
+		//ofs_csv << top.CreateCSV(data, rev);
+		//ofs_csv.close();
+		ofs << top.CreateCSV(data, rev);
 	}
-	ofs << primer_output << endl;
-	ofs << detail_output << endl;
+	//ofs << primer_output << endl;
+	//ofs << detail_output << endl;
 
 	// Close input/output file streams.
 	ifs.close();
 	ofs.close();
 	
 	// Show closing messages then close the program.
-	cout << "Output details saved to " << filename.substr(0, found) << ".dgp" << endl;
+	//cout << "Output details saved to " << filename.substr(0, found) << ".dgp" << endl;
+	cout << "Output details saved to " << GlobalSettings::GetOutputFile() << endl;
 	cout << "Program complete." << endl;
 	exit(PROGRAM_SUCCESS);
 }
@@ -677,7 +694,8 @@ void ProcessTags(int argc, char *argv[])
 	bool containsEnd = false;
 	char *ptr;
 	int value;
-	for(int i = 1;i < argc - 1;i++)
+	//for(int i = 1;i < argc - 1;i++)
+	for(int i = 1;i < argc;i++)
 	{
 		if(strcmp("--h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0)
 		{
@@ -786,6 +804,16 @@ void ProcessTags(int argc, char *argv[])
 			string str = ptr;
 			GlobalSettings::SetInvRevValue(str);
 			GlobalSettings::SetRunInvRev(true);
+		}
+		else if(strstr(argv[i], "--input_file:") != NULL)
+		{
+			string str = ptr;
+			GlobalSettings::SetInputFile(str);
+		}
+		else if(strstr(argv[i], "--output_file:") != NULL)
+		{
+			string str = ptr;
+			GlobalSettings::SetOutputFile(str);
 		}
 		else
 		{
