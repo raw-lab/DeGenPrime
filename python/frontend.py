@@ -4,8 +4,8 @@ import customtkinter as ctk
 import os, subprocess, webbrowser
 from CTkMessagebox import CTkMessagebox
 
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("dark-blue.json")
+#ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("build/dark-blue.json")
 
 class ToplevelWindow(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -179,7 +179,9 @@ class MyTabView(ctk.CTkTabview):
             handle_exit_code(result.returncode)
         except subprocess.CalledProcessError as e:
             handle_exit_code(e.returncode)
-    
+    def open_browser(self):
+        url = 'https://github.com/raw-lab/DeGenPrime'
+        webbrowser.open_new(url)
 
 
 class App(ctk.CTk):
@@ -188,16 +190,15 @@ class App(ctk.CTk):
         self.geometry("950x600")
         self.title("DeGenPrime-Ez")
 
-    
-        def find_input_file():
+        
+        def find_input_file(self):
             file = askopenfile(mode ='r', filetypes =[('Acceptable Filetypes', '*.fasta *.fna *.clust *.faa')])
             if file:
+                global inputpath
                 inputpath = os.path.abspath(file.name)
-                self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
-                self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
-        def open_browser():
-            url = 'https://github.com/raw-lab/DeGenPrime'
-            webbrowser.open_new(url)
+                #self.lbl_inputpath = ctk.CTkLabel(self, text="Your selected file is: " + str(inputpath),wraplength = 300,justify="center")
+                #self.lbl_inputpath.grid(row=2, column=2, padx = 10, pady=10)
+            
 
         self.sidebar = ctk.CTkFrame(self, width=250)
         self.sidebar.pack(side="left", fill="y")
@@ -211,14 +212,15 @@ class App(ctk.CTk):
         self.browse_files = ctk.CTkButton(self.sidebar, text="Browse Files", command=find_input_file, height = 50)
         self.browse_files.pack(padx=20, pady=50)
 
-        self.run_program = ctk.CTkButton(self.sidebar, text="Run Program", command= self.tab_view.pull_settings, height = 50)
+        self.run_program = ctk.CTkButton(self.sidebar, text="Run Program", command= self.tab_view.pull_settings(inputpath), height = 50)
         self.run_program.pack(padx=20, pady=50)
 
-        self.github = ctk.CTkButton(self.sidebar, text="GitHub", command=open_browser, height = 50)
+        self.github = ctk.CTkButton(self.sidebar, text="GitHub", command=self.tab_view.open_browser, height = 50)
         self.github.pack(padx=20, pady=50)
 
         self.toplevel_window = None
 
+    
     def open_toplevel(self):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = ToplevelWindow(self)
