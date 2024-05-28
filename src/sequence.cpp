@@ -48,6 +48,7 @@ namespace DeGenPrime
 	}
 	
 	void Sequence::PopBack() { _codes.pop_back(); }
+	void Sequence::Clear() { _codes.clear(); }
 
 	void Sequence::Invert()
 	{

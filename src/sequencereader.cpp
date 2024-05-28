@@ -68,6 +68,7 @@ namespace DeGenPrime
 					if(line[0] == '>') // New Sequence
 					{
 						list.PushBack(seq); // The first sequence will be empty
+						seq.Clear();
 						line = line.erase(0,1); // erase the '>'
 						seq.SetName(line);
 					}

@@ -37,6 +37,7 @@ namespace DeGenPrime
 		void PushBack(char c);
 		void PushBack(std::string str);
 		void PopBack();
+		void Clear();
 
 		void Invert();
 		void Reverse();

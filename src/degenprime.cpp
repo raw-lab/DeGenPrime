@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
 	// Read Sequences
 	SequenceReader read;
 	SequenceList list = read.CreateList(ifs);
+	
 	// Test Sequences
 	if(list.size() == 0)
 	{
@@ -595,6 +596,10 @@ int main(int argc, char *argv[])
 			
 			
 			// Filter PrimerPairList
+			string temp = pairlist.FilterMessage("start", 0) + "\n";
+			temp += pairlist.FilterAmpliconLength() + "\n";
+			temp += pairlist.FilterTemperatureDifference() + "\n";
+			temp += pairlist.FilterMessage("final", 0) + "\n";
 			/*
 			detail_output += pairlist.FilterMessage("start", 0) + "\n";
 			detail_output += pairlist.FilterAmpliconLength() + "\n";
