@@ -43,6 +43,7 @@ namespace DeGenPrime
 		SequenceList();
 
 		SequenceList InvRevList();
+		SequenceList Filtered(int min);
 		DataSequence ProcessList();
 		
 		void SetList(std::vector<Sequence> catalog);
@@ -63,7 +64,7 @@ namespace DeGenPrime
 
 		std::vector<char> CharsAt(int index) const;
 		std::vector<Sequence> GetSequenceList() const;
-		int size() const;
+		size_t size() const;
 		int IndexOf(std::string name);
 	private:
 		std::vector<Sequence> _list;

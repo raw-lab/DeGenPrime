@@ -22,22 +22,26 @@ namespace DeGenPrime
 	void GlobalSettings::SetMinimumPrimerLength(int len) {_minLen = (MIN_PRIMER_LENGTH < len) ? len : MIN_PRIMER_LENGTH;}
 	void GlobalSettings::SetPrimerConcentration(float primer_conc) {_primerConcentration = (MIN_PRIMER_CONC < primer_conc) ? primer_conc : MIN_PRIMER_CONC;}
 	void GlobalSettings::SetMonoIonConcentration(float salt_conc) {_monovalentIonConcentration = (MIN_SALT_CONC < salt_conc) ? salt_conc : MIN_SALT_CONC; }
-	void GlobalSettings::SetMaximumReturnPrimers(int max) {_maxPrimers = (MAX_PRIMER_RETURNS > max) ? max : MAX_PRIMER_RETURNS;}
+	void GlobalSettings::SetMaximumReturnPrimers(int max) {_maxPrimers = max;}
 	void GlobalSettings::SetThermodynamicTemperature(float temp) {_thermodynamicTemperature = temp;}
+	void GlobalSettings::SetSeqFilterLengthMin(int min) {_seqfiltermin = min;}
 	void GlobalSettings::SetBeginFlag(bool begin) {_beginflag = begin;}
 	void GlobalSettings::SetEndFlag(bool ending) {_endflag = ending;}
 	void GlobalSettings::SetRunTest(bool test) {_testRun = test;}
 	void GlobalSettings::SetRunInvRev(bool test) {_invRevRun = test;}
 	void GlobalSettings::SetSearchFwd(bool search) {_SearchFwd = search;}
 	void GlobalSettings::SetSearchRev(bool search) {_SearchRev = search;}
+	void GlobalSettings::SetDetail(bool det) {_detailOut = det;}
 	void GlobalSettings::SetTestValue(std::string str) {_testStr = str;}
 	void GlobalSettings::SetInvRevValue(std::string str) {_invRevValue = str;}
 	void GlobalSettings::SetSearchFwdArg(std::string str) {_searchFwdArg = str;}
 	void GlobalSettings::SetSearchRevArg(std::string str) {_searchRevArg = str;}
 	void GlobalSettings::SetSortByTemp(bool temp) {_sortbytemp = temp;}
 	void GlobalSettings::SetUserTemp(bool temp) {_userTemp = temp;}
+	void GlobalSettings::SetFilterSeqs(bool fil) {_filterseqs = fil;}
 	void GlobalSettings::SetInputFile(std::string str) {_inputfile = str;}
 	void GlobalSettings::SetOutputFile(std::string str) {_outputfile = str;}
+	void GlobalSettings::SetDetailFile(std::string str) { _detailfile = str;}
 
 	int GlobalSettings::GetMinimumAmplicon() { return _ampLength; }
 	int GlobalSettings::GetBeginningNucleotide() { return _beginningNucleotide; }
@@ -48,6 +52,7 @@ namespace DeGenPrime
 	bool GlobalSettings::GetProteinSequence() { return _proteinSequence; }
 	bool GlobalSettings::GetBeginFlag() { return _beginflag; }
 	bool GlobalSettings::GetEndFlag() { return _endflag; }
+	bool GlobalSettings::Detail() { return _detailOut; }
 	float GlobalSettings::GetMinimumTemperature() { return _minTemp; }
 	float GlobalSettings::GetMaximumTemperature() { return _maxTemp; }
 	int GlobalSettings::GetMaximumPrimerLength() { return _maxLen; }
@@ -56,16 +61,19 @@ namespace DeGenPrime
 	float GlobalSettings::GetMonoIonConcentration() { return _monovalentIonConcentration; }
 	int GlobalSettings::GetMaximumReturnPrimers() { return _maxPrimers; }
 	float GlobalSettings::GetThermodynamicTemperature() { return _thermodynamicTemperature; }
+	int GlobalSettings::GetSeqFilterLengthMin() { return _seqfiltermin; }
 	bool GlobalSettings::GetRunTest() { return _testRun; }
 	bool GlobalSettings::GetRunInvRev() { return _invRevRun; }
 	bool GlobalSettings::GetSearchFwd() { return _SearchFwd; }
 	bool GlobalSettings::GetSearchRev() { return _SearchRev; }
 	bool GlobalSettings::GetSortByTemp() { return _sortbytemp; }
 	bool GlobalSettings::GetUserTemp() { return _userTemp; }
+	bool GlobalSettings::GetFilterSeqs() { return _filterseqs; }
 	string GlobalSettings::GetTestValue() { return _testStr; }
 	string GlobalSettings::GetInvRevValue() { return _invRevValue; }
 	string GlobalSettings::GetSearchFwdArg() { return _searchFwdArg; }
 	string GlobalSettings::GetSearchRevArg() { return _searchRevArg; }
 	string GlobalSettings::GetInputFile() { return _inputfile; }
 	string GlobalSettings::GetOutputFile() { return _outputfile; }
+	string GlobalSettings::GetDetailFile() { return _detailfile; }
 } // End of DeGenPrime

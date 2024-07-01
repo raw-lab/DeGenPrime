@@ -21,7 +21,7 @@ namespace DeGenPrime
 	SequenceList SequenceList::InvRevList()
 	{
 		SequenceList rev_inv_list;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			Sequence seq = _list[i];
 			seq.Invert();
@@ -29,6 +29,22 @@ namespace DeGenPrime
 			rev_inv_list.PushBack(seq);
 		}
 		return rev_inv_list;
+	}
+
+	SequenceList SequenceList::Filtered(int min)
+	{
+		SequenceList filter_list;
+		for(int i = _list.size() - 1;i >= 0;i--)
+		{
+			Sequence seq = _list[i];
+			cout << "Sequence[" << i << "] size=" << seq.size() << endl;
+			if(seq.size() < min)
+			{
+				filter_list.PushBack(seq);
+				Erase(i);
+			}
+		}
+		return filter_list;
 	}
 
 	DataSequence SequenceList::ProcessList()
@@ -107,7 +123,7 @@ namespace DeGenPrime
 		SequenceList ret;
 		int begin = GlobalSettings::GetBeginningNucleotide();
 		int ending = GlobalSettings::GetEndingNucleotide();
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			int dash_count = 0;
 			for(int j = begin;j < ending;j++)
@@ -131,10 +147,10 @@ namespace DeGenPrime
 	{
 		std::vector<Sequence> seq_temp;
 		std::vector<char> chars;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			Sequence seq(_list[i].GetName());
-			for(int j = 0;j < _list[i].GetCodes().size();j++)
+			for(size_t j = 0;j < _list[i].GetCodes().size();j++)
 			{
 				char c = _list[i].GetCodes()[j];
 				if(c != '-')
@@ -153,10 +169,10 @@ namespace DeGenPrime
 	{
 		string ret = "";
 		string line;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			line = "";
-			string seq_num = Format(i + 1,4);
+			string seq_num = Format((int)i + 1,4);
 			line += "Sequence(" + seq_num + "):[";
 			line += Format(_list[i].GetName(), 16, Alignment::Right);
 			line += "] Size:[" + to_string(_list[i].size()); // All should be same size
@@ -202,7 +218,7 @@ namespace DeGenPrime
 	std::string SequenceList::Section(int index, int length) const
 	{
 		string ret = "";
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			Sequence seq = GetSequenceList()[i];
 			ret += seq.GetName();
@@ -229,7 +245,7 @@ namespace DeGenPrime
 			{
 				sizes.push_back(seq.size());
 			}
-			for(int i = 1;i < _list.size();i++)
+			for(size_t i = 1;i < _list.size();i++)
 			{
 				if(aligned == false)
 				{
@@ -247,7 +263,7 @@ namespace DeGenPrime
 	std::vector<char> SequenceList::CharsAt(int index) const
 	{
 		std::vector<char> char_list;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			char_list.push_back(_list[i].GetCodes()[index]);
 		}
@@ -255,11 +271,11 @@ namespace DeGenPrime
 	}
 
 	std::vector<Sequence> SequenceList::GetSequenceList() const { return _list; }
-	int SequenceList::size() const { return _list.size(); }
+	size_t SequenceList::size() const { return _list.size(); }
 	int SequenceList::IndexOf(std::string name)
 	{
 		int index = -1;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			string seq_name = _list[i].GetName();
 			seq_name = seq_name.substr(0,name.length());

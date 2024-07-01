@@ -42,8 +42,8 @@ namespace DeGenPrime
 	{
 	public:
 		PrimerPairList();
-		PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list);
-		PrimerPairList SubList(int startIndex, int length);
+		//PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list);
+		PrimerPairList SubList(int startIndex, size_t length);
 
 		void Append(PrimerPairList list);
 		

@@ -28,7 +28,7 @@
 //	of any primer in degrees celsius.				            	//
 // MAX_TEMP_DIFFERENCE (Default 1.0) Maximum allowed temperature	//
 //	difference between forward and reverse primer.			        //
-// MAX_PRIMER_RETURNS (Default 10) Maximum number of primers to	    //
+// MAX_PRIMER_RETURNS (Default 5) Maximum number of primers to	    //
 //	return in the program output.						            //
 // MIN_SALT_CONC (Default 50.0) Minimum salt concentration in mM	//
 //	allowed by the program						                	//
@@ -82,11 +82,14 @@
 #define MAX_GC_EXTREMA_RATIO 0.7
 #define MIN_GC_TOTAL_RATIO 0.4
 #define MAX_GC_TOTAL_RATIO 0.6001
-#define MIN_DEGENERATE_THRESHOLD 60
+#define MIN_DI_DEGENERATE_THRESHOLD 60
+#define MIN_TRI_DEGENERATE_THRESHOLD 50
+#define MAX_TRI_DEGENERATE_THRESHOLD 10
+#define MIN_DEGENERATE_THRESHOLD 40
 #define MAX_N_TOLERANCE 0.0
 #define MAX_DASH_HORIZONTAL_TOLERANCE 0.5
 #define MAX_DASH_VERTICAL_TOLERANCE 0.3
-#define MAX_PENALTY 100.0
+#define MAX_PENALTY 1000.0
 #define MIN_PRIMER_TEMP 50.0
 #define MAX_PRIMER_TEMP 65.0
 #define MAX_TEMP_DIFFERENCE 1.0

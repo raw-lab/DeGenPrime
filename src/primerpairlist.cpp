@@ -21,15 +21,16 @@ namespace DeGenPrime
 	{
 		_OriginalSize = 0;
 	}
+	/*
 	PrimerPairList::PrimerPairList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<PrimerPair> pair_list)
 	{
 		_pairs = pair_list;
 		_OriginalSize = size();
-	}
+	}*/
 
-	PrimerPairList PrimerPairList::SubList(int startIndex, int length)
+	PrimerPairList PrimerPairList::SubList(int startIndex, size_t length)
 	{
-		PrimerPairList sub_list;
+		PrimerPairList sub_list;		
 		int amt = (_pairs.size() <= length) ? _pairs.size() : length; 
 		for(int i = startIndex;i < startIndex+amt;i++)
 		{
@@ -52,9 +53,9 @@ namespace DeGenPrime
 		int fwd_begin, int fwd_end, int rev_begin, int rev_end)
 	{
 		int x_begin = fwd_begin >= 0 ? fwd_begin : 0;
-		int x_end = fwd_end > fwd_seq.size() ? fwd_seq.size() : fwd_end;
+		int x_end = fwd_end > (int)fwd_seq.size() ? (int)fwd_seq.size() : fwd_end;
 		int y_begin = rev_begin >= 0 ? rev_begin : 0;
-		int y_end = rev_end > rev_seq.size() ? rev_seq.size() : rev_end;
+		int y_end = rev_end > (int)rev_seq.size() ? (int)rev_seq.size() : rev_end;
 		for(int i = x_begin;i < x_end;i++)
 		{
 			for(int j = y_begin;j < y_end;j++)
@@ -69,7 +70,7 @@ namespace DeGenPrime
 	string PrimerPairList::CreateList(DataSequence fwd_seq, DataSequence rev_seq, std::vector<Primer> fwd_list, std::vector<Primer> rev_list)
 	{
 		string ret = FilterMessage("start", 0) + "\n";
-		int initial_size = 0;
+		// int initial_size = 0;
 		int amp_filter = 0;
 		int temp_filter = 0;
 		int good_count = 0;
@@ -294,8 +295,8 @@ namespace DeGenPrime
 			int rev_index = _pairs[i].GetReverse().Index();
 			while(i > j)
 			{
-				int f_index = _pairs[j].GetForward().Index();
-				int r_index = _pairs[j].GetReverse().Index();
+				//int f_index = _pairs[j].GetForward().Index();
+				//int r_index = _pairs[j].GetReverse().Index();
 				if(fwd_index == _pairs[j].GetForward().Index() ||
 					rev_index == _pairs[j].GetReverse().Index())
 				{
@@ -323,7 +324,7 @@ namespace DeGenPrime
 	{
 		string ret = "";
 		string line = "";
-		for(int i = 0;i < _pairs.size();i++)
+		for(size_t i = 0;i < _pairs.size();i++)
 		{
 			line = "Primer Pair #" + to_string(i + 1);
 			ret += Format(line, 25, Alignment::Center);
@@ -335,7 +336,7 @@ namespace DeGenPrime
 	string PrimerPairList::CreateCSV(DataSequence fwd, DataSequence rev)
 	{
 		string ret = "Pair #,Forward,Reverse,Amplicon,Temp. Diff\n";
-		for(int i = 0;i < _pairs.size();i++)
+		for(size_t i = 0;i < _pairs.size();i++)
 		{
 			DataSequence fwdSub = fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].GetForward().Length());
 			DataSequence revSub = rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].GetReverse().Length());
@@ -353,7 +354,7 @@ namespace DeGenPrime
 	string PrimerPairList::PrintAllShort(DataSequence fwd, DataSequence rev)
 	{
 		string ret = "";
-		for(int i =0;i < _pairs.size();i++)
+		for(size_t i =0;i < _pairs.size();i++)
 		{
 			ret += "Pair #" + to_string(i + 1) + " ";
 			ret += _pairs[i].PrintShort(fwd, rev);

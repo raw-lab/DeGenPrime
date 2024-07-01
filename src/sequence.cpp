@@ -24,7 +24,7 @@ namespace DeGenPrime
 	{
 		int count = 0; // number of mismatches
 		string MC = data.MC();
-		for(int i = 0;i < data.size();i++)
+		for(size_t i = 0;i < data.size();i++)
 		{
 			if(MC[i] != _codes[i])count++;
 		}
@@ -52,7 +52,7 @@ namespace DeGenPrime
 
 	void Sequence::Invert()
 	{
-		for(int i = 0; i < _codes.size();i++)
+		for(size_t i = 0; i < _codes.size();i++)
 		{
 			switch(_codes[i])
 			{
@@ -91,7 +91,7 @@ namespace DeGenPrime
 	void Sequence::RemoveDashes()
 	{
 		std::vector<char> chars;
-		for(int i = 0;i < _codes.size();i++)
+		for(size_t i = 0;i < _codes.size();i++)
 		{
 			char c = _codes[i];
 			if(c != '-')

@@ -38,7 +38,7 @@ namespace DeGenPrime
 		FileType type = IdentifyFileType(ifs);
 		string line;
 		int counter = 1;
-		char next;
+		// char next;
 		switch(type)
 		{
 			case clust:
@@ -74,7 +74,7 @@ namespace DeGenPrime
 					}
 					else // Adding to existing sequence
 					{
-						for(int i = 0;i < line.length();i++)
+						for(size_t i = 0;i < line.length();i++)
 						{
 							seq.PushBack(line[i]);
 						}
@@ -105,7 +105,7 @@ namespace DeGenPrime
 		string codes = line2.erase(0, 16);
 		seq.SetName(name);
 		std::vector<char> list;
-		for(int i=0; i<codes.length(); i++)
+		for(size_t i=0; i<codes.length(); i++)
 		{
 			list.push_back(codes[i]);
 		}

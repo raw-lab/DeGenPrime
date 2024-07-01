@@ -107,7 +107,7 @@ namespace DeGenPrime
 		int CountMatches(DataSequence data) const;
 		int RevIndex(int index) const;
 		int IndexOf(DataSequence data) const;
-		int size() const;
+		size_t size() const;
 		int ActualSize() const;
 
 		bool checkMatch(DataSequence data) const;

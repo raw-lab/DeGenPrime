@@ -49,6 +49,10 @@ namespace DeGenPrime
 				{
 					continue;
 				}
+				else if(sub.ActualSize() < GlobalSettings::GetMinimumPrimerLength())
+				{
+					continue;
+				}
 				else
 				{
 					id.SetPenalty(penalty);
@@ -67,9 +71,9 @@ namespace DeGenPrime
 		loopBound = loopBound > 0 ? loopBound : 0;
 		int min = GlobalSettings::GetMinimumPrimerLength();
 		int max = GlobalSettings::GetMaximumPrimerLength();
-		if(loopBound + max > data.size())
+		if(loopBound + max > (int)data.size())
 		{
-			loopBound = data.size() - max;
+			loopBound = (int)data.size() - max;
 		}
 		
 		// Needs to loop through all primers in the forward direction
@@ -105,18 +109,19 @@ namespace DeGenPrime
 			for(int i = min;i <= max;i++)
 			{
 				int endIndex = (region_size - i < threshold) ? region_size - i : threshold;
-				/*
-				bool search = (GlobalSettings::GetSearchFwd() || GlobalSettings::GetSearchRev());
-				if(search)endIndex = region_size - i;*/
 				for(int j = 0;j <= endIndex;j++)
 				{
 					Primer pr(p.Index() + j, i);
 					DataSequence sub = data.SubSeq(pr.Index(), pr.Length());
 					float penalty = sub.Penalty();
-					if(penalty > MAX_PENALTY)
+					if(sub.ActualSize() < GlobalSettings::GetMinimumPrimerLength())
 					{
 						continue;
 					}
+					/*else if(penalty > MAX_PENALTY)
+					{
+						continue;
+					}*/
 					else
 					{
 						pr.SetPenalty(penalty);
@@ -163,13 +168,13 @@ namespace DeGenPrime
 			//	- or more than 1 B,D,H,V
 			//	- or more than 2 others. (count B,D,H,V as 2 any other as 1, ends as 3)
 			int degeneracy_count = 0;
-			for(int j = 0;j < p.size();j++)
+			for(size_t j = 0;j < p.size();j++)
 			{
 				if(degeneracy_count >= 3)
 				{
 					break;
 				}
-				int position_multiplier =  ((j < 3) || (j >= p.size() - 3)) ? 3 : 1;
+				int position_multiplier =  (((int)j < 3) || ((int)j >= (int)p.size() - 3)) ? 3 : 1;
 				char c = toupper(p.GetDataSequence()[j].GetCode());
 				switch(c)
 				{
@@ -213,7 +218,7 @@ namespace DeGenPrime
 			bool flag = false;
 			int total_deletions_count = 0;
 			// Filter sequences for deletions
-			for(int j = 0;j < p.size();j++)
+			for(size_t j = 0;j < p.size();j++)
 			{
 				if(flag)
 				{
@@ -222,7 +227,7 @@ namespace DeGenPrime
 				if(p.GetDataSequence()[j].GetCode() == '-')
 				{
 					total_deletions_count++;
-					if(j < 3 || j > (p.size() - 4))
+					if((int)j < 3 || (int)j > ((int)p.size() - 4))
 					{
 						flag = true;
 					}
@@ -231,7 +236,7 @@ namespace DeGenPrime
 				{
 					flag = true;
 				}
-				if((p.size() - total_deletions_count) < GlobalSettings::GetMinimumPrimerLength())
+				if(((int)p.size() - total_deletions_count) < GlobalSettings::GetMinimumPrimerLength())
 				{
 					flag = true;
 				}
@@ -261,13 +266,13 @@ namespace DeGenPrime
 			//	- filter any primer without 40% minimum or 60% maximum gc content
 			//	- filter any primer with more than 3 G or C in last five nucleotides
 			//	- count by most common to avoid issues with degenerate codes
-			for(int j = 0; j < p.size();j++)
+			for(size_t j = 0; j < p.size();j++)
 			{
 				char c = p.GetDataSequence()[j].GetMostCommon();
 				if(c == 'C' || c == 'G')
 				{
 					gc_total_count++;
-					if(j > (p.size() - 6))
+					if((int)j > ((int)p.size() - 6))
 					{
 						gc_end_count++;
 					}
@@ -300,7 +305,7 @@ namespace DeGenPrime
 			//	- raise flag if four matches are found to any pair, more than one codon, or any higher
 			//	- break loop if flag or length * (match count) < remaining checks * match count
 			//	- there is no need to check subsequences longer than sqrt the total length.
-			for(int j = 0;j < p.size() - 6;j++)
+			for(size_t j = 0;j < p.size() - 6;j++)
 			{
 				if(flag)
 				{
@@ -317,8 +322,8 @@ namespace DeGenPrime
 				int quadra_match_count = 0;
 
 				// Choose k starting at index j + 1 and run through size - 4
-				int k = j + 1;
-				while(k < p.size() - 5)
+				size_t k = j + 1;
+				while((int)k < (int)p.size() - 5)
 				{
 					if(flag)
 					{
@@ -393,7 +398,7 @@ namespace DeGenPrime
 				{
 					break;
 				}
-				for(int j = 0;j + 3 < p.size() - k_mer;j++)
+				for(size_t j = 0;j + 3 < p.size() - (size_t)k_mer;j++)
 				{
 					if(flag)
 					{
@@ -405,7 +410,7 @@ namespace DeGenPrime
 					{
 						continue;
 					}
-					for(int k = j + k_mer + 3;k < p.size() - k_mer;k++)
+					for(size_t k = j + k_mer + 3;k < p.size() - (size_t)k_mer;k++)
 					{
 						if(flag)
 						{
@@ -459,7 +464,7 @@ namespace DeGenPrime
 			// -	filter primers with 3' end < -3.0
 
 			// Pull Deletions off the sequence
-			for(int j = 0;j < p.size();j++)
+			for(size_t j = 0;j < p.size();j++)
 			{
 				if(p.GetDataSequence()[j].GetMostCommon() == '-')
 				{
@@ -606,7 +611,7 @@ namespace DeGenPrime
 			s.PushBack(node);
 		}
 
-		for(int i = 0;i < _primers.size();i++)
+		for(size_t i = 0;i < _primers.size();i++)
 		{
 			if(flag)
 			{

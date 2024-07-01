@@ -72,7 +72,7 @@ namespace DeGenPrime
 	std::string DataSequence::Codes() const
 	{
 		string ret = "";
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			ret += _list[i].GetCode();
 		}
@@ -82,7 +82,7 @@ namespace DeGenPrime
 	std::string DataSequence::MC()
 	{
 		string ret = "";
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			ret += _list[i].GetMostCommon();
 		}
@@ -98,9 +98,8 @@ namespace DeGenPrime
 		if(cons)
 		{
 			ret += Format("Conserved regions capitalized.", STR_FORMAT, Alignment::Center) + "\n";
-			for(int i = 0;i < fwd_ind.size();i++)
+			for(size_t i = 0;i < fwd_ind.size();i++)
 			{
-				int len = fwd_len[i];
 				string sub = codes.substr(fwd_ind[i], fwd_len[i]);
 				transform(sub.begin(), sub.end(), sub.begin(), ::toupper);
 				codes.replace(fwd_ind[i], fwd_len[i], sub);
@@ -165,7 +164,7 @@ namespace DeGenPrime
 		DataSequence p;
 
 		//	Get a subsequence that contains no deletions
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			if(_list[i].GetMostCommon() != '-')
 			{
@@ -176,7 +175,7 @@ namespace DeGenPrime
 		if(p.size() < 2)return 0.0; // Avoids Seg faults for mini-seqs.
 
 		// Add up NN enthalpies of the subsequence
-		for(int i = 0; i < p.size() - 1;i++)
+		for(size_t i = 0; i < p.size() - 1;i++)
 		{
 			accumulated_enthalpy += p.GetDataSequence()[i].Enthalpy(p.GetDataSequence()[i + 1]);
 		}
@@ -197,7 +196,7 @@ namespace DeGenPrime
 		DataSequence p;
 		
 		//	Get a subsequence that contains no deletions
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			if(_list[i].GetMostCommon() != '-')
 			{
@@ -208,7 +207,7 @@ namespace DeGenPrime
 		if(p.size() < 2)return 0.0; // Avoids seg faults for mini-seqs.
 
 		// Add up NN entropies of the subsequence
-		for(int i = 0; i < p.size() - 1;i++)
+		for(size_t i = 0; i < p.size() - 1;i++)
 		{
 			accumulated_entropy += p.GetDataSequence()[i].Entropy(p.GetDataSequence()[i + 1]);
 		}
@@ -230,7 +229,7 @@ namespace DeGenPrime
 		
 		// If a nearest neighbor is a deletion, we need to skip over that particular 
 		// DataNode and get a subsequence that does not contain any deletions.
-		for(int i = 0; i < _list.size();i++)
+		for(size_t i = 0; i < _list.size();i++)
 		{
 			if(_list[i].GetMostCommon() != '-')
 			{
@@ -240,7 +239,7 @@ namespace DeGenPrime
 
 		if(p.size() < 2)return 0.0; // Avoids seg faults for mini-seqs.
 		
-		for(int i = 0;i < p.size() - 1;i++)
+		for(size_t i = 0;i < p.size() - 1;i++)
 		{
 			accumulated_gibbs += p.GetDataSequence()[i].Gibbs(p.GetDataSequence()[i + 1]);
 		}
@@ -248,8 +247,10 @@ namespace DeGenPrime
 		char first = p.GetDataSequence()[0].GetMostCommon();
 		char last = p.GetDataSequence()[p.size() - 1].GetMostCommon();
 
+		/*
 		float accum = (first == 'C' || first == 'G') ? .98 : 1.03;
 		accum = (last == 'C' || last == 'G') ? .98 : 1.03;
+		*/
 
 		accumulated_gibbs += (first == 'C' || first == 'G') ? 0.98 : 1.03;
 		accumulated_gibbs += (last == 'C' || last == 'G') ? 0.98 : 1.03;
@@ -258,11 +259,11 @@ namespace DeGenPrime
 	}
 
 	std::vector<DataNode> DataSequence::GetDataSequence() const { return _list; }
-	int DataSequence::size() const { return _list.size(); }
+	size_t DataSequence::size() const { return _list.size(); }
 	int DataSequence::ActualSize() const
 	{
 		int s = 0;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			if(_list[i].GetMostCommon() != '-')s++;
 		}
@@ -280,11 +281,10 @@ namespace DeGenPrime
 	int DataSequence::IndexOf(DataSequence data) const
 	{
 		int index = -1;
-		bool outerflag = false;
-		for(int i = 0;i < _list.size() - data.size();i++)
+		for(size_t i = 0;i < _list.size() - data.size();i++)
 		{
 			bool innerflag = false;
-			for(int j = 0;j < data.size();j++)
+			for(size_t j = 0;j < data.size();j++)
 			{
 				if(innerflag)
 				{
@@ -298,7 +298,6 @@ namespace DeGenPrime
 			}
 			if(!innerflag)
 			{
-				outerflag = true;
 				index = i;
 			}
 		}
@@ -310,7 +309,7 @@ namespace DeGenPrime
 		float temperature = 0.0;
 		int gc = 0;
 		int at = 0;
-		for(int i = 0;i < _list.size();i++)
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			switch(_list[i].GetMostCommon())
 			{
@@ -366,7 +365,7 @@ namespace DeGenPrime
 	float DataSequence::GCRatio() const
 	{
 		int gc = 0;
-		for(int i = 0;i < size();i++)
+		for(size_t i = 0;i < size();i++)
 		{
 			if(_list[i].GetMostCommon() == 'C' ||
 				_list[i].GetMostCommon() == 'G')
@@ -405,9 +404,8 @@ namespace DeGenPrime
 	{
 		float penalty = 0.0; // The lower this number the higher the quality.
 		// Primers outside of size range should not be considered
-		int penalty_mod = 1;
-		if(size() < GlobalSettings::GetMinimumPrimerLength() ||
-			size() > GlobalSettings::GetMaximumPrimerLength())
+		if(size() < (size_t)GlobalSettings::GetMinimumPrimerLength() ||
+			size() > (size_t)GlobalSettings::GetMaximumPrimerLength())
 		{
 			return 1000.0;
 		}
@@ -418,7 +416,7 @@ namespace DeGenPrime
 		for(char c : {'A', 'C', 'G', 'T'})
 		{
 			int char_match_count = 0;
-			for(int i = 0;i < _list.size() - 1;i++)
+			for(size_t i = 0;i < _list.size() - 1;i++)
 			{
 				if(_list[i].GetMostCommon() == c &&
 					_list[i+1].GetMostCommon() == c)
@@ -474,7 +472,7 @@ namespace DeGenPrime
 		penalty += (gibbs < -3.0) ? ((-1.0 * gibbs) - 3.0) : 0;
 
 		// Hairpins
-		for(int j = 0;j + 4 < _list.size();j++)
+		for(size_t j = 0;j + 4 < _list.size();j++)
 		{
 			char first = _list[j].GetMostCommon();
 			char second = _list[j+4].GetMostCommon();
@@ -515,7 +513,7 @@ namespace DeGenPrime
 				penalty += 0.5;
 			}
 		}
-		for(int j = 0;j + 5 < _list.size();j++)
+		for(size_t j = 0;j + 5 < _list.size();j++)
 		{
 			char first = _list[j].GetMostCommon();
 			char second = _list[j+5].GetMostCommon();
@@ -567,7 +565,7 @@ namespace DeGenPrime
 			penalty += 25.0 * (GCRatio() - MAX_GC_TOTAL_RATIO);
 		}
 		float gc = 0.0;
-		for(int i = _list.size() - 6;i < _list.size();i++)
+		for(size_t i = _list.size() - 6;i < _list.size();i++)
 		{
 			if(_list[i].GetMostCommon() == 'C' || _list[i].GetMostCommon() == 'G')gc++;
 		}
@@ -607,7 +605,9 @@ namespace DeGenPrime
 		string degen2 = "WSRYKM";
 		string degen3 = "BDHV";
 		int del_count = 0;
-		for(int i = 0;i < _list.size();i++)
+		int di_count = 0;
+		int tri_count = 0;
+		for(size_t i = 0;i < _list.size();i++)
 		{
 			string s = string(1, _list[i].GetCode());
 			if(nondegen.find(s) != string::npos)
@@ -621,20 +621,22 @@ namespace DeGenPrime
 			}
 			else if(degen2.find(s) != string::npos)
 			{
-				penalty += 2.0;
-				continue;
+				//penalty += 2.0;
+				di_count++;
 			}
 			else if(degen3.find(s) != string::npos)
 			{
-				penalty += 6.0;
-				continue;
+				// penalty += 6.0;
+				tri_count++;
 			}
 			else
 			{
-				penalty += 12.0;
+				penalty += 1000.0;
 			}
 		}
 		penalty += (8.0 * del_count);
+		penalty += di_count == 0 ? 0.0 : pow(10, di_count);
+		penalty += tri_count == 0 ? 0 .0: pow(100, tri_count);
 		return penalty;
 	}
 
@@ -645,7 +647,7 @@ namespace DeGenPrime
 		{
 			return -1;
 		}
-		for(int i = 0; i < data.size();i++)
+		for(size_t i = 0; i < data.size();i++)
 		{
 			if(data.GetDataSequence()[i].GetMostCommon() == _list[i].GetMostCommon())
 			{
@@ -661,7 +663,7 @@ namespace DeGenPrime
 		{
 			return false;
 		}
-		for(int i = 0;i < data.size();i++)
+		for(size_t i = 0;i < data.size();i++)
 		{
 			if(data.GetDataSequence()[i].GetMostCommon() != _list[i].GetMostCommon())
 			{

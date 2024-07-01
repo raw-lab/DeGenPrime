@@ -32,6 +32,7 @@ namespace DeGenPrime
 		static void SetMonoIonConcentration(float salt_conc);
 		static void SetMaximumReturnPrimers(int max);
 		static void SetThermodynamicTemperature(float temp);
+		static void SetSeqFilterLengthMin(int min);
 		static void SetBeginFlag(bool begin);
 		static void SetEndFlag(bool ending);
 		static void SetRunTest(bool test);
@@ -40,12 +41,15 @@ namespace DeGenPrime
 		static void SetSearchRev(bool search);
 		static void SetSortByTemp(bool temp);
 		static void SetUserTemp(bool temp);
+		static void SetFilterSeqs(bool fil);
+		static void SetDetail(bool det);
 		static void SetTestValue(std::string str);
 		static void SetInvRevValue(std::string str);
 		static void SetSearchFwdArg(std::string str);
 		static void SetSearchRevArg(std::string str);
 		static void SetInputFile(std::string str);
 		static void SetOutputFile(std::string str);
+		static void SetDetailFile(std::string str);
 	
 		static int GetMinimumAmplicon();
 		static int GetBeginningNucleotide();
@@ -64,18 +68,22 @@ namespace DeGenPrime
 		static float GetMonoIonConcentration();
 		static int GetMaximumReturnPrimers();
 		static float GetThermodynamicTemperature();
+		static int GetSeqFilterLengthMin();
 		static bool GetRunTest();
 		static bool GetRunInvRev();
 		static bool GetSearchFwd();
 		static bool GetSearchRev();
 		static bool GetSortByTemp();
 		static bool GetUserTemp();
+		static bool GetFilterSeqs();
+		static bool Detail();
 		static std::string GetTestValue();
 		static std::string GetInvRevValue();
 		static std::string GetSearchFwdArg();
 		static std::string GetSearchRevArg();
 		static std::string GetInputFile();
 		static std::string GetOutputFile();
+		static std::string GetDetailFile();
 
 	private:
 		static int _ampLength;
@@ -95,18 +103,22 @@ namespace DeGenPrime
 		static float _monovalentIonConcentration;
 		static int _maxPrimers;
 		static float _thermodynamicTemperature;
+		static int _seqfiltermin;
 		static bool _testRun;
 		static bool _invRevRun;
 		static bool _SearchFwd;
 		static bool _SearchRev;
 		static bool _sortbytemp;
 		static bool _userTemp;
+		static bool _filterseqs;
+		static bool _detailOut;
 		static std::string _testStr;
 		static std::string _invRevValue;
 		static std::string _searchFwdArg;
 		static std::string _searchRevArg;
 		static std::string _inputfile;
 		static std::string _outputfile;
+		static std::string _detailfile;
 	};
 } // end of DeGenPrime
 #endif // GLOBAL_SETTINGS
