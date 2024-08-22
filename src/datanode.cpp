@@ -76,6 +76,7 @@ namespace DeGenPrime
 			_ratio = ((float)Count[Index]) / (float)char_list.size(); // Set ratio
 		}
 		
+		EvaluateCode();
 		//EvaluateCode(Count, char_list.size()); // Double check code
 		/*
 		if(_code == '-')return;
@@ -112,7 +113,7 @@ namespace DeGenPrime
 		}*/
 	}
 
-	/*
+	
 	void DataNode::EvaluateCode()
 	{
 		// Make sure the chosen degenerate code has sufficient
@@ -136,7 +137,7 @@ namespace DeGenPrime
 				}
 				else if(degen3.find(_code) != std::string::npos)
 				{
-					if(per < MIN_TRI_DEGENERATE_THRESHOLD)return;
+					if(perc < MIN_TRI_DEGENERATE_THRESHOLD)return;
 					else
 					{
 						return;
@@ -153,7 +154,7 @@ namespace DeGenPrime
 				}
 		}
 		return;
-	}*/
+	}
 
 	DataNode::DataNode(char code, char mc, float ratio) // build node directly
 	{
@@ -418,10 +419,11 @@ namespace DeGenPrime
 				}
 			}
 		}
-		EvaluateCode(Count, Size);
+		//EvaluateCode(Count, Size);
 		return;
 	}
 
+	/*
 	void DataNode::EvaluateCode(int Count[6], int Size)
 	{
 		int nucs[4];
@@ -565,7 +567,7 @@ namespace DeGenPrime
 			}
 		}
 		return;
-	}
+	}*/
 
 	/*
 	void DataNode::EvaluateCode()

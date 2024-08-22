@@ -636,7 +636,7 @@ namespace DeGenPrime
 		}
 		penalty += (8.0 * del_count);
 		penalty += di_count == 0 ? 0.0 : pow(10, di_count);
-		penalty += tri_count == 0 ? 0 .0: pow(100, tri_count);
+		penalty += tri_count == 0 ? 0.0 : pow(100, tri_count);
 		return penalty;
 	}
 

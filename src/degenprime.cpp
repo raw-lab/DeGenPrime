@@ -119,13 +119,14 @@ int main(int argc, char *argv[])
 		cout << GlobalSettings::GetSeqFilterLengthMin() << " bps and were filtered." << endl;
 		exit(PROGRAM_SUCCESS);
 	}
-	else if(GlobalSettings::GetProteinSequence())
+	else if(GlobalSettings::GetProteinSequence()) 
 	{
 		ofstream os;
 		os.open(GlobalSettings::GetOutputFile());
 		os << list.DecodeProteins() << endl;
 		cout << "Decoded the proteins in the file.  Output saved to: ";
 		cout << GlobalSettings::GetOutputFile() << endl;
+		os.close();
 		exit(PROGRAM_SUCCESS);
 	}
 	else if(list.TestAlignment() == false)

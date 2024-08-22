@@ -64,7 +64,8 @@ namespace DeGenPrime
 		void ChooseCode(int Count[6], int Size);
 		void SortedIndeces(int Indeces[6], int Count[6]);
 		void SortArrayDescending(int Count[], size_t size);
-		void EvaluateCode(int Count[6], int Size);
+		//void EvaluateCode(int Count[6], int Size);
+		void EvaluateCode();
 		int MostCommonIndex(int Count[5]);
 		int IndexOf(int Count[], int Skip[], size_t size, int value);
 		int FromIndex(int index);
