@@ -118,14 +118,12 @@ You are an evolutionary biologist who is trying to find evidence of an evolution
 ```
 
 ## Copyright  
-This is copyrighted by University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely for academic use only. Please contact us for commerical use. The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
+University of North Carolina at Charlotte, Bryan Fulghum, Sophie Tanker, and Richard Allen White III.  All rights reserved.  DeGenPrime is a bioinformatic tool that can be distributed freely.  
+The software is provided “as is” and the copyright owners or contributors are not liable for any direct, indirect, incidental, special, or consequential damages including but not limited to, procurement of goods or services, loss of use, data or profits arising in any way out of the use of this software.<br />
 
 ## Citing DeGenPrime
 
 If you are publishing results obtained using DeGenPrime, please cite: <br />
-
-Fulghum BW, Tanker S, White III RA. 2024.  <br />
-DeGenPrime provides robust primer design and optimization unlocking the biosphere. [Bioinformatics Advances](https://academic.oup.com/bioinformaticsadvances/article/4/1/vbae044/7628619) <br />
 
 Fulghum BW, Tanker S, White III RA. 2023.  <br />
 DeGenPrime provides robust primer design and optimization unlocking the biosphere. [bioRxiv](https://www.biorxiv.org/content/10.1101/2023.08.11.553048v1) <br />
