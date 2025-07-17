@@ -335,19 +335,24 @@ namespace DeGenPrime
 
 	string PrimerPairList::CreateCSV(DataSequence fwd, DataSequence rev)
 	{
-		string ret = "Pair #,Forward,Reverse,Amplicon,Temp. Diff\n";
+		string ret = "Pair #,Forward,Reverse,Amplicon,Temp. Diff,Fwd. Start,Rev. End\n";
+		int N = fwd.size();
 		for(size_t i = 0;i < _pairs.size();i++)
 		{
 			DataSequence fwdSub = fwd.SubSeq(_pairs[i].GetForward().Index(), _pairs[i].GetForward().Length());
 			DataSequence revSub = rev.SubSeq(_pairs[i].GetReverse().Index(), _pairs[i].GetReverse().Length());
-
+			
+			int fwdStart = _pairs[i].GetForward().Index() + 1;
+			int revEnd = N - _pairs[i].GetReverse().Index();
+			
 			ret += to_string(i + 1) + ",";
 			ret += fwdSub.Codes() + ",";
 			ret += revSub.Codes() + ",";
 			ret += to_string(_pairs[i].AmpSize()) + ",";
-			ret += to_string(_pairs[i].TempDiff()) + "\n";
+			ret += to_string(_pairs[i].TempDiff()) + ",";
+			ret += to_string(fwdStart) + ",";
+			ret += to_string(revEnd) + "\n";
 		}
-
 		return ret;
 	}
 
