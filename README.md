@@ -132,8 +132,6 @@ DeGenPrime provides robust primer design and optimization unlocking the biospher
 The informatics point-of-contact for this project is [Dr. Richard Allen White III](https://github.com/raw-lab).  
 If you have any questions or feedback, please feel free to get in touch by email.  
 [Dr. Richard Allen White III](mailto:rwhit101@uncc.edu)<br /> 
-[Bryan Fulghum](mailto:bfulghu2@charlotte.edu
-) <br />
 Or [open an issue](https://github.com/raw-lab/degenprime/issues).  
 
 [back to top](https://github.com/raw-lab/DeGenPrime/)
