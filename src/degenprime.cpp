@@ -668,6 +668,7 @@ void ProcessTags(int argc, char *argv[])
 	int value;
 	for(int i = 1;i < argc;i++)
 	{
+		cout << "Checking TAG: " << argv[i] << endl;
 		if(strcmp("--h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0)
 		{
 			PrintHelp();
@@ -693,7 +694,9 @@ void ProcessTags(int argc, char *argv[])
 		// For most tags, they follow the format: '--tag:value'
 		// We want to check what the tag is with strstr()
 		// and store the given value to global settings with strchr()
-		ptr = strchr(argv[i], ':') + 1;
+		ptr = strchr(argv[i], ':');
+		if(ptr)
+			ptr += 1;
 		if(ptr != NULL && (strstr(argv[i], "--test:") == NULL || 
 			(strstr(argv[i], "--search_fwd:") == NULL) ||
 			(strstr(argv[i], "--search_rev:") == NULL)))
@@ -910,7 +913,7 @@ void ProcessTags(int argc, char *argv[])
 void PrintHelp()
 {
 	cout << "degenprime version " << DeGenPrime_VERSION << "\n";
-	cout << "Syntax: ./degenprime [--tags] <filename>\n";
+	cout << "Syntax: degenprime [--tags] --input_file:<filename>\n";
 	cout << "Valid tags include:\n";
 	cout << "\t--amplicon:int, Set the minimum amplicon length.  This will not work with";
 	cout << "--begin or --end tags.\n";
