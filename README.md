@@ -34,6 +34,7 @@ cmake ../src
 make -j4
 sudo make install
 ```
+
 #### Local install
 ```console
 git clone https://github.com/raw-lab/DeGenPrime.git
@@ -50,7 +51,7 @@ export PATH=$PATH:/home/DeGenPrime/build/degenprime #for example home directory
 ```
 
 
-DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  The program does try to align a file that is misaligned by calling MAFFT within the program, so you must either have this installed or manually align your sequences to use DeGenPrime.
+DeGenPrime is designed to run as a stand-alone console application on any platform capable of running C++ applications.  You must manually align your sequences to use DeGenPrime.
 
 ### Options  
 
@@ -61,33 +62,31 @@ DeGenPrime is designed to run as a stand-alone console application on any platfo
 #### Command-line arguments
 Valid tags include:
 ```console
---amplicon:           <int>, Set the minimum amplicon length. 
---begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
---degenerate          this tag directs the program to use hard filters and some limited degeneracy instead of basing primer design off the consensus sequence and minimizing penalty.  This method runs significantly slower than the default approach.
---delta_g:            <int>, Sets the minimum allowed gibbs free energy for the repetition filter.  Default value is -4.0 kcal/mol.
---end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
---global or --g,       for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for global alignment.
 --help or --h,         prints this help menu.
 --input_file:<file>   this tag species the input file for the program.  It must be an aligned file in fasta or clustal form.  This tag is required for program operation.
 --output_file:<file> This tag specifies the output csv file where the program data will be saved.  If this tag is not included, the filename will write output to the same filename as the input filename but will replace the file extension with '.csv'
---local or --l,        for lists of sequences that are misaligned, this tag specifies that the file should run MAFFT for local alignment.
---max_primer_len:  <int>, Sets the maximum length of the desired primer.  This has a default value of 22 and cannot be larger than 25.
---min_primer_len:  <int>, Sets the minimum length of the desired primer.  This has a default value of 20 and cannot be less than 18.
+--amplicon:           <int>, Set the minimum amplicon length. 
+--begin:              <int>, Set the beginning nucleotide. If the user inputs an integer < 0, the program will default this value to zero.
+--end:                <int>, Set the ending nucleotide. If the user inputs an integer > the number of base pairs in the entire sequence, then the program will default this to the last nucleotide in the sequence.
+--max_primers:        <int>, Sets the maximum number of output primers. This has a maximum value of 10 and this program will reduce any value larger to this value.
+--max_primer_len:     <int>, Sets the maximum length of the desired primer.  This has a default value of 22 and cannot be larger than 25.
+--min_primer_len:     <int>, Sets the minimum length of the desired primer.  This has a default value of 20 and cannot be less than 18.
 --min_temp:           <int>, Sets the minimum primer melting temperature. This has a minimum value of 50.0 (degrees Celsius) and must be smaller than --max_temp.
 --max_temp:           <int>, Sets the maximum primer melting temperature. This has a maximum value of 65.0 (degrees Celsius) and must be larger than --min_temp.
 --primer_conc:        <int>, Sets the concentration of the PCR primer in nM. This has a minimum value of 50.0 nM, and this program will raise any value smaller to this value.
---protein            This tag will cause the program to interpret the input file as a sequence of amino acids and translate the amino acids into nucleotides then save the output file as <filename>_protein.faa.
 --salt_conc:          <int>, Sets the concentration of monovalent ions in mM. This has a minimum value of 50.0 mM, and this program will raise any value smaller to this value.
+--delta_g:            <int>, Sets the minimum allowed gibbs free energy for the repetition filter.  Default value is -4.0 kcal/mol.
+--protein            This tag will cause the program to interpret the input file as a sequence of amino acids and translate the amino acids into nucleotides then save the output file as <filename>_protein.faa.
 --search_fwd:         <string>, The string represents a forward primer.  Searches the collected list of forward primers to see if the argument primer is within them.  If this primer is included, it gives its relative position on the ordered list by penalty.  This tag is not compatible with --test.
---search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with --test.
---max_primers:        <int>, Sets the maximum number of output primers. This has a maximum value of 10 and this program will reduce any value larger to this value.
+--search_rev:         <string>, This tag is similar to --search_fwd, but is for the reverse primer list.  It is also not compatible with  --test.
+--degenerate          this tag directs the program to use hard filters and some limited degeneracy instead of basing primer design off the consensus sequence and minimizing penalty.  This method runs significantly slower than the default approach.
 --test:               <string>, The string represents a single primer.  Runs the primer through all filters.  Returns the thermodynamic values of this primer as well as any filters this primer would not pass and its calculated penalty.  This tag is incompatible with --search tags.  Any primer smaller or larger than the size limits will show primer outside size range.
 ```
 
 ### Input
-Input files to DeGenPrime can use a variety of formats including single sequences to alignment files.<br /> 
+Input files to DeGenPrime can be either single sequences or alignment files.<br /> 
 - Nucleotide fasta formats (.faa, .fasta, .ffn, .fna)<br />
-- Nucleotide alignments (.clust)<br />
+- Nucleotide alignments (.clust, .aln)<br />
 
 ### Output
 DeGenPrime will output a few progress messages as the program runs, the recommended primers and their details, and the program runtime at the end to the console.  DeGenPrime also records the operation details and the primers to an output file.  The output filename is selected based on the specified input file.<br />  
@@ -97,7 +96,7 @@ DeGenPrime will output a few progress messages as the program runs, the recommen
 - Any errors that occur during runtime will also be written on the console.<br />
 
 ### Examples
-Your find modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the mutated zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.<br /> You would use:<br />
+You find modifications on chromosome 21 in the p arms above the centromere.  You find out the length of this region from the tips of the 3’ end of the telomeres to the centromere is about 12 million base pairs.  The average length of telomeres on chromosome 21 for a human zygote is 10 thousand base pairs.  Your team collects data from the mutated zygotes’ chromosome 21 and other genetic information collected from NCBI on chromosome 21 into a fasta file called zygote_21.faa.  You want to find 10 good primer pairs on this chromosome to amplify in a PCR reaction.<br /> You would use:<br />
 
 ```console
 ./DeGenPrime --begin:10000 --end:12000000 --max_primers:10 --input_file:zygote_21.faa
@@ -107,15 +106,19 @@ You are an immunologist who wants to identify mutations that might have occurred
 You would use:<br />
 
 ```console
-./DeGenPrime --amplicon:660 --local --input_file:influenzaA_4.faa
+First perform local alignment using a tool such as MAFFT, and save with .aln or .clust extension
+
+./DeGenPrime --amplicon:660 --input_file:influenzaA_4.aln
 or
-./DeGenPrime --amplicon:660 --local --input_file:influenzaA_6.faa
+./DeGenPrime --amplicon:660 --input_file:influenzaA_6.aln
 ```
 
 You are an evolutionary biologist who is trying to find evidence of an evolutionary link between a newly discovered archaea from the dead sea region.  The archaea is a halophile and thermophile.  Your theory is that this archaea evolved from the bacterium when it acquired its salt and temperature resistance which enabled it to occupy new niches and evolve through adaptive radiation.  You have aggregated the genetic data from these species into a file called microbe_genes.faa (not aligned) and want to get a PCR reaction with salt and temperature conditions similar to those found in the archaean’s natural habitat.  The Sea of Salt is about 10 times saltier than regular ocean water and has a consistent temperature of 60 +/- 1 degrees Celsius because it is heated from geothermal activity.  You determine the concentration of salt in the Sea of Salt is about 6.3 mM and you want to use a primer concentration of 100 nM to be certain your primer will bond.
 
 ```console
-./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 --input_file:microbe_genes.faa
+First perform global alignment using a tool such as MAFFT, and save with .aln or .clust extension
+
+./DeGenPrime --salt_conc:6.3 --primer_conc:100 --global --min_temp:59 --max_temp:61 --input_file:microbe_genes.aln
 ```
 
 ## Copyright  

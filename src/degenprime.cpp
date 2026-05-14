@@ -683,13 +683,14 @@ void ProcessTags(int argc, char *argv[])
 			GlobalSettings::SetNonDegenerate(false);
 			continue;
 		}
-		else if(strstr(argv[i], "--global") != NULL ||
-			strstr(argv[i], "--local") != NULL ||
-			strstr(argv[i], "--g") != NULL ||
-			strstr(argv[i], "--l") != NULL)
-		{
-			continue;
-		}
+		//  else if(
+		//  	strstr(argv[i], "--global") != NULL ||
+		//  	strstr(argv[i], "--local") != NULL ||
+		//  	strstr(argv[i], "--g") != NULL ||
+		//  	strstr(argv[i], "--l") != NULL)
+		//  {
+		//  	continue;
+		//  }
 
 		// For most tags, they follow the format: '--tag:value'
 		// We want to check what the tag is with strstr()
@@ -915,39 +916,78 @@ void PrintHelp()
 	cout << "degenprime version " << DeGenPrime_VERSION << "\n";
 	cout << "Syntax: degenprime [--tags] --input_file:<filename>\n";
 	cout << "Valid tags include:\n";
-	cout << "\t--amplicon:int, Set the minimum amplicon length.  This will not work with";
-	cout << "--begin or --end tags.\n";
-	cout << "\t--begin:int, Set the beginning nucleotide.  This must be used with --end ";
-	cout << "and cannot be used with --amplicon.\n";
-	cout << "\t--end:int, Set the ending nucleotide.  This must be used with --begin ";
-	cout << "and cannot be used with --amplicon.\n";
-	cout << "\t--global or --g, for lists of sequences that are misaligned, this tag specifies ";
-	cout << "that the file should run MAFFT for global alignment.\n";
-	cout << "\t--help or --h, prints this help menu.\n";
-	cout << "\t--local or --l, for lists of sequences that are misaligned, this tag specifies ";
-	cout << "that the file should run MAFFT for local alignment.\n";
-	cout << "\t--min_temp:int, Sets the minimum primer melting temperature.  This has";
-	cout << " a minimum value of " << MIN_PRIMER_TEMP << " (degrees Celsius) and must be ";
-	cout << "smaller than --max_temp.\n";
-	cout << "\t--max_primers:int, Sets the maximum number of output primers to be ";
-	cout << "returned by this program.\n";
-	cout << "\t--max_temp:int, Sets the maximum primer melting temperature.  This has";
-	cout << " a maximum value of " << MAX_PRIMER_TEMP << " (degrees Celsius) and must be ";
-	cout << "larger than --min_temp.\n";
-	cout << "\t--primer_conc:int, Sets the concentration of the PCR primer in nM.  This has ";
-	cout << "a minimum value of " << MIN_PRIMER_CONC << " and this program will raise ";
-	cout << "any value smaller to this value.\n";
-	cout << "\t--protein, Tells the program that the input sequence is a protein sequence and ";
-	cout << "the program should unwrap the protein sequence into its base nucleotides.  This ";
-	cout << "will produce degenerate nucleotide codes whenever there is any ambiguity.\n";
-	cout << "\t--salt_conc:int, Sets the concentration of monovalent ions in mM.  This has ";
-	cout << "a minimum value of " << MIN_SALT_CONC << " and this program will raise ";
-	cout << "any value smaller to this value.\n";
-	cout << "\t--test:string, The string represents a single primer.  Runs the primer through all filters.";
-	cout <<  "Returns the thermodynamic values of this primer as well as any filters this primer would not pass and";
-	cout << "its calculated penalty.  This tag is incompatible with --search tags.";
-	cout << "Any primer smaller or larger than the size limits will show primer outside size range.";
 
+	cout << "\t--help or --h, prints this help menu.\n";
+
+	cout << "\t--input_file:<file>   this tag species the input file for the program.";
+	cout << "  It must be an aligned file in fasta or clustal form.  This tag is required for program operation.\n";
+
+	cout << "\t--output_file:<file> This tag specifies the output csv file where the program";
+	cout << " data will be saved.  If this tag is not included, the filename will write";
+	cout << " output to the same filename as the input filename but will replace the file extension with '.csv'\n";
+
+	cout << "\t--amplicon:int, Set the minimum amplicon length.  This will not work with";
+	cout << " --begin or --end tags.\n";
+
+	cout << "\t--begin:int, Set the beginning nucleotide.  This must be used with --end";
+	cout << " and cannot be used with --amplicon.\n";
+
+	cout << "\t--end:int, Set the ending nucleotide.  This must be used with --begin";
+	cout << " and cannot be used with --amplicon.\n";
+
+	cout << "\t--max_primers:int, Sets the maximum number of output primers to be";
+	cout << " returned by this program.\n";
+
+	cout << "\t--max_primer_len:int, Sets the maximum length of the desired primer.";
+	cout << "  This has a default value of " << DEFAULT_MAX_PRIMER_LENGTH << " and cannot be larger than " << MAX_PRIMER_LENGTH << ".\n";
+
+	cout << "\t--min_primer_len:int, Sets the minimum length of the desired primer.";
+	cout << "  This has a default value of " << DEFAULT_MIN_PRIMER_LENGTH << " and cannot be less than " << MIN_PRIMER_LENGTH << ".\n";
+
+	cout << "\t--min_temp:int, Sets the minimum primer melting temperature.  This has";
+	cout << " a minimum value of " << MIN_PRIMER_TEMP << " (degrees Celsius) and must be";
+	cout << " smaller than --max_temp.\n";
+
+	cout << "\t--max_temp:int, Sets the maximum primer melting temperature.  This has";
+	cout << " a maximum value of " << MAX_PRIMER_TEMP << " (degrees Celsius) and must be";
+	cout << " larger than --min_temp.\n";
+
+	cout << "\t--primer_conc:int, Sets the concentration of the PCR primer in nM.  This has";
+	cout << "a minimum value of " << MIN_PRIMER_CONC << " and this program will raise";
+	cout << "any value smaller to this value.\n";
+
+	cout << "\t--salt_conc:int, Sets the concentration of monovalent ions in mM.  This has";
+	cout << "a minimum value of " << MIN_SALT_CONC << " and this program will raise";
+	cout << "any value smaller to this value.\n";
+
+	cout << "\t--delta_g:int, Sets the minimum allowed gibbs free energy for the repetition";
+	cout << " filter.  Default value is " << DEFAULT_DELTA_G << " kcal/mol.\n";
+
+	cout << "\t--protein, Tells the program that the input sequence is a protein sequence and";
+	cout << " the program should unwrap the protein sequence into its base nucleotides.  This";
+	cout << " will produce degenerate nucleotide codes whenever there is any ambiguity.\n";
+
+	cout << "\t--search_fwd:string, The string represents a forward primer.  Searches the collected";
+	cout << " list of forward primers to see if the argument primer is within them.  If this primer is";
+	cout << " included, it gives its relative position on the ordered list by penalty.  This tag is not";
+	cout << " compatible with --test.\n";
+
+	cout << "\t--search_rev:string, This tag is similar to --search_fwd, but is for the reverse primer list.";
+	cout << "  It is also not compatible with --test.\n";
+
+	cout << "\t--degenerate, this tag directs the program to use hard filters and some limited";
+	cout << " degeneracy instead of basing primer design off the consensus sequence and minimizing";
+	cout << " penalty.  This method runs significantly slower than the default approach.\n";
+
+	cout << "\t--test:string, The string represents a single primer.  Runs the primer through all filters.";
+	cout << "  Returns the thermodynamic values of this primer as well as any filters this primer would not pass and";
+	cout << " its calculated penalty.  This tag is incompatible with --search tags.";
+	cout << "  Any primer smaller or larger than the size limits will show primer outside size range.\n";
+
+	//cout << "\t--global or --g, for lists of sequences that are misaligned, this tag specifies";
+	//cout << " that the file should run MAFFT for global alignment.\n";
+	//cout << "\t--local or --l, for lists of sequences that are misaligned, this tag specifies";
+	//cout << " that the file should run MAFFT for local alignment.\n";
 
 	exit(PROGRAM_SUCCESS);
 }
